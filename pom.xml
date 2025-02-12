@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.allMighty</groupId>
-	<artifactId>Spring-Jooq-Starter</artifactId>
+	<artifactId>Dr-Limbach</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Spring-Jooq-Starter</name>
-	<description>Starter for Spring-Jooq</description>
+	<name>Dr-Limbach</name>
+	<description>project for dr.Limbach</description>
 
 
 
