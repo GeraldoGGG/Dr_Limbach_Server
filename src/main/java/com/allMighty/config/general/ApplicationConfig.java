@@ -1,6 +1,6 @@
 package com.allMighty.config.general;
 
-import com.allMighty.system_user.repository.SystemUserRepository;
+import com.allMighty.person.repository.SystemUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

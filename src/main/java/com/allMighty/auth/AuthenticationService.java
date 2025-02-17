@@ -6,7 +6,7 @@ import com.allMighty.auth.model.AuthenticationResponse;
 import com.allMighty.auth.model.RegisterRequest;
 import com.allMighty.config.jwt.JwtService;
 import com.allMighty.enitity.Person;
-import com.allMighty.system_user.repository.SystemUserRepository;
+import com.allMighty.person.repository.SystemUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
