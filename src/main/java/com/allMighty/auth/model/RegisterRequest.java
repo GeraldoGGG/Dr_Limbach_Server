@@ -1,6 +1,6 @@
 package com.allMighty.auth.model;
 
-import com.allMighty.person.role.Role;
+import com.allMighty.config.security.person.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
