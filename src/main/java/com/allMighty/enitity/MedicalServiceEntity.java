@@ -1,5 +1,6 @@
 package com.allMighty.enitity;
 
+import com.allMighty.enitity.analysis.MedicalAnalysisEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,19 +20,17 @@ public class MedicalServiceEntity extends AbstractEntity {
     private boolean removed;
 
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    private String description;
+    @Column(columnDefinition = "TEXT")
+    private String content;
 
 
     @ManyToMany
     @JoinTable(
-            name = "medical_service_blog",
+            name = "medical_service_event",
             joinColumns = @JoinColumn(name = "medical_service_id"),
-            inverseJoinColumns = @JoinColumn(name = "medical_blog_id")
+            inverseJoinColumns = @JoinColumn(name = "medical_event_id")
     )
-    private List<MedicalBlogEntity> blogs = new ArrayList<>();
-
+    private List<MedicalEventEntity> events = new ArrayList<>();
 
 
     @ManyToMany
@@ -41,5 +40,8 @@ public class MedicalServiceEntity extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "medical_analyse_id")
     )
     private List<MedicalAnalysisEntity> analysis = new ArrayList<>();
+
+
+    //TODO manage image
 
 }

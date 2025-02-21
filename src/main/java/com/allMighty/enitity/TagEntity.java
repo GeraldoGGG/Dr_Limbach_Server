@@ -1,5 +1,6 @@
 package com.allMighty.enitity;
 
+import com.allMighty.enitity.analysis.MedicalAnalysisEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +18,11 @@ public class TagEntity extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "medical_blog_entity_tags",
+            name = "medical_article_entity_tags",
             joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "medical_blog_id")
+            inverseJoinColumns = @JoinColumn(name = "medical_article_id")
     )
-    private Set<MedicalBlogEntity> medicalBlogs;
+    private Set<MedicalArticleEntity> medicalArticles;
 
     @ManyToMany
     @JoinTable(

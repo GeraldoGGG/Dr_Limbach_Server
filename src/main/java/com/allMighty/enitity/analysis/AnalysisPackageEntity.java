@@ -1,5 +1,6 @@
-package com.allMighty.enitity;
+package com.allMighty.enitity.analysis;
 
+import com.allMighty.enitity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,13 +12,14 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "medical_analysis_package")
-public class PackageEntity extends AbstractEntity {
+public class AnalysisPackageEntity extends AbstractEntity {
 
     private Integer price;
     private Integer discountPercentage;
+    private boolean promoted;
+
     private boolean archived;
     private boolean removed;
-    private boolean promoted;
 
     @ManyToMany
     @JoinTable(

@@ -1,5 +1,6 @@
-package com.allMighty.enitity;
+package com.allMighty.enitity.analysis;
 
+import com.allMighty.enitity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "medical_analysis")
-public class MedicalAnalysisEntity extends AbstractEntity{
+public class MedicalAnalysisEntity extends AbstractEntity {
 
     private String medicalName;
     private String synonym; //TODO  to be checked
@@ -25,11 +26,11 @@ public class MedicalAnalysisEntity extends AbstractEntity{
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "analysis_id")
-    private List<FieldValue> fieldValues = new ArrayList<>();
+    private List<AnalysisDetails> analysisDetails = new ArrayList<>();
 
 
 
-    @ManyToMany(mappedBy = "analysis")
+  /*  @ManyToMany(mappedBy = "analysis")
     private List<MedicalServiceEntity> services = new ArrayList<>();
-
+*/
 }
