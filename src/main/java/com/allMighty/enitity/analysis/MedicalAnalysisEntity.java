@@ -1,6 +1,6 @@
 package com.allMighty.enitity.analysis;
 
-import com.allMighty.enitity.AbstractEntity;
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,22 +15,17 @@ import java.util.List;
 public class MedicalAnalysisEntity extends AbstractEntity {
 
     private String medicalName;
-    private String synonym; //TODO  to be checked
+    private String synonym;
     private Integer price;
 
 
     private boolean archived;
     private boolean removed;
 
-    //TODO opsionet per tu diskutuar
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "analysis_id")
     private List<AnalysisDetails> analysisDetails = new ArrayList<>();
 
 
-
-  /*  @ManyToMany(mappedBy = "analysis")
-    private List<MedicalServiceEntity> services = new ArrayList<>();
-*/
 }

@@ -1,6 +1,6 @@
 package com.allMighty.enitity.analysis;
 
-import com.allMighty.enitity.AbstractEntity;
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "analysis_detials")
+@Table(name = "analysis_details")
 public class AnalysisDetails extends AbstractEntity {
 
     private String string_value;

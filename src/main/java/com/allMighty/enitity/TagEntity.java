@@ -1,5 +1,6 @@
 package com.allMighty.enitity;
 
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import com.allMighty.enitity.analysis.MedicalAnalysisEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,8 +13,9 @@ import java.util.Set;
 @Entity
 @Table(name = "tag")
 public class TagEntity extends AbstractEntity {
-    private String name;
 
+    //unique
+    private String name;
 
 
     @ManyToMany

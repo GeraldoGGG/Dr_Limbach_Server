@@ -1,23 +1,22 @@
 package com.allMighty.enitity;
 
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import com.allMighty.enumeration.EntityType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 
 @Getter
 @Setter
 @Entity
 @Table(name = "image")
 public class ImageEntity extends AbstractEntity {
-    //will be used for centralized image api and to generate the url for image dto
+
+    @Column
     private Long entityReferenceId;
+
     @Enumerated(EnumType.STRING)
     private EntityType entityType;
-
-
-
 
     @Column
     private String fileName;

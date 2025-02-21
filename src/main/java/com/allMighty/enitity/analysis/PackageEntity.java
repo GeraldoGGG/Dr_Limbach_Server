@@ -1,6 +1,6 @@
 package com.allMighty.enitity.analysis;
 
-import com.allMighty.enitity.AbstractEntity;
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "medical_analysis_package")
-public class AnalysisPackageEntity extends AbstractEntity {
+@Table(name = "package")
+public class PackageEntity extends AbstractEntity {
 
     private Integer price;
     private Integer discountPercentage;
@@ -23,7 +23,7 @@ public class AnalysisPackageEntity extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "medical_package_analysis",
+            name = "package_analysis",
             joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "analysis_id")
     )

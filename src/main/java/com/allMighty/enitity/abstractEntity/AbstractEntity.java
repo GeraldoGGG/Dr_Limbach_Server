@@ -1,4 +1,4 @@
-package com.allMighty.enitity;
+package com.allMighty.enitity.abstractEntity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

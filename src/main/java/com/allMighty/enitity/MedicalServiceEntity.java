@@ -1,5 +1,6 @@
 package com.allMighty.enitity;
 
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import com.allMighty.enitity.analysis.MedicalAnalysisEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,11 +27,11 @@ public class MedicalServiceEntity extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "medical_service_event",
+            name = "medical_service_article",
             joinColumns = @JoinColumn(name = "medical_service_id"),
-            inverseJoinColumns = @JoinColumn(name = "medical_event_id")
+            inverseJoinColumns = @JoinColumn(name = "medical_article_id")
     )
-    private List<MedicalEventEntity> events = new ArrayList<>();
+    private List<MedicalArticleEntity> articles = new ArrayList<>();
 
 
     @ManyToMany
@@ -40,8 +41,5 @@ public class MedicalServiceEntity extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "medical_analyse_id")
     )
     private List<MedicalAnalysisEntity> analysis = new ArrayList<>();
-
-
-    //TODO manage image
 
 }

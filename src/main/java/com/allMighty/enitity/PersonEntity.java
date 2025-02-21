@@ -1,6 +1,7 @@
 package com.allMighty.enitity;
 
 import com.allMighty.config.security.person.role.Role;
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

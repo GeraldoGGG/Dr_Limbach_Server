@@ -1,5 +1,6 @@
 package com.allMighty.enitity;
 
+import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +24,8 @@ public class MedicalArticleEntity extends AbstractEntity {
     private boolean removed;
 
 
-
-    @ManyToMany(mappedBy = "article")
+    @ManyToMany(mappedBy = "articles")
     private List<MedicalServiceEntity> medicalServices = new ArrayList<>();
 
-
-
-    //TODO manage image ne dto   List<String> imageUrls = new ArrayList<>();
 
 }
