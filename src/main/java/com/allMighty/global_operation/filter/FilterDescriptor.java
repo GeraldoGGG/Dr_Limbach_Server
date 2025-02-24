@@ -3,12 +3,12 @@ package com.allMighty.global_operation.filter;
 import lombok.Getter;
 
 @Getter
-public class FilterDescriptor<T extends IQueryField, V> {
+public class FilterDescriptor<T extends FilterableField, V> {
 
-    private T field;
-    private String fieldAlias;
-    private FilterOperator operator;
-    private V value;
+    private final T field;
+    private final String fieldAlias;
+    private final FilterOperator operator;
+    private final V value;
 
     public FilterDescriptor(T field, FilterOperator operator, String fieldAlias, V value) {
         this(field, fieldAlias, operator, value);

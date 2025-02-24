@@ -42,4 +42,15 @@ public class MedicalServiceEntity extends AbstractEntity {
     )
     private List<MedicalAnalysisEntity> analysis = new ArrayList<>();
 
+
+
+    // TODO need for handeling data
+    public void addArticle(MedicalArticleEntity article) {
+        this.articles.add(article);
+    }
+
+    public void removeArticle(MedicalArticleEntity article) {
+        this.articles.remove(article);
+    }
+
 }

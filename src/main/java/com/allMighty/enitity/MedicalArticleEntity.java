@@ -23,9 +23,4 @@ public class MedicalArticleEntity extends AbstractEntity {
     private boolean archived;
     private boolean removed;
 
-
-    @ManyToMany(mappedBy = "articles")
-    private List<MedicalServiceEntity> medicalServices = new ArrayList<>();
-
-
 }

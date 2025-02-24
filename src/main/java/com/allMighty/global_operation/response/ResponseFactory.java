@@ -1,8 +1,12 @@
-package com.allMighty.global_operation.page;
+package com.allMighty.global_operation.response;
+
+import com.allMighty.business_logic_domain.medical_article.ArticleDTO;
+import com.allMighty.global_operation.response.page.EntityPageResponseDTO;
+import com.allMighty.global_operation.response.page.PageDescriptor;
 
 import java.util.List;
 
-public class PageResponseFactory {
+public class ResponseFactory {
     public static <T> EntityPageResponseDTO<T> createPage(Long count, List<T> items, PageDescriptor pageDescriptor) {
         EntityPageResponseDTO<T> response = new EntityPageResponseDTO<>();
         response.setItems(items);
@@ -11,6 +15,14 @@ public class PageResponseFactory {
         response.setAvailablePages(pageDescriptor.getAvailablePages(null != count ? count : 0));
         response.setPage(pageDescriptor.getPageNumber());
 
+        return response;
+    }
+
+
+
+    public static <T> EntityResponseDTO<T> createResponse(T item) {
+        EntityResponseDTO<T> response = new EntityResponseDTO<>();
+        response.setResult(item);
         return response;
     }
 }

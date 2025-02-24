@@ -1,4 +1,4 @@
-package com.allMighty.global_operation.page;
+package com.allMighty.global_operation.response.page;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

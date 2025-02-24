@@ -1,6 +1,6 @@
 package com.allMighty.global_operation.exception_management.exception;
 
-import com.allMighty.global_operation.response.PayloadValidationStatus;
+import com.allMighty.global_operation.exception_management.PayloadValidationStatus;
 import org.springframework.http.HttpStatus;
 
 public class BadRequestException extends Http4xxException {

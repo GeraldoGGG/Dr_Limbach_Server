@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public class FilterParser<T extends IQueryField> {
+public class FilterParser<T extends FilterableField> {
 
     private final T[] fieldValues;
 
@@ -27,6 +27,7 @@ public class FilterParser<T extends IQueryField> {
             }
         }
         List<FilterDescriptor<T, ?>> result = new ArrayList<>();
+
         for (String filter : multiFilters) {
             if (StringUtils.isBlank(filter)) {
                 continue;

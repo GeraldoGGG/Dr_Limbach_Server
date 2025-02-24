@@ -1,5 +1,6 @@
-package com.allMighty.global_operation.response;
+package com.allMighty.global_operation.exception_management;
 
+import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Getter
 public class PayloadValidationStatus {
     private static final String BAD_FORMAT_MESSAGE_FORMAT = "Bad format for field '%s'";
     private static final String INTERNAL_ERROR_MESSAGE_FORMAT = "Internal error while updating '%s'";
@@ -16,15 +18,6 @@ public class PayloadValidationStatus {
     private List<ResponseMessageDTO> responseErrors;
 
     private List<ResponseMessageDTO> responseWarnings;
-
-
-    public List<ResponseMessageDTO> getResponseErrors() {
-        return responseErrors;
-    }
-
-    public List<ResponseMessageDTO> getResponseWarnings() {
-        return responseWarnings;
-    }
 
 
     private ResponseMessageDTO buildResponseMessage(String message) {

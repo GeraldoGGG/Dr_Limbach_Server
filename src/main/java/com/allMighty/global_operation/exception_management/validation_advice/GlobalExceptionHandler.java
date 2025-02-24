@@ -2,7 +2,7 @@ package com.allMighty.global_operation.exception_management.validation_advice;
 
 
 import com.allMighty.global_operation.exception_management.exception.*;
-import com.allMighty.global_operation.response.PayloadValidationStatus;
+import com.allMighty.global_operation.exception_management.PayloadValidationStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.Level;
 import org.springframework.core.Ordered;
@@ -15,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -28,11 +26,16 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.allMighty.global_operation.exception_management.validation_advice.GlobalExceptionHandlerData.*;
+import static com.allMighty.global_operation.exception_management.validation_advice.GlobalExceptionHandler.GlobalExceptionHandlerData.*;
 import static org.springframework.http.HttpStatus.*;
+
+//TODO use the new format with 4 ttributes to handle exceptions
+
 
 @Slf4j
 @ControllerAdvice
@@ -221,6 +224,30 @@ public class GlobalExceptionHandler {
         }
 
         return new ResponseEntity<>(formattedMessage, headers, httpStatus);
+    }
+
+   static class GlobalExceptionHandlerData {
+        static final Map<Class, String> defaultErrorMessageMap = new HashMap<>();
+
+        static final String DEFAULT_AUTHENTICATION_MESSAGE = "An error occurred during authentication";
+        static final String DEFAULT_4XX_MESSAGE = "The request is invalid";
+        static final String DEFAULT_5XX_MESSAGE = "An internal error occurred, the request can not be processed at this time";
+        static final String DEFAULT_CONSTRAINT_VIOLATION_MESSAGE = "The parameters passed are invalid";
+        static final String DEFAULT_INTERNAL_SERVER_ERROR = "Internal server error";
+        static final String DEFAULT_9XX_MESSAGE = "Custom error occurred, the request can not be processed at this time";
+        static final String DEFAULT_BAD_REQUEST_FOR_ENUMERATION = "Invalid enumeration value";
+
+        static {
+            defaultErrorMessageMap.put(BadCredentialsException.class, "Incorrect credentials or missing schema");
+            defaultErrorMessageMap.put(CredentialsExpiredException.class, "The supplied credentials have expired");
+            defaultErrorMessageMap.put(AuthenticationCredentialsNotFoundException.class, "No credentials found");
+            defaultErrorMessageMap.put(InternalAuthenticationServiceException.class,
+                    "An internal error occurred, please try again later");
+            defaultErrorMessageMap.put(AuthenticationServiceException.class,
+                    "Problem authenticating the request, please try again later");
+            defaultErrorMessageMap.put(BadRequestForEnumeration.class, DEFAULT_BAD_REQUEST_FOR_ENUMERATION);
+        }
+
     }
 
 }
