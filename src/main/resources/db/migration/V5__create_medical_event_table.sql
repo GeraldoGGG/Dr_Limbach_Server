@@ -1,5 +1,5 @@
 -- Create Table: medical_event
-CREATE TABLE medical_event (
+CREATE TABLE event (
                                id BIGSERIAL PRIMARY KEY,
                                version BIGINT,
                                title VARCHAR(255) NOT NULL,
@@ -12,6 +12,6 @@ CREATE TABLE medical_event (
 );
 
 -- Create the sequence with increment size of 50 (matching Hibernate allocationSize)
-CREATE SEQUENCE medical_event_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE event_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
-ALTER SEQUENCE medical_event_seq OWNED BY medical_event.id;
+ALTER SEQUENCE event_seq OWNED BY event.id;

@@ -1,6 +1,5 @@
 package com.allMighty.global_operation.response;
 
-import com.allMighty.business_logic_domain.medical_article.ArticleDTO;
 import com.allMighty.global_operation.response.page.EntityPageResponseDTO;
 import com.allMighty.global_operation.response.page.PageDescriptor;
 

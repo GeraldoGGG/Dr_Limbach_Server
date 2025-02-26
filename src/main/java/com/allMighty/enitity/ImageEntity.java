@@ -2,6 +2,7 @@ package com.allMighty.enitity;
 
 import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import com.allMighty.enumeration.EntityType;
+import com.allMighty.enumeration.ImageContentType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,5 +36,8 @@ public class ImageEntity extends AbstractEntity {
 
     @Column(name = "file_version_id")
     private String versionId;
+
+   /* @Column(name = "image_content_type")
+    private ImageContentType imageContentType;*/
 
 }

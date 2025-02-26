@@ -92,12 +92,8 @@ public class PayloadValidationStatus {
         appendWarning(messageDTO);
     }
 
-    public boolean isValid() {
+    public boolean isValidStatus() {
         return CollectionUtils.isEmpty(responseErrors);
-    }
-
-    public boolean isNotValid() {
-        return CollectionUtils.isNotEmpty(responseErrors);
     }
 
 

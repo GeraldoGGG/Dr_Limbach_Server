@@ -1,5 +1,5 @@
 -- Create Table: medical_analysis
-CREATE TABLE medical_analysis (
+CREATE TABLE analysis (
                                   id BIGSERIAL PRIMARY KEY,
                                   version BIGINT,
                                   medical_name VARCHAR(255) NOT NULL,
@@ -10,6 +10,6 @@ CREATE TABLE medical_analysis (
 );
 
 -- Create the sequence with increment size of 50 (matching Hibernate allocationSize)
-CREATE SEQUENCE medical_analysis_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE analysis_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
-ALTER SEQUENCE medical_analysis_seq OWNED BY medical_analysis.id;
+ALTER SEQUENCE analysis_seq OWNED BY analysis.id;

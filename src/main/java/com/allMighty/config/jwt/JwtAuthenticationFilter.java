@@ -1,5 +1,6 @@
 package com.allMighty.config.jwt;
 
+import com.allMighty.client.UrlProperty;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/v1/auth")) {
+        if (request.getServletPath().contains(UrlProperty.Auth.PATH)) {
             filterChain.doFilter(request, response);
             return;
         }

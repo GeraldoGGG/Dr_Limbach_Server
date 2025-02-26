@@ -11,6 +11,6 @@ CREATE TABLE image (
                        file_version_id VARCHAR(255)
 );
 -- Create the sequence with increment size of 50 (matching Hibernate allocationSize)
-CREATE SEQUENCE image_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE image_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
 ALTER SEQUENCE image_seq OWNED BY image.id;

@@ -9,7 +9,7 @@ CREATE TABLE person (
                         role VARCHAR(255) NOT NULL
 );
 
-CREATE SEQUENCE person_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE person_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
 ALTER SEQUENCE person_seq OWNED BY person.id;
 

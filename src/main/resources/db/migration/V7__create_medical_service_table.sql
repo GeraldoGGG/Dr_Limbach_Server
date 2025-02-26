@@ -10,6 +10,6 @@ CREATE TABLE medical_service (
 );
 
 -- Create the sequence with increment size of 50 (matching Hibernate allocationSize)
-CREATE SEQUENCE medical_service_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE medical_service_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
 ALTER SEQUENCE medical_service_seq OWNED BY medical_service.id;

@@ -1,4 +1,4 @@
-package com.allMighty.business_logic_domain.medical_article;
+package com.allMighty.business_logic_domain.article;
 
 import com.allMighty.client.UrlProperty.Article;
 import com.allMighty.global_operation.response.page.EntityPageResponseDTO;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.allMighty.client.UrlProperty.Article.BY_ID;
+import static com.allMighty.client.UrlProperty.ID_PATH;
 import static com.allMighty.global_operation.response.ResponseFactory.createPage;
 import static com.allMighty.global_operation.response.ResponseFactory.createResponse;
 
@@ -35,7 +35,7 @@ public class ArticleController {
     return ResponseEntity.ok(createPage(count, articleDTOs, pageDescriptor));
   }
 
-  @GetMapping(BY_ID)
+  @GetMapping(ID_PATH)
   public ResponseEntity<EntityResponseDTO<ArticleDTO>> getArticleById(
       @PathVariable(name = "id") Long id) {
 
@@ -43,21 +43,22 @@ public class ArticleController {
     return ResponseEntity.ok(createResponse(articleDTO));
   }
 
-
   @PostMapping
   public ResponseEntity<EntityResponseDTO<ArticleDTO>> createArticle(
-          @RequestBody @Valid ArticleDTO articleDTO) {
+      @RequestBody @Valid ArticleDTO articleDTO) {
 
-    ArticleDTO createdArticle = articleService.createArticle(articleDTO);
+    Long articleId = articleService.createArticle(articleDTO);
+    ArticleDTO createdArticle = articleService.getArticleById(articleId);
+
     return ResponseEntity.ok(createResponse(createdArticle));
   }
 
-  @PutMapping(BY_ID)
+  @PutMapping(ID_PATH)
   public ResponseEntity<EntityResponseDTO<ArticleDTO>> updateArticle(
-          @PathVariable(name = "id") Long id,
-          @RequestBody @Valid ArticleDTO articleDTO) {
+      @PathVariable(name = "id") Long id, @RequestBody @Valid ArticleDTO articleDTO) {
 
-    ArticleDTO updatedArticle = articleService.updateArticle(id, articleDTO);
+    Long articleId = articleService.updateArticle(id, articleDTO);
+    ArticleDTO updatedArticle = articleService.getArticleById(articleId);
     return ResponseEntity.ok(createResponse(updatedArticle));
   }
 }

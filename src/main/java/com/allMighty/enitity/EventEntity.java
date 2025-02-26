@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "medical_event")
-public class MedicalEventEntity extends AbstractEntity {
+@Table(name = "event")
+public class EventEntity extends AbstractEntity {
 
     private String title;
 

@@ -15,12 +15,12 @@ CREATE TABLE package_analysis (
                                           analysis_id BIGINT NOT NULL,
                                           PRIMARY KEY (package_id, analysis_id),
                                           FOREIGN KEY (package_id) REFERENCES package (id) ON DELETE CASCADE,
-                                          FOREIGN KEY (analysis_id) REFERENCES medical_analysis (id) ON DELETE CASCADE
+                                          FOREIGN KEY (analysis_id) REFERENCES analysis (id) ON DELETE CASCADE
 );
 
 
 -- Create the sequence with increment size of 50 (matching Hibernate allocationSize)
-CREATE SEQUENCE package_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE package_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
 ALTER SEQUENCE package_seq OWNED BY package.id;
 

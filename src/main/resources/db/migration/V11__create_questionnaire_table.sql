@@ -10,6 +10,6 @@ CREATE TABLE questionnaire (
 -- Optional: Index for business_module (for optimized queries)
 CREATE INDEX idx_questionnaire_business_module ON questionnaire (business_module);
 
-CREATE SEQUENCE questionnaire_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE questionnaire_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
 ALTER SEQUENCE questionnaire_seq OWNED BY questionnaire.id;

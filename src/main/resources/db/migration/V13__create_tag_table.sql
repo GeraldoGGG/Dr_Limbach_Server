@@ -10,17 +10,17 @@ CREATE INDEX idx_tag_name ON tag (name);
 
 -- Create many-to-many relationship tables:
 
--- Table: medical_article_entity_tags
-CREATE TABLE medical_article_entity_tags (
+-- Table: article_tag
+CREATE TABLE tag_article (
                                              tag_id BIGINT NOT NULL,
-                                             medical_article_id BIGINT NOT NULL,
-                                             PRIMARY KEY (tag_id, medical_article_id),
+                                             article_id BIGINT NOT NULL,
+                                             PRIMARY KEY (tag_id, article_id),
                                              FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE,
-                                             FOREIGN KEY (medical_article_id) REFERENCES medical_article(id) ON DELETE CASCADE
+                                             FOREIGN KEY (article_id) REFERENCES article(id) ON DELETE CASCADE
 );
 
--- Table: medical_service_entity_tags
-CREATE TABLE medical_service_entity_tags (
+-- Table: tag_medical_service_entitys
+CREATE TABLE tag_medical_service (
                                              tag_id BIGINT NOT NULL,
                                              medical_service_id BIGINT NOT NULL,
                                              PRIMARY KEY (tag_id, medical_service_id),
@@ -28,17 +28,17 @@ CREATE TABLE medical_service_entity_tags (
                                              FOREIGN KEY (medical_service_id) REFERENCES medical_service(id) ON DELETE CASCADE
 );
 
--- Table: medical_analysis_entity_tags
-CREATE TABLE medical_analysis_entity_tags (
+-- Table: tag_medical_analysis_entitys
+CREATE TABLE tag_analysis (
                                               tag_id BIGINT NOT NULL,
-                                              medical_analysis_id BIGINT NOT NULL,
-                                              PRIMARY KEY (tag_id, medical_analysis_id),
+                                              analysis_id BIGINT NOT NULL,
+                                              PRIMARY KEY (tag_id, analysis_id),
                                               FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE,
-                                              FOREIGN KEY (medical_analysis_id) REFERENCES medical_analysis(id) ON DELETE CASCADE
+                                              FOREIGN KEY (analysis_id) REFERENCES analysis(id) ON DELETE CASCADE
 );
 
 
-CREATE SEQUENCE tag_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE tag_seq START WITH 1 INCREMENT BY 1;
 -- Set the sequence as the owner of the id column
 ALTER SEQUENCE tag_seq OWNED BY tag.id;
 

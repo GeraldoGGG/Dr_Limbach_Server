@@ -27,6 +27,6 @@ public class PackageEntity extends AbstractEntity {
             joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "analysis_id")
     )
-    private List<MedicalAnalysisEntity> analyses = new ArrayList<>();
+    private List<AnalysisEntity> analyses = new ArrayList<>();
 
 }
