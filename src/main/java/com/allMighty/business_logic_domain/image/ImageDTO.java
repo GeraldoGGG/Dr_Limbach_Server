@@ -1,6 +1,7 @@
 package com.allMighty.business_logic_domain.image;
 
 import com.allMighty.enumeration.ImageContentType;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,5 +13,6 @@ public class ImageDTO {
   Long type;
   String url;
   String imageData;
-  ImageContentType imageContentType;
+  byte[] imageDataByte;
+  @NotNull ImageContentType imageContentType;
 }

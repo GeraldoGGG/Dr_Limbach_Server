@@ -1,18 +1,18 @@
 package com.allMighty.enumeration;
 
+import lombok.Getter;
+import org.springframework.http.MediaType;
+
+@Getter
 public enum ImageContentType {
-  JPEG("image/jpeg"),
-  PNG("image/png"),
-  GIF("image/gif"),
-  BMP("image/bmp");
+  JPEG(MediaType.IMAGE_JPEG),
+  PNG(MediaType.IMAGE_PNG),
+  GIF(MediaType.IMAGE_GIF);
 
-  private final String headerValue;
+  private final MediaType mediaType;
 
-  ImageContentType(String headerValue) {
-    this.headerValue = headerValue;
+  ImageContentType(MediaType mediaType) {
+    this.mediaType = mediaType;
   }
 
-  public String getHeaderValue() {
-    return headerValue;
-  }
 }

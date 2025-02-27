@@ -1,5 +1,6 @@
 package com.allMighty.business_logic_domain.article;
 
+import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.ArticleEntity;
@@ -9,7 +10,9 @@ import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jooq.Result;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,24 +72,6 @@ public class ArticleMapper {
         }
       }
       article.setTags(tags);
-
-
-/*
-      //TODO s esht entitet kjo duhet ber ne map m vete ne keto raste
-
-      Result<Record> imagesResult = record.get("images", Result.class);
-      Set<TagEntity> tags = new HashSet<>();
-      if (tagsResult != null) {
-        for (Record tagRecord : tagsResult) {
-          TagEntity tag = new TagEntity();
-          tag.setId(tagRecord.get(TAG.ID));
-          tag.setName(tagRecord.get(TAG.NAME));
-          tag.setVersion(tagRecord.get(TAG.VERSION));
-          tags.add(tag);
-        }
-      }
-      article.setTags(tags);*/
-
       return article;
     }
   }

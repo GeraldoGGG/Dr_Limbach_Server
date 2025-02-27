@@ -71,11 +71,11 @@ public class TagRepository {
     return dslContext.select(TAG.ID, TAG.NAME, TAG.VERSION).from(TAG).fetch(tagJooqMapper);
   }
 
-  private static TagEntity getTagEntity(Record record) {
+/*  private static TagEntity getTagEntity(Record record) {
     TagEntity tagEntity = new TagEntity();
     tagEntity.setId(record.get(TAG.ID));
     tagEntity.setName(record.get(TAG.NAME));
     tagEntity.setVersion(record.get(TAG.VERSION));
     return tagEntity;
-  }
+  }*/
 }

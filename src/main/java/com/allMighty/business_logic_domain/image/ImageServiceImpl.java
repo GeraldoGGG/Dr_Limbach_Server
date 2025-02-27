@@ -1,13 +1,23 @@
 package com.allMighty.business_logic_domain.image;
 
+import static com.allMighty.business_logic_domain.image.ImageMapper.mapToImageDTO;
+import static com.allMighty.business_logic_domain.image.ImageMapper.mapToImageDTO_WithData;
+
 import com.allMighty.enitity.ImageEntity;
 import com.allMighty.enumeration.EntityType;
 import com.allMighty.global_operation.BaseService;
-import java.util.ArrayList;
+import com.allMighty.global_operation.exception_management.exception.BadRequestException;
+import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.allMighty.global_operation.exception_management.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,25 +27,56 @@ public class ImageServiceImpl extends BaseService implements ImageService {
 
   private final ImageRepository imageRepository;
 
-  public List<ImageDTO> getImages(Long entityReferenceId, EntityType entityType) {
+  public Map<Long, List<ImageDTO>> getImages(List<Long> entityReferenceIds, EntityType entityType) {
     List<ImageEntity> imagesByEntityReference =
-        imageRepository.getImagesByEntityReference(entityReferenceId, entityType);
+        imageRepository.getImagesByEntityReference(entityReferenceIds, entityType);
 
-    List<ImageDTO> imagesDto = new ArrayList<>();
-    for (ImageEntity imageEntity : imagesByEntityReference) {
-      ImageDTO imageDto = new ImageDTO();
-      imageDto.setUrl(imageBaseUrl + "direjtoria e leshit " + "/" + imageEntity.getId());
-      imagesDto.add(imageDto);
-    }
-    return imagesDto;
+    return imagesByEntityReference.stream()
+        .map(e -> mapToImageDTO(e, imageBaseUrl))
+        .collect(Collectors.groupingBy(ImageDTO::getEntityReferenceId));
   }
 
-  /*public void create(){
-      byte[] image = Base64.getDecoder().decode(competencyDTO.getImage());
+  public void deleteImages(List<Long> entityReferenceIds, EntityType entityType) {
+    imageRepository.deleteImagesByEntityReferenceAndContentType(entityReferenceIds, entityType);
+  }
 
-  }*/
+  @Override
+  @Transactional
+  public void createImages(List<ImageDTO> images, EntityType entityType, Long entityReferenceId) {
 
-  public boolean imageExists(Long imageId) {
-    return imageRepository.imageExists(imageId);
+    if (CollectionUtils.isEmpty(images)) {
+      return;
+    }
+
+    for (ImageDTO imageDTO : images) {
+      if (imageDTO.getImageData() == null) {
+        continue;
+      }
+
+      if (imageDTO.getImageContentType() == null) {
+        throw new BadRequestException("Image content type is required");
+      }
+      ImageEntity imageEntity = new ImageEntity();
+      imageEntity.setEntityReferenceId(entityReferenceId);
+      imageEntity.setEntityType(entityType);
+      imageEntity.setImageContentType(imageDTO.getImageContentType());
+      try {
+        byte[] image = Base64.getDecoder().decode(imageDTO.getImageData());
+        imageEntity.setImageData(image);
+
+        em.persist(imageEntity);
+
+      } catch (IllegalArgumentException iae) {
+        throw new BadRequestException("Invalid image format.");
+      }
+    }
+  }
+
+  @Override
+  public ImageDTO getImageById(Long imageId) {
+    return imageRepository
+        .getImageById(imageId)
+        .map(ImageMapper::mapToImageDTO_WithData)
+        .orElseThrow(() -> new NotFoundException("Image not found for imageId: " + imageId));
   }
 }

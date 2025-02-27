@@ -1,7 +1,7 @@
 package com.allMighty.config.security;
 
 
-import com.allMighty.config.security.person.repository.UserDetailRepository;
+import com.allMighty.config.security.person.repository.PersonEntityRepository;
 import com.allMighty.enitity.PersonEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +15,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserDetailRepository userDetailRepository;
+    private final PersonEntityRepository personEntityRepository;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<PersonEntity> person = userDetailRepository.findByEmail(username);
+        Optional<PersonEntity> person = personEntityRepository.findByEmail(username);
         if (person.isEmpty()) {
             throw new UsernameNotFoundException("User was not found: " + username);
         } else {

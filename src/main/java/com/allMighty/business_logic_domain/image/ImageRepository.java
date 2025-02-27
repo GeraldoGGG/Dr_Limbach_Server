@@ -3,13 +3,17 @@ package com.allMighty.business_logic_domain.image;
 import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.enitity.ImageEntity;
 import com.allMighty.enumeration.EntityType;
+import com.allMighty.enumeration.ImageContentType;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Transient;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.jooq.generated.tables.Image.IMAGE;
 
@@ -18,44 +22,47 @@ import static com.example.jooq.generated.tables.Image.IMAGE;
 public class ImageRepository {
 
   private final DSLContext dsl;
+  private final ImageMapper.ImageJooqMapper imageJooqMapper = new ImageMapper.ImageJooqMapper();
 
   public List<ImageEntity> getImagesByEntityReference(
-      Long entityReferenceId, EntityType entityType) {
-    return dsl.select()
+      List<Long> entityReferenceIds, EntityType entityType) {
+    return dsl.select(IMAGE.ID, IMAGE.ENTITY_REFERENCE_ID, IMAGE.IMAGE_CONTENT_TYPE)
         .from(IMAGE)
         .where(
             IMAGE
                 .ENTITY_REFERENCE_ID
-                .eq(entityReferenceId)
+                .in(entityReferenceIds)
                 .and(IMAGE.ENTITY_TYPE.eq(entityType.name())))
-        .fetchInto(ImageEntity.class); // Mapping the result into ImageEntity objects
+        .fetch(imageJooqMapper);
   }
 
-  public List<ImageEntity> getAllImages() {
+  public Optional<ImageEntity> getImageById(Long imageId) {
+    ImageEntity image =
+        dsl.select(IMAGE.ID, IMAGE.IMAGE_DATA, IMAGE.IMAGE_CONTENT_TYPE)
+            .from(IMAGE)
+            .where(IMAGE.ID.eq(imageId))
+            .fetchOne(new ImageMapper.ImageDataJooqMapper());
+
+    return Optional.ofNullable(image);
+  }
+
+  /*  public List<ImageEntity> getAllImages() {
     return dsl.select().from(IMAGE).fetchInto(ImageEntity.class);
   }
 
   public boolean imageExists(Long imageId) {
     return dsl.fetchExists(dsl.selectOne().from(IMAGE).where(IMAGE.ID.eq(imageId)));
-  }
-/*
-  public void handleImageEntities(List<ImageDTO> images, ArticleEntity saved, EntityManager em) {
-    for(ImageDTO imageDTO : images) {
-      Long imageId = imageDTO.getId();
-      if(imageId != null){
-        boolean imageExists = false; //imageService.imageExists(imageId);
-        if(imageExists){
-          continue;
-        }
-      }
-
-      ImageEntity imageEntity = new ImageEntity();
-      byte[] imageData = Base64.getDecoder().decode(imageDTO.getImageData());
-      imageEntity.setImageData(imageData);
-      imageEntity.setEntityReferenceId(saved.getId());
-      imageEntity.setImageContentType(imageDTO.getImageContentType());
-      em.persist(imageEntity);
-    }
   }*/
 
+  @Transactional
+  public int deleteImagesByEntityReferenceAndContentType(
+      List<Long> entityReferenceIds, EntityType entityType) {
+    return dsl.deleteFrom(IMAGE)
+        .where(
+            IMAGE
+                .ENTITY_REFERENCE_ID
+                .in(entityReferenceIds)
+                .and(IMAGE.ENTITY_TYPE.eq(entityType.name())))
+        .execute();
+  }
 }

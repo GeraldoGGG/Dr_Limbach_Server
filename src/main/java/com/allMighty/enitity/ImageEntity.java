@@ -37,7 +37,8 @@ public class ImageEntity extends AbstractEntity {
     @Column(name = "file_version_id")
     private String versionId;
 
-   /* @Column(name = "image_content_type")
-    private ImageContentType imageContentType;*/
+    @Column(name = "image_content_type")
+    @Enumerated(EnumType.STRING)
+    private ImageContentType imageContentType;
 
 }

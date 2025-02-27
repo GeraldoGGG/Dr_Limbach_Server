@@ -1,7 +1,10 @@
 package com.allMighty.enitity;
 
+import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;

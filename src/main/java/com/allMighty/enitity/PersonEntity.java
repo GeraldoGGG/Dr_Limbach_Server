@@ -3,10 +3,7 @@ package com.allMighty.enitity;
 import com.allMighty.config.security.person.role.Role;
 import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @NoArgsConstructor
@@ -14,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "person")
 @Getter
+@Setter
 public class PersonEntity extends AbstractEntity {
 
     private String firstName;

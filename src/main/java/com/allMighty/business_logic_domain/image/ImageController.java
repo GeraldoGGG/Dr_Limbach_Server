@@ -1,40 +1,36 @@
 package com.allMighty.business_logic_domain.image;
 
-import com.allMighty.client.UrlProperty;
-import com.allMighty.enumeration.EntityType;
+import com.allMighty.client.UrlProperty.Image;
+import com.allMighty.enumeration.ImageContentType;
+import com.allMighty.global_operation.exception_management.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(UrlProperty.Article.PATH)
+@RequestMapping(Image.PATH)
 @RequiredArgsConstructor
 public class ImageController {
 
-    private final ImageService imageService;
+  private final ImageService imageService;
 
+  @GetMapping("/{id}")
+  public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+    ImageDTO imageDTO = imageService.getImageById(id);
 
-   /*  @GetMapping("/{id}")
-    public ResponseEntity<byte[]> getImage(
-            @PathVariable Long id,
-            @RequestParam("type") EntityType type) {
+    if (imageDTO.getImageDataByte() == null) {
+      throw new InternalServerException("Image does not hava data!");
+    }
 
-       // Retrieve the image entity based on the id and enum parameter.
-        List<ImageDTO> image = imageService.getImages(id, type);
+    HttpHeaders headers = new HttpHeaders();
 
-        if (image == null || image.getImageData() == null) {
-            return ResponseEntity.notFound().build();
-        }
+    ImageContentType imageContentType = imageDTO.getImageContentType();
 
-        HttpHeaders headers = new HttpHeaders();
-        // Set the content type (change if your images are in a different format)
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        headers.setContentLength(image.getImageData().length);
+    headers.setContentType(imageContentType.getMediaType());
+    headers.setContentLength(imageDTO.getImageDataByte().length);
 
-        return new ResponseEntity<>(image.getImageData(), headers, HttpStatus.OK);
-    }*/
+    return new ResponseEntity<>(imageDTO.getImageDataByte(), headers, HttpStatus.OK);
+  }
 }

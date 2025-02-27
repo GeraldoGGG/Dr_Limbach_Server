@@ -6,7 +6,7 @@ import com.allMighty.auth.model.AuthenticationResponse;
 import com.allMighty.auth.model.RegisterRequest;
 import com.allMighty.config.jwt.JwtService;
 import com.allMighty.config.security.CustomUserDetails;
-import com.allMighty.config.security.person.repository.UserDetailRepository;
+import com.allMighty.config.security.person.repository.PersonEntityRepository;
 import com.allMighty.enitity.PersonEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserDetailRepository repository;
+    private final PersonEntityRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;

@@ -1,7 +1,6 @@
 package com.allMighty.config.general;
 
 import com.allMighty.config.security.CustomUserDetailsService;
-import com.allMighty.config.security.person.repository.UserDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,24 +1,16 @@
 package com.allMighty.business_logic_domain.article;
 
 import static com.example.jooq.generated.tables.Article.ARTICLE;
-import static com.example.jooq.generated.tables.TagArticle.TAG_ARTICLE;
-import static com.example.jooq.generated.tables.Image.IMAGE;
 import static com.example.jooq.generated.tables.Tag.TAG;
+import static com.example.jooq.generated.tables.TagArticle.TAG_ARTICLE;
 import static org.jooq.impl.DSL.multiset;
 import static org.jooq.impl.DSL.select;
 
-import com.allMighty.business_logic_domain.tag.TagRepository;
 import com.allMighty.enitity.ArticleEntity;
-import com.allMighty.enitity.TagEntity;
-import com.allMighty.enumeration.EntityType;
 import com.allMighty.global_operation.response.page.PageDescriptor;
-
 import java.util.*;
-
-import com.example.jooq.generated.tables.Image;
 import lombok.RequiredArgsConstructor;
 import org.jooq.*;
-import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
@@ -27,9 +19,12 @@ import org.springframework.stereotype.Repository;
 public class ArticleRepository {
 
   private final DSLContext dsl;
-  private final TagRepository tagRepository;
 
   private ArticleMapper.ArticleJooqMapper articleJooqMapper = new ArticleMapper.ArticleJooqMapper();
+
+  public Long count() {
+    return count(new ArrayList<>());
+  }
 
   public Long count(List<Condition> conditions) {
     return dsl.select(DSL.countDistinct(ARTICLE.ID))
@@ -40,10 +35,6 @@ public class ArticleRepository {
         .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
         .where(conditions)
         .fetchSingleInto(Long.class);
-  }
-
-  public List<ArticleEntity> getAllArticles(List<Condition> conditions) {
-    return getAllArticles(conditions, null);
   }
 
   public List<ArticleEntity> getAllArticles(
@@ -68,16 +59,7 @@ public class ArticleRepository {
                         .leftJoin(TAG_ARTICLE)
                         .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
                         .where(TAG_ARTICLE.ARTICLE_ID.eq(ARTICLE.ID)))
-                .as("tags"),
-            multiset(
-                    select(IMAGE.ID)
-                        .from(IMAGE)
-                        .where(
-                            IMAGE
-                                .ENTITY_TYPE
-                                .eq(EntityType.ARTICLE.name())
-                                .and(IMAGE.ENTITY_REFERENCE_ID.eq(ARTICLE.ID))))
-                .as("images"))
+                .as("tags"))
         .from(ARTICLE)
         .leftJoin(TAG_ARTICLE)
         .on(ARTICLE.ID.eq(TAG_ARTICLE.ARTICLE_ID))
@@ -96,8 +78,6 @@ public class ArticleRepository {
         .limit(pageSize)
         .fetch(articleJooqMapper);
   }
-
-  // TODO manage iamges nee
 
   public Optional<ArticleEntity> findById(Long id) {
     Condition eq = ARTICLE.ID.eq(id);
