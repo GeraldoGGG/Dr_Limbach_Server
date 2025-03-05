@@ -57,6 +57,8 @@ public class SecurityConfiguration {
                     .hasRole(Role.ADMIN.name())
                     .requestMatchers(HttpMethod.PUT, Article.PATH + "/**")
                     .hasRole(ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, UrlProperty.Email.PATH + "/**")
+                        .hasRole(Role.ADMIN.name())
                     .anyRequest()
                     .authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

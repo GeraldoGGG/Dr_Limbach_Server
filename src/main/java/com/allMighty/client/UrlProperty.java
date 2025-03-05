@@ -16,4 +16,8 @@ public interface UrlProperty extends ParamProperty {
   interface Image {
     String PATH = ROOT_PATH + "/images";
   }
+
+  interface Email {
+    String PATH = ROOT_PATH + "/email";
+  }
 }
