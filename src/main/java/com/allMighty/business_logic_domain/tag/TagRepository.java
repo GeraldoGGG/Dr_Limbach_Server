@@ -43,7 +43,8 @@ public class TagRepository {
 
       if (idTagMap.containsKey(tagId)) {
         TagEntity tagEntity = idTagMap.get(tagId);
-        tagEntities.add(tagEntity);
+        TagEntity found = em.find(TagEntity.class, tagEntity.getId());
+        tagEntities.add(found);
         continue;
       }
 
@@ -54,7 +55,8 @@ public class TagRepository {
 
       if (nameTagMap.containsKey(name)) {
         TagEntity tagEntity = nameTagMap.get(name);
-        tagEntities.add(tagEntity);
+        TagEntity found = em.find(TagEntity.class, tagEntity.getId());
+        tagEntities.add(found);
         continue;
       }
 

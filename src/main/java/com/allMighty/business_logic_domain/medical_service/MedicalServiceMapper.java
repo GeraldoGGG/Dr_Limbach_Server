@@ -7,17 +7,20 @@ import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.enitity.MedicalServiceEntity;
 import com.allMighty.enitity.analysis.AnalysisEntity;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
 public class MedicalServiceMapper {
 
-  private static final String ARTICLES_IDS_KEYWORD = "articleIds";
-  private static final String ANALYSIS_IDS_KEYWORD = "articleIds";
+  static final String ARTICLES_IDS_KEYWORD = "articleIds";
+  static final String ANALYSIS_IDS_KEYWORD = "analysisId";
 
   // Converts MedicalServiceEntity to MedicalServiceDTO
   public static MedicalServiceDTO toMedicalServiceDTO(MedicalServiceEntity medicalServiceEntity) {
@@ -44,7 +47,7 @@ public class MedicalServiceMapper {
           medicalServiceEntity.getAnalysis().stream()
               .map(AnalysisEntity::getId)
               .collect(Collectors.toList());
-      medicalServiceDTO.setArticleIds(analysisIds);
+      medicalServiceDTO.setAnalysisIds(analysisIds);
     }
 
     // Map Tags
@@ -84,21 +87,21 @@ public class MedicalServiceMapper {
       entity.setShowInHomePage(record.get(MEDICAL_SERVICE.SHOW_IN_HOME_PAGE));
 
       // Map the article IDs as a list
-      List<Long> articleIds = record.get(ARTICLES_IDS_KEYWORD, List.class);
-      List<ArticleEntity> articles =
-          articleIds.stream()
-              .map(
-                  articleId -> {
-                    ArticleEntity article = new ArticleEntity();
-                    article.setId(articleId);
-                    return article;
-                  })
-              .toList();
+      List<Long> articleIds = record.get(ARTICLES_IDS_KEYWORD, ArrayList.class);
+      List<ArticleEntity> articles = mapArticleEntitiesForService(articleIds);
 
       entity.setArticles(articles);
 
       // Map the analysis IDs as a list
-      List<Long> analysisIds = record.get(ANALYSIS_IDS_KEYWORD, List.class);
+      List<Long> analysisIds = record.get(ANALYSIS_IDS_KEYWORD, ArrayList.class);
+      List<AnalysisEntity> analyses = mapAnalysisEntitiesForService(analysisIds);
+      entity.setAnalysis(analyses);
+
+      return entity;
+    }
+
+    private static @NotNull List<AnalysisEntity> mapAnalysisEntitiesForService(
+        List<Long> analysisIds) {
       List<AnalysisEntity> analyses =
           analysisIds.stream()
               .map(
@@ -108,9 +111,21 @@ public class MedicalServiceMapper {
                     return analysis;
                   })
               .toList();
-      entity.setAnalysis(analyses);
+      return analyses;
+    }
 
-      return entity;
+    private static @NotNull List<ArticleEntity> mapArticleEntitiesForService(
+        List<Long> articleIds) {
+      List<ArticleEntity> articles =
+          articleIds.stream()
+              .map(
+                  articleId -> {
+                    ArticleEntity article = new ArticleEntity();
+                    article.setId(articleId);
+                    return article;
+                  })
+              .toList();
+      return articles;
     }
   }
 }

@@ -5,7 +5,7 @@ CREATE TABLE event (
                                title VARCHAR(255) NOT NULL,
                                content TEXT,
                                event_date TIMESTAMP WITHOUT TIME ZONE,
-                               event_duration INTERVAL,
+                               event_duration BIGINT,
                                price INT,
                                archived BOOLEAN NOT NULL DEFAULT FALSE,
                                removed BOOLEAN NOT NULL DEFAULT FALSE

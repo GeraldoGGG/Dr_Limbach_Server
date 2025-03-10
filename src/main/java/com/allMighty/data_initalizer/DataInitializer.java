@@ -1,8 +1,15 @@
 package com.allMighty.data_initalizer;
 
+import com.allMighty.business_logic_domain.analysis.AnalysisService;
+import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
+import com.allMighty.business_logic_domain.analysis.dto.AnalysisDetailDTO;
 import com.allMighty.business_logic_domain.article.ArticleDTO;
 import com.allMighty.business_logic_domain.article.ArticleService;
+import com.allMighty.business_logic_domain.event.EventDTO;
+import com.allMighty.business_logic_domain.event.EventService;
 import com.allMighty.business_logic_domain.image.ImageDTO;
+import com.allMighty.business_logic_domain.medical_service.MedicalServiceDTO;
+import com.allMighty.business_logic_domain.medical_service.MedicalServiceService;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.config.security.person.repository.PersonEntityRepository;
 import com.allMighty.config.security.person.role.Role;
@@ -10,6 +17,8 @@ import com.allMighty.enitity.PersonEntity;
 import com.allMighty.enumeration.ImageContentType;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +31,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class DataInitializer implements CommandLineRunner {
   private final ArticleService articleService;
+  private final EventService eventService;
+  private final AnalysisService analysisService;
+  private final MedicalServiceService medicalServiceService;
+
+
   private final PersonEntityRepository personEntityRepository;
 
   @Override
@@ -29,6 +43,9 @@ public class DataInitializer implements CommandLineRunner {
     log.error("Initializing data...");
     insertDummyArticles();
     insertDummyMainUser();
+    insertDummyEvents();
+    insertDummyAnalysis();
+    insertDummyMedicalServices();
   }
 
   private void insertDummyMainUser() {
@@ -37,11 +54,84 @@ public class DataInitializer implements CommandLineRunner {
       adminUser.setFirstName("John");
       adminUser.setLastName("Doe");
       adminUser.setEmail("john.doe@example.com");
-      adminUser.setPassword("limbach!;");
+      adminUser.setPassword("$2b$12$Ol5VnvETmsFKwS.M5j0n0.Zj5KgWceosZbQ3rGEGWDwndLj.awTaS");
       adminUser.setRole(Role.ADMIN);
       personEntityRepository.save(adminUser);
     }
   }
+
+  private void insertDummyMedicalServices() {
+    if (medicalServiceService.count() != 0) {
+      return;
+    }
+
+    for (int i = 1; i <= 15; i++) {
+      MedicalServiceDTO medicalServiceDTO = new MedicalServiceDTO();
+      medicalServiceDTO.setTitle("Medical Service " + i);
+      medicalServiceDTO.setShowInHomePage(i % 2 == 0); // Show on homepage for even entries
+      medicalServiceDTO.setArchived(false);
+      medicalServiceDTO.setRemoved(false);
+      medicalServiceDTO.setContent(getMedicalContent());
+
+      List<Long> analysisIds = new ArrayList<>();
+      for (int j = 1; j <= 5; j++) {
+        analysisIds.add((long) j); // Dummy IDs
+      }
+      medicalServiceDTO.setAnalysisIds(analysisIds);
+
+      List<Long> articleIds = new ArrayList<>();
+      for (int j = 1; j <= 5; j++) {
+        articleIds.add((long) j); // Dummy IDs
+      }
+      medicalServiceDTO.setArticleIds(articleIds);
+
+      medicalServiceDTO.setTags(getTagContent(i));
+      medicalServiceDTO.setImages(getImageContent());
+
+      medicalServiceService.createMedicalService(medicalServiceDTO);
+    }
+
+    log.error("Generated 15 Medical Services!");
+  }
+
+
+  private void insertDummyAnalysis() {
+    if (analysisService.count() != 0) {
+      return;
+    }
+
+    for (int i = 1; i <= 15; i++) {
+      // Create the AnalysisDTO
+      AnalysisDTO analysisDTO = new AnalysisDTO();
+      analysisDTO.setMedicalName("Medical Analysis " + i);
+      analysisDTO.setSynonym("Synonym " + i);
+      analysisDTO.setPrice(100 + i);
+      analysisDTO.setArchived(false);
+      analysisDTO.setRemoved(false);
+
+      Set<TagDTO> tags = getTagContent(i);
+      analysisDTO.setTags(tags);
+
+      List<ImageDTO> images = getImageContent();
+      analysisDTO.setImages(images);
+
+      List<AnalysisDetailDTO> analysisDetails = new ArrayList<>();
+      for (int j = 1; j <= 5; j++) {
+        AnalysisDetailDTO detail = new AnalysisDetailDTO();
+        detail.setKeyValue("key for Analysis " + i + " - " + j);
+        detail.setStringValue("value for Analysis " + i + " - " + j);
+
+        analysisDetails.add(detail);
+      }
+      analysisDTO.setDetails(analysisDetails);
+
+      analysisService.createAnalysis(analysisDTO);
+    }
+
+    log.error("Generated 15 Analysis records with details, tags, and images!");
+  }
+
+
 
   private void insertDummyArticles() {
     if (articleService.count() != 0) {
@@ -49,18 +139,37 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     for (int i = 1; i <= 15; i++) {
-      ArticleDTO article = new ArticleDTO();
-      article.setId((long) i);
-      article.setTitle("Artikulli " + i);
-      article.setAuthor("Autor " + i);
-      article.setContent(getMedicalContent());
-      article.setArchived(false);
-      article.setTags(getTagContent(i));
-      article.setImages(getImageContent());
-      articleService.createArticle(article);
+      ArticleDTO articleDTO = new ArticleDTO();
+      articleDTO.setTitle("Artikulli " + i);
+      articleDTO.setAuthor("Autor " + i);
+      articleDTO.setContent(getMedicalContent());
+      articleDTO.setArchived(false);
+      articleDTO.setTags(getTagContent(i));
+      articleDTO.setImages(getImageContent());
+      articleService.createArticle(articleDTO);
     }
 
     log.error("Generated 15 Articles !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  }
+
+  private void insertDummyEvents() {
+    if (eventService.count() != 0) {
+      return;
+    }
+
+    for (int i = 1; i <= 15; i++) {
+      EventDTO eventDTO = new EventDTO();
+      eventDTO.setTitle("Event " + i);
+      eventDTO.setPrice(100);
+      eventDTO.setContent(getMedicalContent());
+      eventDTO.setArchived(false);
+      eventDTO.setEventDate(LocalDateTime.of(2025, 3, 10, 10, 0));
+      eventDTO.setEventDuration(10800L);
+      eventDTO.setImages(getImageContent());
+      eventService.createEvent(eventDTO);
+    }
+
+    log.error("Generated 15 Events !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   }
 
   private List<ImageDTO> getImageContent() {

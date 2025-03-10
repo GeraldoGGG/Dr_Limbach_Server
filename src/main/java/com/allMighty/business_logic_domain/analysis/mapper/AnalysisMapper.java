@@ -6,9 +6,11 @@ import static com.allMighty.business_logic_domain.tag.TagMapper.TagJooqMapper.ma
 import static com.example.jooq.generated.tables.Analysis.ANALYSIS;
 
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
+import com.allMighty.business_logic_domain.analysis.dto.AnalysisDetailDTO;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.analysis.AnalysisEntity;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
@@ -26,6 +28,15 @@ public class AnalysisMapper {
     analysisDTO.setArchived(analysisEntity.isArchived());
     analysisDTO.setRemoved(analysisEntity.isRemoved());
 
+    if (CollectionUtils.isNotEmpty(analysisEntity.getAnalysisDetailEntities())) {
+      List<AnalysisDetailDTO> analysisDetails =
+          analysisEntity.getAnalysisDetailEntities().stream()
+              .map(AnalysisDetailMapper::toDetailDTO)
+              .toList();
+
+      analysisDTO.setDetails(analysisDetails);
+    }
+
     if (CollectionUtils.isNotEmpty(analysisEntity.getTags())) {
       Set<TagDTO> tagDTOs =
           analysisEntity.getTags().stream().map(TagMapper::toTagDTO).collect(Collectors.toSet());
@@ -41,7 +52,7 @@ public class AnalysisMapper {
     analysisEntity.setPrice(analysisDTO.getPrice());
     analysisEntity.setArchived(analysisDTO.isArchived());
     analysisEntity.setRemoved(analysisDTO.isRemoved());
-    analysisEntity.setAnalysisDetails(toDetailEntities(analysisDTO.getDetails()));
+    analysisEntity.setAnalysisDetailEntities(toDetailEntities(analysisDTO.getDetails(), analysisEntity));
   }
 
   public static class AnalysisJooqMapper implements RecordMapper<Record, AnalysisEntity> {
@@ -58,7 +69,7 @@ public class AnalysisMapper {
       analysis.setArchived(record.get(ANALYSIS.ARCHIVED));
       analysis.setRemoved(record.get(ANALYSIS.REMOVED));
       analysis.setTags(mapTagEntities(record));
-      analysis.setAnalysisDetails(mapDetails(record));
+      analysis.setAnalysisDetailEntities(mapDetails(record));
 
       return analysis;
     }

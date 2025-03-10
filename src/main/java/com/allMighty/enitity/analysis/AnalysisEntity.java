@@ -25,9 +25,9 @@ public class AnalysisEntity extends AbstractEntity {
     private boolean removed;
 
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "analysis_id")
-    private List<AnalysisDetail> analysisDetails = new ArrayList<>();
+    private List<AnalysisDetailEntity> analysisDetailEntities = new ArrayList<>();
 
 
 

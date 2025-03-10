@@ -3,7 +3,7 @@ package com.allMighty.business_logic_domain.analysis;
 import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisDetailMapper.DETAILS_KEYWORD;
 import static com.allMighty.business_logic_domain.tag.TagMapper.TAGS_KEYWORD;
 import static com.example.jooq.generated.tables.Analysis.ANALYSIS;
-import static com.example.jooq.generated.tables.AnalysisDetails.ANALYSIS_DETAILS;
+import static com.example.jooq.generated.tables.AnalysisDetail.ANALYSIS_DETAIL;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.MedicalServiceAnalysis.MEDICAL_SERVICE_ANALYSIS;
 import static com.example.jooq.generated.tables.Tag.TAG;
@@ -68,11 +68,12 @@ public class AnalysisRepository {
                 .as(TAGS_KEYWORD),
             multiset(
                     select(
-                            ANALYSIS_DETAILS.ID,
-                            ANALYSIS_DETAILS.KEY_VALUE,
-                            ANALYSIS_DETAILS.STRING_VALUE)
-                        .from(ANALYSIS_DETAILS)
-                        .where(ANALYSIS_DETAILS.ANALYSIS_ID.eq(ANALYSIS.ID)))
+                            ANALYSIS_DETAIL.ID,
+                            ANALYSIS_DETAIL.KEY_VALUE,
+                            ANALYSIS_DETAIL.STRING_VALUE,
+                            ANALYSIS_DETAIL.VERSION)
+                        .from(ANALYSIS_DETAIL)
+                        .where(ANALYSIS_DETAIL.ANALYSIS_ID.eq(ANALYSIS.ID)))
                 .as(DETAILS_KEYWORD))
         .from(ANALYSIS)
         .leftJoin(MEDICAL_SERVICE_ANALYSIS)

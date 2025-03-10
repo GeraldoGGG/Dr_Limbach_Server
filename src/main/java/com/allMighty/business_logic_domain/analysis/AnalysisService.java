@@ -1,5 +1,6 @@
 package com.allMighty.business_logic_domain.analysis;
 
+import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisDetailMapper.toDetailEntities;
 import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper.*;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 

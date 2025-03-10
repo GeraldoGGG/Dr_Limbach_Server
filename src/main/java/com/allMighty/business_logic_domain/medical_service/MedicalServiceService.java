@@ -3,7 +3,6 @@ package com.allMighty.business_logic_domain.medical_service;
 import static com.allMighty.business_logic_domain.medical_service.MedicalServiceMapper.*;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
-import com.allMighty.business_logic_domain.article.ArticleDTO;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.business_logic_domain.tag.TagRepository;
@@ -16,13 +15,13 @@ import com.allMighty.global_operation.BaseService;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;
 import com.allMighty.global_operation.filter.FilterParser;
 import com.allMighty.global_operation.response.page.PageDescriptor;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -77,9 +76,11 @@ public class MedicalServiceService extends BaseService {
             .orElseThrow(() -> new BadRequestException("Medical service not found!"));
 
     toMedicalServiceEntity(medicalServiceDTO, medicalServiceEntity);
-    medicalServiceEntity.setAnalysis(Collections.emptyList());
-    medicalServiceEntity.setArticles(Collections.emptyList());
+
+    medicalServiceEntity.setArticles(new ArrayList<>());
     updateArticles(medicalServiceDTO.getArticleIds(), medicalServiceEntity);
+
+    medicalServiceEntity.setAnalysis(new ArrayList<>());
     updateAnalysis(medicalServiceDTO.getAnalysisIds(), medicalServiceEntity);
 
     Set<TagEntity> tagEntities = tagRepository.updateTagEntities(medicalServiceDTO.getTags(), em);
@@ -119,7 +120,13 @@ public class MedicalServiceService extends BaseService {
   }
 
   private void updateArticles(List<Long> articleIds, MedicalServiceEntity medicalServiceEntity) {
+    if (CollectionUtils.isEmpty(articleIds)) {
+      return;
+    }
     for (Long id : articleIds) {
+      if (id == null) {
+        continue;
+      }
       ArticleEntity article = em.find(ArticleEntity.class, id);
       if (article != null) {
         medicalServiceEntity.getArticles().add(article);
@@ -128,7 +135,14 @@ public class MedicalServiceService extends BaseService {
   }
 
   private void updateAnalysis(List<Long> analysisIds, MedicalServiceEntity medicalServiceEntity) {
+    if (CollectionUtils.isEmpty(analysisIds)) {
+      return;
+    }
+
     for (Long id : analysisIds) {
+      if (id == null) {
+        continue;
+      }
       AnalysisEntity analysis = em.find(AnalysisEntity.class, id);
       if (analysis != null) {
         medicalServiceEntity.getAnalysis().add(analysis);

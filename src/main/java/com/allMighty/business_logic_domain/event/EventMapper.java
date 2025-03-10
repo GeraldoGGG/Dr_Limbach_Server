@@ -43,7 +43,7 @@ public class EventMapper {
       event.setTitle(record.get(EVENT.TITLE));
       event.setContent(record.get(EVENT.CONTENT));
       event.setEventDate(record.get(EVENT.EVENT_DATE));
-      event.setEventDuration(record.get(EVENT.EVENT_DURATION, Duration.class));
+      event.setEventDuration(record.get(EVENT.EVENT_DURATION));
       event.setPrice(record.get(EVENT.PRICE));
       event.setArchived(record.get(EVENT.ARCHIVED));
       event.setRemoved(record.get(EVENT.REMOVED));

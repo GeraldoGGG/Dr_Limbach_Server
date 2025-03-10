@@ -40,6 +40,7 @@ public class ArticleMapper {
     articleEntity.setContent(articleDTO.getContent());
     articleEntity.setAuthor(articleDTO.getAuthor());
     articleEntity.setArchived(articleDTO.isArchived());
+
   }
 
   static class ArticleJooqMapper implements RecordMapper<Record, ArticleEntity> {

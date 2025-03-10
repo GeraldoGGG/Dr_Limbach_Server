@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -61,6 +62,7 @@ public class EventService extends BaseService {
     return eventDTO;
   }
 
+  @Transactional
   public Long createEvent(EventDTO articleDTO) {
     EventEntity eventEntity = new EventEntity();
     toEventEntity(articleDTO, eventEntity);
@@ -72,7 +74,7 @@ public class EventService extends BaseService {
 
     return saved.getId();
   }
-
+  @Transactional
   public Long updateEvent(Long id, EventDTO articleDTO) {
     EventEntity eventEntity =
         eventRepository

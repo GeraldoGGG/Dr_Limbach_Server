@@ -4,7 +4,6 @@ import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.global_operation.dto.AbstractDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class EventDTO extends AbstractDTO {
   private LocalDateTime eventDate;
 
   @NotNull(message = "Event duration cannot be blank")
-  private Duration eventDuration;
+  private Long eventDuration;
 
   private Integer price;
 
