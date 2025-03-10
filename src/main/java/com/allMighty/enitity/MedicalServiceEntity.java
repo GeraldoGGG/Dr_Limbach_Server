@@ -16,7 +16,7 @@ import java.util.Set;
 @Table(name = "medical_service")
 public class MedicalServiceEntity extends AbstractEntity {
 
-    boolean showInHomePage;
+    private boolean showInHomePage;
     private String title;
     private boolean archived;
     private boolean removed;
@@ -53,7 +53,5 @@ public class MedicalServiceEntity extends AbstractEntity {
             joinColumns = @JoinColumn(name = "medical_service_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<TagEntity> tags;
-
-
 
 }

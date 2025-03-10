@@ -4,11 +4,9 @@ import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,21 +14,18 @@ import java.time.LocalDateTime;
 @Table(name = "event")
 public class EventEntity extends AbstractEntity {
 
-    private String title;
+  private String title;
 
-    @Column(columnDefinition = "TEXT")
-    private String content;
+  @Column(columnDefinition = "TEXT")
+  private String content;
 
-    private LocalDateTime eventDate;
+  private LocalDateTime eventDate;
 
+  @Column(name = "event_duration")
+  private Long eventDuration;
 
-    @Column(columnDefinition = "INTERVAL")
-    private Duration eventDuration;
+  private Integer price;
 
-
-    private Integer price;
-
-    private boolean archived;
-    private boolean removed;
-
+  private boolean archived;
+  private boolean removed;
 }

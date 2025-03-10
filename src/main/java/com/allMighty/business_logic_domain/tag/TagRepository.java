@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -23,7 +23,8 @@ public class TagRepository {
 
   private TagMapper.TagJooqMapper tagJooqMapper = new TagMapper.TagJooqMapper();
 
-  public Set<TagEntity> handleTagEntities(Set<TagDTO> tags, EntityManager em) {
+  @Transactional
+  public Set<TagEntity> updateTagEntities(Set<TagDTO> tags, EntityManager em) {
     if (CollectionUtils.isEmpty(tags)) {
       return Collections.emptySet();
     }
@@ -42,7 +43,8 @@ public class TagRepository {
 
       if (idTagMap.containsKey(tagId)) {
         TagEntity tagEntity = idTagMap.get(tagId);
-        tagEntities.add(tagEntity);
+        TagEntity found = em.find(TagEntity.class, tagEntity.getId());
+        tagEntities.add(found);
         continue;
       }
 
@@ -53,7 +55,8 @@ public class TagRepository {
 
       if (nameTagMap.containsKey(name)) {
         TagEntity tagEntity = nameTagMap.get(name);
-        tagEntities.add(tagEntity);
+        TagEntity found = em.find(TagEntity.class, tagEntity.getId());
+        tagEntities.add(found);
         continue;
       }
 

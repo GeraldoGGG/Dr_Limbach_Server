@@ -3,7 +3,6 @@ package com.allMighty.business_logic_domain.article;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.global_operation.dto.AbstractDTO;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;

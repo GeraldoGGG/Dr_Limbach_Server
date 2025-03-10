@@ -2,7 +2,7 @@ package com.allMighty.global_operation.exception_management.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class BadRequestForEnumeration extends RuntimeException {
+public class BadRequestForEnumeration extends Http4xxException {
   Class enumClass;
   String source;
 

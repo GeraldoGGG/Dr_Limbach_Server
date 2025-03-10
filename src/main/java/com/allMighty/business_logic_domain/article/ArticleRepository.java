@@ -1,6 +1,9 @@
 package com.allMighty.business_logic_domain.article;
 
+import static com.allMighty.business_logic_domain.tag.TagMapper.TAGS_KEYWORD;
 import static com.example.jooq.generated.tables.Article.ARTICLE;
+import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
+import static com.example.jooq.generated.tables.MedicalServiceArticle.MEDICAL_SERVICE_ARTICLE;
 import static com.example.jooq.generated.tables.Tag.TAG;
 import static com.example.jooq.generated.tables.TagArticle.TAG_ARTICLE;
 import static org.jooq.impl.DSL.multiset;
@@ -20,7 +23,7 @@ public class ArticleRepository {
 
   private final DSLContext dsl;
 
-  private ArticleMapper.ArticleJooqMapper articleJooqMapper = new ArticleMapper.ArticleJooqMapper();
+  private final ArticleMapper.ArticleJooqMapper articleJooqMapper = new ArticleMapper.ArticleJooqMapper();
 
   public Long count() {
     return count(new ArrayList<>());
@@ -59,8 +62,12 @@ public class ArticleRepository {
                         .leftJoin(TAG_ARTICLE)
                         .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
                         .where(TAG_ARTICLE.ARTICLE_ID.eq(ARTICLE.ID)))
-                .as("tags"))
+                .as(TAGS_KEYWORD))
         .from(ARTICLE)
+        .leftJoin(MEDICAL_SERVICE_ARTICLE)
+        .on(ARTICLE.ID.eq(MEDICAL_SERVICE_ARTICLE.ARTICLE_ID))
+        .leftJoin(MEDICAL_SERVICE)
+        .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ARTICLE.MEDICAL_SERVICE_ID))
         .leftJoin(TAG_ARTICLE)
         .on(ARTICLE.ID.eq(TAG_ARTICLE.ARTICLE_ID))
         .leftJoin(TAG)
