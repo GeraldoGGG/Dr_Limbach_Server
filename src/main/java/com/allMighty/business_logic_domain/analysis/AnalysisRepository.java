@@ -34,11 +34,15 @@ public class AnalysisRepository {
 
   public Long count(List<Condition> conditions) {
     return dsl.select(DSL.countDistinct(ANALYSIS.ID))
-        .from(ANALYSIS)
-        .leftJoin(TAG_ANALYSIS)
-        .on(ANALYSIS.ID.eq(TAG_ANALYSIS.ANALYSIS_ID))
-        .leftJoin(TAG)
-        .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
+            .from(ANALYSIS)
+            .leftJoin(MEDICAL_SERVICE_ANALYSIS)
+            .on(ANALYSIS.ID.eq(MEDICAL_SERVICE_ANALYSIS.ANALYSIS_ID))
+            .leftJoin(MEDICAL_SERVICE)
+            .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ANALYSIS.MEDICAL_SERVICE_ID))
+            .leftJoin(TAG_ANALYSIS)
+            .on(ANALYSIS.ID.eq(TAG_ANALYSIS.ANALYSIS_ID))
+            .leftJoin(TAG)
+            .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
         .where(conditions)
         .fetchSingleInto(Long.class);
   }
