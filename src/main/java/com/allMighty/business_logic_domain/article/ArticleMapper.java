@@ -1,24 +1,19 @@
 package com.allMighty.business_logic_domain.article;
 
-import com.allMighty.business_logic_domain.image.ImageDTO;
+import static com.allMighty.business_logic_domain.tag.TagMapper.TagJooqMapper.mapTagEntities;
+import static com.example.jooq.generated.tables.Article.ARTICLE;
+
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.enitity.TagEntity;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import org.jooq.Result;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.example.jooq.generated.tables.Article.ARTICLE;
-import static com.example.jooq.generated.tables.Tag.TAG;
-
+// TODO this are mechanical mappers it would be wise to use some library maybe mapstruct
 public class ArticleMapper {
 
   public static ArticleDTO toArticleDTO(ArticleEntity articleEntity) {
@@ -31,7 +26,8 @@ public class ArticleMapper {
 
     if (CollectionUtils.isNotEmpty(articleEntity.getTags())) {
       Set<TagDTO> tagDTOs =
-          articleEntity.getTags().stream()
+          articleEntity.getTags()
+                  .stream()
                   .map(TagMapper::toTagDTO)
                   .collect(Collectors.toSet());
       articleDTO.setTags(tagDTOs);
@@ -60,17 +56,7 @@ public class ArticleMapper {
       article.setArchived(record.get(ARTICLE.ARCHIVED));
       article.setRemoved(record.get(ARTICLE.REMOVED));
 
-      Result<Record> tagsResult = record.get("tags", Result.class);
-      Set<TagEntity> tags = new HashSet<>();
-      if (tagsResult != null) {
-        for (Record tagRecord : tagsResult) {
-          TagEntity tag = new TagEntity();
-          tag.setId(tagRecord.get(TAG.ID));
-          tag.setName(tagRecord.get(TAG.NAME));
-          tag.setVersion(tagRecord.get(TAG.VERSION));
-          tags.add(tag);
-        }
-      }
+      Set<TagEntity> tags = mapTagEntities(record);
       article.setTags(tags);
       return article;
     }

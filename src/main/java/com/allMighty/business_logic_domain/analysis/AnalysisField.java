@@ -1,4 +1,4 @@
-package com.allMighty.business_logic_domain.article;
+package com.allMighty.business_logic_domain.analysis;
 
 import static com.example.jooq.generated.tables.Article.ARTICLE;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
@@ -9,7 +9,7 @@ import lombok.Getter;
 import org.jooq.Field;
 
 @Getter
-public enum ArticleField implements FilterableField {
+public enum AnalysisField implements FilterableField {
   ID("id", ARTICLE.ID),
   TAG_ID("tag:id", TAG.ID),
   TAG_NAME("tag:name", TAG.NAME),
@@ -18,7 +18,7 @@ public enum ArticleField implements FilterableField {
   private final String restAlias;
   private final Field<?> jooqField;
 
-  ArticleField(String restAlias, Field<?> jooqField) {
+  AnalysisField(String restAlias, Field<?> jooqField) {
     this.restAlias = restAlias;
     this.jooqField = jooqField;
   }

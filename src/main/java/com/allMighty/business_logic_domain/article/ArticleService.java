@@ -42,19 +42,15 @@ public class ArticleService extends BaseService {
     return articleDTOS;
   }
 
-  private void addImages(List<ArticleDTO> articleDTOS) {
-    List<Long> referenceIds = articleDTOS.stream().map(ArticleDTO::getId).toList();
-    Map<Long, List<ImageDTO>> images = imageService.getImages(referenceIds, EntityType.ARTICLE);
-    articleDTOS.forEach(dto -> dto.setImages(images.get(dto.getId())));
-  }
-
   public ArticleDTO getArticleById(Long id) {
     ArticleDTO articleDTO =
         articleRepository
             .findById(id)
             .map(ArticleMapper::toArticleDTO)
             .orElseThrow(() -> new BadRequestException("Article not found!"));
+
     addImages(Collections.singletonList(articleDTO));
+
     return articleDTO;
   }
 
@@ -75,7 +71,7 @@ public class ArticleService extends BaseService {
             .orElseThrow(() -> new BadRequestException("Article not found!"));
     toArticleEntity(articleDTO, articleEntity);
 
-    Set<TagEntity> tagEntities = tagRepository.handleTagEntities(articleDTO.getTags(), em);
+    Set<TagEntity> tagEntities = tagRepository.updateTagEntities(articleDTO.getTags(), em);
     articleEntity.setTags(tagEntities);
 
     ArticleEntity saved = em.merge(articleEntity);
@@ -98,14 +94,20 @@ public class ArticleService extends BaseService {
     ArticleEntity articleEntity = new ArticleEntity();
     toArticleEntity(articleDTO, articleEntity);
 
-    Set<TagEntity> tagEntities = tagRepository.handleTagEntities(articleDTO.getTags(), em);
+    Set<TagEntity> tagEntities = tagRepository.updateTagEntities(articleDTO.getTags(), em);
     articleEntity.setTags(tagEntities);
 
     ArticleEntity saved = em.merge(articleEntity);
 
     List<ImageDTO> images = articleDTO.getImages();
-
     imageService.createImages(images, EntityType.ARTICLE, saved.getId());
+
     return saved.getId();
+  }
+
+  private void addImages(List<ArticleDTO> articleDTOS) {
+    List<Long> referenceIds = articleDTOS.stream().map(ArticleDTO::getId).toList();
+    Map<Long, List<ImageDTO>> images = imageService.getImages(referenceIds, EntityType.ARTICLE);
+    articleDTOS.forEach(dto -> dto.setImages(images.get(dto.getId())));
   }
 }

@@ -13,11 +13,23 @@ public interface UrlProperty extends ParamProperty {
     String PATH = ROOT_PATH + "/articles";
   }
 
+  interface Event {
+    String PATH = ROOT_PATH + "/events";
+  }
+
   interface Image {
     String PATH = ROOT_PATH + "/images";
   }
 
   interface Email {
-    String PATH = ROOT_PATH + "/email";
+    String PATH = ROOT_PATH + "/emails";
+  }
+
+  interface Analysis {
+    String PATH = ROOT_PATH + "/analyses";
+  }
+
+  interface MedicalService {
+    String PATH = ROOT_PATH + "/services";
   }
 }

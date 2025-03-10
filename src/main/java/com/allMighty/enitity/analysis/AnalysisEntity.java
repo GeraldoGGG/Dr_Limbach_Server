@@ -25,10 +25,9 @@ public class AnalysisEntity extends AbstractEntity {
     private boolean removed;
 
 
-    //TODO strong realtionship will need cascade
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "analysis_id")
-    private List<AnalysisDetails> analysisDetails = new ArrayList<>();
+    private List<AnalysisDetail> analysisDetails = new ArrayList<>();
 
 
 

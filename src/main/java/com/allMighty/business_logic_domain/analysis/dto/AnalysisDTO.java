@@ -1,9 +1,8 @@
-package com.allMighty.business_logic_domain.article;
+package com.allMighty.business_logic_domain.analysis.dto;
 
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.global_operation.dto.AbstractDTO;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,22 +13,25 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class ArticleDTO extends AbstractDTO {
+public class AnalysisDTO  extends AbstractDTO {
     private Long id;
 
-    @NotBlank(message = "Title cannot be blank")
-    private String title;
+    private String medicalName;
+    private String synonym;
+    private Integer price;
 
-    @NotBlank(message = "Author cannot be blank")
-    private String author;
-
-    @NotBlank(message = "Content cannot be blank")
-    private String content;
 
     private boolean archived;
+    private boolean removed;
 
+
+    private List<AnalysisDetailDTO> details = new ArrayList<>();
 
     private Set<TagDTO> tags = new HashSet<>();
 
     private List<ImageDTO> images = new ArrayList<>();
+
+
+
+
 }
