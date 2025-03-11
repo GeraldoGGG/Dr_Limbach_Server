@@ -19,6 +19,7 @@ public class MedicalServiceDTO extends AbstractDTO {
   private boolean archived;
   private boolean removed;
   private String content;
+  private Long version;
 
   private List<Long> analysisIds;
   private List<Long> articleIds;

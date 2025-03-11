@@ -18,8 +18,12 @@ public class AnalysisDetailMapper {
   public static final String DETAILS_KEYWORD = "analysisDetails";
 
   public static AnalysisDetailDTO toDetailDTO(AnalysisDetailEntity entity) {
-    return new AnalysisDetailDTO(
-        entity.getId(), entity.getString_value(), entity.getKey_value(), entity.getVersion());
+      AnalysisDetailDTO dto = new AnalysisDetailDTO();
+      dto.setId(entity.getId());
+      dto.setStringValue(entity.getString_value());
+      dto.setKeyValue(entity.getKey_value());
+      dto.setVersion(entity.getVersion());
+      return dto;
   }
 
   public static List<AnalysisDetailEntity> toDetailEntities(

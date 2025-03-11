@@ -27,6 +27,7 @@ public class AnalysisMapper {
     analysisDTO.setPrice(analysisEntity.getPrice());
     analysisDTO.setArchived(analysisEntity.isArchived());
     analysisDTO.setRemoved(analysisEntity.isRemoved());
+    analysisDTO.setVersion(analysisEntity.getVersion());
 
     if (CollectionUtils.isNotEmpty(analysisEntity.getAnalysisDetailEntities())) {
       List<AnalysisDetailDTO> analysisDetails =
@@ -52,6 +53,7 @@ public class AnalysisMapper {
     analysisEntity.setPrice(analysisDTO.getPrice());
     analysisEntity.setArchived(analysisDTO.isArchived());
     analysisEntity.setRemoved(analysisDTO.isRemoved());
+    analysisEntity.setVersion(analysisDTO.getVersion());
     analysisEntity.setAnalysisDetailEntities(toDetailEntities(analysisDTO.getDetails(), analysisEntity));
   }
 

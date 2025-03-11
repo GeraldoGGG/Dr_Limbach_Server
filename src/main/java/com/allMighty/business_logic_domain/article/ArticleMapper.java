@@ -23,13 +23,13 @@ public class ArticleMapper {
     articleDTO.setContent(articleEntity.getContent());
     articleDTO.setAuthor(articleEntity.getAuthor());
     articleDTO.setArchived(articleEntity.isArchived());
+    articleDTO.setVersion(articleEntity.getVersion());
+    articleDTO.setCreationDate(articleEntity.getCreationDate());
+    articleDTO.setSummary(articleEntity.getSummary());
 
     if (CollectionUtils.isNotEmpty(articleEntity.getTags())) {
       Set<TagDTO> tagDTOs =
-          articleEntity.getTags()
-                  .stream()
-                  .map(TagMapper::toTagDTO)
-                  .collect(Collectors.toSet());
+          articleEntity.getTags().stream().map(TagMapper::toTagDTO).collect(Collectors.toSet());
       articleDTO.setTags(tagDTOs);
     }
     return articleDTO;
@@ -40,7 +40,9 @@ public class ArticleMapper {
     articleEntity.setContent(articleDTO.getContent());
     articleEntity.setAuthor(articleDTO.getAuthor());
     articleEntity.setArchived(articleDTO.isArchived());
-
+    articleEntity.setVersion(articleDTO.getVersion());
+    articleEntity.setCreationDate(articleDTO.getCreationDate());
+    articleEntity.setSummary(articleDTO.getSummary());
   }
 
   static class ArticleJooqMapper implements RecordMapper<Record, ArticleEntity> {
@@ -56,7 +58,8 @@ public class ArticleMapper {
       article.setContent(record.get(ARTICLE.CONTENT));
       article.setArchived(record.get(ARTICLE.ARCHIVED));
       article.setRemoved(record.get(ARTICLE.REMOVED));
-
+      article.setCreationDate(record.get(ARTICLE.CREATION_DATE));
+      article.setSummary(record.get(ARTICLE.SUMMARY));
       Set<TagEntity> tags = mapTagEntities(record);
       article.setTags(tags);
       return article;

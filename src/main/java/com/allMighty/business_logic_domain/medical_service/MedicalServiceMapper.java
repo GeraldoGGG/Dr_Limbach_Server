@@ -31,6 +31,7 @@ public class MedicalServiceMapper {
     medicalServiceDTO.setArchived(medicalServiceEntity.isArchived());
     medicalServiceDTO.setRemoved(medicalServiceEntity.isRemoved());
     medicalServiceDTO.setContent(medicalServiceEntity.getContent());
+    medicalServiceDTO.setVersion(medicalServiceEntity.getVersion());
 
     // Map Articles
     if (CollectionUtils.isNotEmpty(medicalServiceEntity.getArticles())) {
@@ -70,6 +71,7 @@ public class MedicalServiceMapper {
     medicalServiceEntity.setArchived(medicalServiceDTO.isArchived());
     medicalServiceEntity.setRemoved(medicalServiceDTO.isRemoved());
     medicalServiceEntity.setContent(medicalServiceDTO.getContent());
+    medicalServiceEntity.setVersion(medicalServiceDTO.getVersion());
   }
 
   static class MedicalServiceJooqMapper implements RecordMapper<Record, MedicalServiceEntity> {

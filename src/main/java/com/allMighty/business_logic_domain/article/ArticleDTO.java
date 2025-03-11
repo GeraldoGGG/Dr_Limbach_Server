@@ -4,32 +4,37 @@ import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.global_operation.dto.AbstractDTO;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 public class ArticleDTO extends AbstractDTO {
-    private Long id;
+  private Long id;
 
-    @NotBlank(message = "Title cannot be blank")
-    private String title;
+  @NotBlank(message = "Title cannot be blank")
+  private String title;
 
-    @NotBlank(message = "Author cannot be blank")
-    private String author;
+  @NotBlank(message = "Author cannot be blank")
+  private String author;
 
-    @NotBlank(message = "Content cannot be blank")
-    private String content;
+  @NotBlank(message = "Content cannot be blank")
+  private String content;
 
-    private boolean archived;
+  private boolean archived;
 
+  private Long version;
 
-    private Set<TagDTO> tags = new HashSet<>();
+  private String summary;
 
-    private List<ImageDTO> images = new ArrayList<>();
+  private LocalDateTime creationDate;
+
+  private Set<TagDTO> tags = new HashSet<>();
+
+  private List<ImageDTO> images = new ArrayList<>();
 }

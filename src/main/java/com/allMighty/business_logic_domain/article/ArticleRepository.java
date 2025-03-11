@@ -23,7 +23,8 @@ public class ArticleRepository {
 
   private final DSLContext dsl;
 
-  private final ArticleMapper.ArticleJooqMapper articleJooqMapper = new ArticleMapper.ArticleJooqMapper();
+  private final ArticleMapper.ArticleJooqMapper articleJooqMapper =
+      new ArticleMapper.ArticleJooqMapper();
 
   public Long count() {
     return count(new ArrayList<>());
@@ -32,14 +33,14 @@ public class ArticleRepository {
   public Long count(List<Condition> conditions) {
     return dsl.select(DSL.countDistinct(ARTICLE.ID))
         .from(ARTICLE)
-            .leftJoin(MEDICAL_SERVICE_ARTICLE)
-            .on(ARTICLE.ID.eq(MEDICAL_SERVICE_ARTICLE.ARTICLE_ID))
-            .leftJoin(MEDICAL_SERVICE)
-            .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ARTICLE.MEDICAL_SERVICE_ID))
-            .leftJoin(TAG_ARTICLE)
-            .on(ARTICLE.ID.eq(TAG_ARTICLE.ARTICLE_ID))
-            .leftJoin(TAG)
-            .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
+        .leftJoin(MEDICAL_SERVICE_ARTICLE)
+        .on(ARTICLE.ID.eq(MEDICAL_SERVICE_ARTICLE.ARTICLE_ID))
+        .leftJoin(MEDICAL_SERVICE)
+        .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ARTICLE.MEDICAL_SERVICE_ID))
+        .leftJoin(TAG_ARTICLE)
+        .on(ARTICLE.ID.eq(TAG_ARTICLE.ARTICLE_ID))
+        .leftJoin(TAG)
+        .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
         .where(conditions)
         .fetchSingleInto(Long.class);
   }
@@ -60,6 +61,8 @@ public class ArticleRepository {
             ARTICLE.CONTENT,
             ARTICLE.ARCHIVED,
             ARTICLE.REMOVED,
+            ARTICLE.CREATION_DATE,
+            ARTICLE.SUMMARY,
             multiset(
                     select(TAG.ID, TAG.NAME, TAG.VERSION)
                         .from(TAG)

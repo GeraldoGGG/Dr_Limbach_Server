@@ -1,10 +1,8 @@
 package com.allMighty.enitity;
 
-import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
-
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,11 +22,14 @@ public class ArticleEntity extends AbstractEntity {
   private boolean archived;
   private boolean removed;
 
+  private LocalDateTime creationDate;
+
+  private String summary;
+
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
   @JoinTable(
       name = "tag_article",
       joinColumns = @JoinColumn(name = "article_id"),
       inverseJoinColumns = @JoinColumn(name = "tag_id"))
   private Set<TagEntity> tags;
-
 }

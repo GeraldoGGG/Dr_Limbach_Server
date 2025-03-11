@@ -21,6 +21,7 @@ public class AnalysisDTO extends AbstractDTO {
 
   private boolean archived;
   private boolean removed;
+  private Long version;
 
   private List<AnalysisDetailDTO> details = new ArrayList<>();
 

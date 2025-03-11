@@ -21,6 +21,10 @@ public class EventEntity extends AbstractEntity {
 
   private LocalDateTime eventDate;
 
+  private String organization;
+
+  private Integer guestNumber;
+
   @Column(name = "event_duration")
   private Long eventDuration;
 

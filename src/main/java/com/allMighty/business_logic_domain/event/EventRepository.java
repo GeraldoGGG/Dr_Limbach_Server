@@ -48,7 +48,9 @@ public class EventRepository {
             EVENT.EVENT_DURATION,
             EVENT.PRICE,
             EVENT.ARCHIVED,
-            EVENT.REMOVED)
+            EVENT.REMOVED,
+            EVENT.ORGANIZATION,
+            EVENT.GUEST_NUMBER)
         .from(EVENT)
         .where(conditions)
         .groupBy(
@@ -60,7 +62,9 @@ public class EventRepository {
             EVENT.EVENT_DURATION,
             EVENT.PRICE,
             EVENT.ARCHIVED,
-            EVENT.REMOVED)
+            EVENT.REMOVED,
+            EVENT.ORGANIZATION,
+            EVENT.GUEST_NUMBER)
         .offset(offset)
         .limit(pageSize)
         .fetch(eventJooqMapper);

@@ -29,6 +29,12 @@ public class EventDTO extends AbstractDTO {
 
   private Integer price;
 
+  private Long version;
+
+  private String organization;
+
+  private Integer guestNumber;
+
   private boolean archived;
   private boolean removed;
 

@@ -21,7 +21,7 @@ import static com.example.jooq.generated.tables.Tag.TAG;
 public class TagRepository {
   private final DSLContext dslContext;
 
-  private TagMapper.TagJooqMapper tagJooqMapper = new TagMapper.TagJooqMapper();
+  private final TagMapper.TagJooqMapper tagJooqMapper = new TagMapper.TagJooqMapper();
 
   @Transactional
   public Set<TagEntity> updateTagEntities(Set<TagDTO> tags, EntityManager em) {
@@ -73,12 +73,4 @@ public class TagRepository {
   public List<TagEntity> getAllTags() {
     return dslContext.select(TAG.ID, TAG.NAME, TAG.VERSION).from(TAG).fetch(tagJooqMapper);
   }
-
-/*  private static TagEntity getTagEntity(Record record) {
-    TagEntity tagEntity = new TagEntity();
-    tagEntity.setId(record.get(TAG.ID));
-    tagEntity.setName(record.get(TAG.NAME));
-    tagEntity.setVersion(record.get(TAG.VERSION));
-    return tagEntity;
-  }*/
 }

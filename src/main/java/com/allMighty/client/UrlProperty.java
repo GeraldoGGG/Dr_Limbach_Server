@@ -32,4 +32,8 @@ public interface UrlProperty extends ParamProperty {
   interface MedicalService {
     String PATH = ROOT_PATH + "/services";
   }
+
+  interface Tag {
+    String PATH = ROOT_PATH + "/tags";
+  }
 }

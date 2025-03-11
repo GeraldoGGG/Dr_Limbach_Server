@@ -33,6 +33,7 @@ public class SecurityConfiguration {
   private static final String[] WHITE_LIST_URL = {
     UrlProperty.Auth.PATH + "/**",
     UrlProperty.Image.PATH + "/**",
+    UrlProperty.Tag.PATH + "/**",
     "/v2/api-docs",
     "/v3/api-docs",
     "/v3/api-docs/**",

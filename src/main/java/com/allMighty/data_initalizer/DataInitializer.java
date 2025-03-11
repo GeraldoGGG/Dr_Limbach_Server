@@ -17,7 +17,6 @@ import com.allMighty.enitity.PersonEntity;
 import com.allMighty.enumeration.ImageContentType;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
@@ -35,14 +34,14 @@ public class DataInitializer implements CommandLineRunner {
   private final AnalysisService analysisService;
   private final MedicalServiceService medicalServiceService;
 
-
   private final PersonEntityRepository personEntityRepository;
 
   @Override
   public void run(String... args) {
     log.error("Initializing data...");
-    insertDummyArticles();
     insertDummyMainUser();
+
+    insertDummyArticles();
     insertDummyEvents();
     insertDummyAnalysis();
     insertDummyMedicalServices();
@@ -94,7 +93,6 @@ public class DataInitializer implements CommandLineRunner {
     log.error("Generated 15 Medical Services!");
   }
 
-
   private void insertDummyAnalysis() {
     if (analysisService.count() != 0) {
       return;
@@ -130,8 +128,6 @@ public class DataInitializer implements CommandLineRunner {
 
     log.error("Generated 15 Analysis records with details, tags, and images!");
   }
-
-
 
   private void insertDummyArticles() {
     if (articleService.count() != 0) {
