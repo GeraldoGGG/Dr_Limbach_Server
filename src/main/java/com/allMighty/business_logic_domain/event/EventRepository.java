@@ -50,6 +50,7 @@ public class EventRepository {
             EVENT.ARCHIVED,
             EVENT.REMOVED,
             EVENT.ORGANIZATION,
+            EVENT.LOCATION,
             EVENT.GUEST_NUMBER)
         .from(EVENT)
         .where(conditions)

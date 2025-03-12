@@ -35,6 +35,8 @@ public class EventDTO extends AbstractDTO {
 
   private Integer guestNumber;
 
+  private String location;
+
   private boolean archived;
   private boolean removed;
 

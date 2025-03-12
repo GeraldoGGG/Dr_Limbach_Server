@@ -2,8 +2,8 @@
 CREATE TABLE analysis_detail (
                                   id BIGSERIAL PRIMARY KEY,
                                   version BIGINT,
-                                  string_value VARCHAR(500),  -- Increased size to 500 characters
-                                  key_value VARCHAR(500),     -- Increased size to 500 characters
+                                  string_value TEXT,
+                                  key_value TEXT,
                                   analysis_id BIGINT NOT NULL,
                                   FOREIGN KEY (analysis_id) REFERENCES analysis(id) ON DELETE CASCADE
 );

@@ -22,6 +22,7 @@ public class EventMapper {
     eventDTO.setVersion(eventEntity.getVersion());
     eventDTO.setOrganization(eventEntity.getOrganization());
     eventDTO.setGuestNumber(eventEntity.getGuestNumber());
+    eventDTO.setLocation(eventEntity.getLocation());
 
     return eventDTO;
   }
@@ -37,6 +38,7 @@ public class EventMapper {
     eventEntity.setVersion(eventDTO.getVersion());
     eventEntity.setOrganization(eventDTO.getOrganization());
     eventEntity.setGuestNumber(eventDTO.getGuestNumber());
+    eventEntity.setLocation(eventDTO.getLocation());
   }
 
   static class EventJooqMapper implements RecordMapper<Record, EventEntity> {
@@ -56,7 +58,7 @@ public class EventMapper {
       event.setRemoved(record.get(EVENT.REMOVED));
       event.setOrganization(record.get(EVENT.ORGANIZATION));
       event.setGuestNumber(record.get(EVENT.GUEST_NUMBER));
-
+      event.setLocation(record.get(EVENT.LOCATION));
       return event;
     }
   }

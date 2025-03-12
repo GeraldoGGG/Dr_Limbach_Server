@@ -28,6 +28,8 @@ public class EventEntity extends AbstractEntity {
   @Column(name = "event_duration")
   private Long eventDuration;
 
+  private String location;
+
   private Integer price;
 
   private boolean archived;

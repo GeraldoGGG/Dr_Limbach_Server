@@ -5,4 +5,7 @@ ALTER TABLE event
     ADD COLUMN organization VARCHAR(255);
 
 ALTER TABLE event
+    ADD COLUMN location VARCHAR(255);
+
+ALTER TABLE event
     ADD COLUMN guest_number INTEGER;
