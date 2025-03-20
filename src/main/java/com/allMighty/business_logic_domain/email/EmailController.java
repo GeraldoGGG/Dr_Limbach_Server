@@ -4,10 +4,10 @@ import com.allMighty.business_logic_domain.email_detail.EmailDetailDTO;
 import com.allMighty.business_logic_domain.export.ExportService;
 import com.allMighty.client.UrlProperty;
 import com.allMighty.enitity.EmailEntity;
+import com.allMighty.global_operation.response.EntityResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.allMighty.client.UrlProperty.Email.EXPORT;
 import static com.allMighty.client.UrlProperty.Email.SUBSCRIBE;
+import static com.allMighty.global_operation.response.ResponseFactory.createResponse;
 
 @RestController
 @RequestMapping(UrlProperty.Email.PATH)
@@ -27,24 +28,15 @@ public class EmailController {
 
     @PostMapping
     public ResponseEntity<String> sendContactEmail(@RequestBody EmailDetailDTO emailDetailDTO) {
-        try {
-            emailService.sendEmailWithTemplate(emailDetailDTO);
-            return ResponseEntity.ok("Contact email sent successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to send contact email: " + e.getMessage());
-        }
+        emailService.sendEmailWithTemplate(emailDetailDTO);
+        return ResponseEntity.ok("Contact email sent successfully!");
     }
 
     @PostMapping(SUBSCRIBE)
-    public ResponseEntity<String> saveSubscriberEmail(@RequestParam(name = "emailAddress") @Valid String emailAddress) {
-        try {
-            emailService.saveEmail(emailAddress);
-            return ResponseEntity.ok("Subscriber email saved successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to save subscriber email: " + e.getMessage());
-        }
+    public ResponseEntity<EntityResponseDTO<EmailEntity>> saveSubscriberEmail(@RequestParam(name = "emailAddress") @Valid String emailAddress) {
+        EmailEntity savedEmail = emailService.saveEmail(emailAddress);
+
+        return ResponseEntity.ok(createResponse(savedEmail));
     }
 
     @GetMapping(EXPORT)

@@ -4,6 +4,7 @@ import com.allMighty.business_logic_domain.email_detail.EmailDetailDTO;
 import com.allMighty.config.email.BrevoConfig;
 import com.allMighty.enitity.EmailEntity;
 import com.allMighty.global_operation.BaseService;
+import com.allMighty.global_operation.exception_management.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,15 @@ public class EmailService extends BaseService {
     }
 
     @Transactional
-    public void saveEmail(String emailAddress) {
+    public EmailEntity saveEmail(String emailAddress) {
         EmailEntity emailEntity = new EmailEntity();
         emailEntity.setEmailAddress(emailAddress);
-        em.merge(emailEntity);
+        emailEntity = em.merge(emailEntity);
+
+        if (emailEntity.getId() == null) {
+            throw new InternalServerException("Failed to save email");
+        }
+        return emailEntity;
     }
 
     public void sendEmailWithTemplate(EmailDetailDTO emailDetailDTO) {
@@ -64,7 +70,7 @@ public class EmailService extends BaseService {
         try {
             apiInstance.sendTransacEmail(email);
         } catch (ApiException e) {
-            throw new RuntimeException("Failed to send email", e);
+            throw new InternalServerException("Failed to send email", e);
         }
     }
 }
