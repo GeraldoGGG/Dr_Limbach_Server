@@ -36,4 +36,8 @@ public interface UrlProperty extends ParamProperty {
   interface Tag {
     String PATH = ROOT_PATH + "/tags";
   }
+
+  interface Questionnaire {
+    String PATH = ROOT_PATH + "/questionnaires";
+  }
 }
