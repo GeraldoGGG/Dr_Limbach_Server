@@ -1,5 +1,6 @@
-package com.allMighty.business_logic_domain.email_detail;
+package com.allMighty.business_logic_domain.email;
 
+import com.allMighty.global_operation.dto.AbstractDTO;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,10 +11,11 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailDetailDTO {
+public class EmailDetailDTO extends AbstractDTO {
     @Email(message = "Please provide a valid email address.")
     private String email;
     private String name;
     private String message;
     private Integer phoneNumber;
+    private Long id;
 }

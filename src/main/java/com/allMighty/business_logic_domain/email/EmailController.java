@@ -1,6 +1,5 @@
 package com.allMighty.business_logic_domain.email;
 
-import com.allMighty.business_logic_domain.email_detail.EmailDetailDTO;
 import com.allMighty.business_logic_domain.export.ExportService;
 import com.allMighty.client.UrlProperty;
 import com.allMighty.enitity.EmailEntity;
@@ -33,15 +32,16 @@ public class EmailController {
     }
 
     @PostMapping(SUBSCRIBE)
-    public ResponseEntity<EntityResponseDTO<EmailEntity>> saveSubscriberEmail(@RequestParam(name = "emailAddress") @Valid String emailAddress) {
-        EmailEntity savedEmail = emailService.saveEmail(emailAddress);
+    public ResponseEntity<EntityResponseDTO<EmailDetailDTO>> saveSubscriberEmail(
+            @RequestParam(name = "emailAddress") @Valid EmailDetailDTO emailDetailDTO) {
+        EmailDetailDTO savedEmail = emailService.saveEmail(emailDetailDTO);
 
         return ResponseEntity.ok(createResponse(savedEmail));
     }
 
     @GetMapping(EXPORT)
-    public ResponseEntity<byte[]> getAllEmails() {
-        List<EmailEntity> ermailList = emailService.getSubscribersEmails();
+    public ResponseEntity<byte[]> exportEmails() {
+        List<EmailDetailDTO> ermailList = emailService.getSubscribersEmails();
 
         byte[] excelFile = exportService.generateSubscribersEmailExcel(ermailList);
 
@@ -51,5 +51,11 @@ public class EmailController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(excelFile);
+    }
+
+    @GetMapping
+    public ResponseEntity<EntityResponseDTO<List<EmailDetailDTO>>> getAllEmails() {
+        List<EmailDetailDTO> ermailList = emailService.getSubscribersEmails();
+        return ResponseEntity.ok(createResponse(ermailList));
     }
 }

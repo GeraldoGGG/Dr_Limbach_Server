@@ -1,5 +1,6 @@
 package com.allMighty.business_logic_domain.export;
 
+import com.allMighty.business_logic_domain.email.EmailDetailDTO;
 import com.allMighty.enitity.EmailEntity;
 import com.allMighty.global_operation.exception_management.exception.ExcelFailException;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ExportService {
 
 
-    public byte[] generateSubscribersEmailExcel(List<EmailEntity> emailList) {
+    public byte[] generateSubscribersEmailExcel(List<EmailDetailDTO> emailList) {
         Workbook workbook = new XSSFWorkbook();
         CellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.index);
@@ -41,11 +42,11 @@ public class ExportService {
         return baos.toByteArray();
     }
 
-    private void addValuesToColumns(List<EmailEntity> emailList, Sheet sheet) {
+    private void addValuesToColumns(List<EmailDetailDTO> emailList, Sheet sheet) {
         int rowNum = 1;
-        for (EmailEntity email : emailList) {
+        for (EmailDetailDTO email : emailList) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(email.getEmailAddress());
+            row.createCell(0).setCellValue(email.getEmail());
         }
     }
 
