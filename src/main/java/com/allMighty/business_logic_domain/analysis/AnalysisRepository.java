@@ -4,8 +4,11 @@ import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisDetail
 import static com.allMighty.business_logic_domain.tag.TagMapper.TAGS_KEYWORD;
 import static com.example.jooq.generated.tables.Analysis.ANALYSIS;
 import static com.example.jooq.generated.tables.AnalysisDetail.ANALYSIS_DETAIL;
+import static com.example.jooq.generated.tables.Category.CATEGORY;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.MedicalServiceAnalysis.MEDICAL_SERVICE_ANALYSIS;
+import static com.example.jooq.generated.tables.Package.PACKAGE;
+import static com.example.jooq.generated.tables.PackageAnalysis.PACKAGE_ANALYSIS;
 import static com.example.jooq.generated.tables.Tag.TAG;
 import static com.example.jooq.generated.tables.TagAnalysis.TAG_ANALYSIS;
 import static org.jooq.impl.DSL.multiset;
@@ -33,62 +36,24 @@ public class AnalysisRepository {
   }
 
   public Long count(List<Condition> conditions) {
-    return dsl.select(DSL.countDistinct(ANALYSIS.ID))
-            .from(ANALYSIS)
-            .leftJoin(MEDICAL_SERVICE_ANALYSIS)
-            .on(ANALYSIS.ID.eq(MEDICAL_SERVICE_ANALYSIS.ANALYSIS_ID))
-            .leftJoin(MEDICAL_SERVICE)
-            .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ANALYSIS.MEDICAL_SERVICE_ID))
-            .leftJoin(TAG_ANALYSIS)
-            .on(ANALYSIS.ID.eq(TAG_ANALYSIS.ANALYSIS_ID))
-            .leftJoin(TAG)
-            .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
-        .where(conditions)
-        .fetchSingleInto(Long.class);
+    SelectSelectStep<?> select = dsl.select(DSL.countDistinct(ANALYSIS.ID));
+    SelectOnConditionStep<?> fromStatement = getFromStatement(select);
+    return fromStatement.where(conditions).fetchSingleInto(Long.class);
   }
 
   public List<AnalysisEntity> getAllAnalyses(
       List<Condition> conditions, PageDescriptor pageDescriptor) {
-    if (pageDescriptor == null) {
-      pageDescriptor = PageDescriptor.maxDataDescriptor();
-    }
+
+    pageDescriptor = Optional.ofNullable(pageDescriptor).orElse(PageDescriptor.maxDataDescriptor());
+
     Long offset = pageDescriptor.getOffset();
     Long pageSize = pageDescriptor.getPageSize();
 
-    return dsl.select(
-            ANALYSIS.ID,
-            ANALYSIS.VERSION,
-            ANALYSIS.MEDICAL_NAME,
-            ANALYSIS.SYNONYM,
-            ANALYSIS.PRICE,
-            ANALYSIS.ARCHIVED,
-            ANALYSIS.REMOVED,
-            multiset(
-                    select(TAG.ID, TAG.NAME, TAG.VERSION)
-                        .from(TAG)
-                        .leftJoin(TAG_ANALYSIS)
-                        .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
-                        .where(TAG_ANALYSIS.ANALYSIS_ID.eq(ANALYSIS.ID)))
-                .as(TAGS_KEYWORD),
-            multiset(
-                    select(
-                            ANALYSIS_DETAIL.ID,
-                            ANALYSIS_DETAIL.KEY_VALUE,
-                            ANALYSIS_DETAIL.STRING_VALUE,
-                            ANALYSIS_DETAIL.VERSION)
-                        .from(ANALYSIS_DETAIL)
-                        .where(ANALYSIS_DETAIL.ANALYSIS_ID.eq(ANALYSIS.ID)))
-                .as(DETAILS_KEYWORD))
-        .from(ANALYSIS)
-        .leftJoin(MEDICAL_SERVICE_ANALYSIS)
-        .on(ANALYSIS.ID.eq(MEDICAL_SERVICE_ANALYSIS.ANALYSIS_ID))
-        .leftJoin(MEDICAL_SERVICE)
-        .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ANALYSIS.MEDICAL_SERVICE_ID))
-        .leftJoin(TAG_ANALYSIS)
-        .on(ANALYSIS.ID.eq(TAG_ANALYSIS.ANALYSIS_ID))
-        .leftJoin(TAG)
-        .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
-        .where(conditions)
+    var selectStatement = getSelect();
+
+    var from = getFromStatement(selectStatement);
+
+    return from.where(conditions)
         .groupBy(
             ANALYSIS.ID,
             ANALYSIS.VERSION,
@@ -100,6 +65,62 @@ public class AnalysisRepository {
         .offset(offset)
         .limit(pageSize)
         .fetch(analysisJooqMapper);
+  }
+
+  private SelectSelectStep<?> getSelect() {
+    return dsl.select(
+        ANALYSIS.ID,
+        ANALYSIS.VERSION,
+        ANALYSIS.MEDICAL_NAME,
+        ANALYSIS.SYNONYM,
+        ANALYSIS.PRICE,
+        ANALYSIS.ARCHIVED,
+        ANALYSIS.REMOVED,
+        ANALYSIS.CATEGORY_ID,
+        ANALYSIS.ISO_VERIFIED,
+        multiset(
+                select(TAG.ID, TAG.NAME, TAG.VERSION)
+                    .from(TAG)
+                    .leftJoin(TAG_ANALYSIS)
+                    .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
+                    .where(TAG_ANALYSIS.ANALYSIS_ID.eq(ANALYSIS.ID)))
+            .as(TAGS_KEYWORD),
+        multiset(
+                select(
+                        ANALYSIS_DETAIL.ID,
+                        ANALYSIS_DETAIL.KEY_VALUE,
+                        ANALYSIS_DETAIL.STRING_VALUE,
+                        ANALYSIS_DETAIL.VERSION)
+                    .from(ANALYSIS_DETAIL)
+                    .where(ANALYSIS_DETAIL.ANALYSIS_ID.eq(ANALYSIS.ID)))
+            .as(DETAILS_KEYWORD));
+  }
+
+  private static SelectOnConditionStep<?> getFromStatement(SelectSelectStep<?> select) {
+    return select
+        .from(ANALYSIS)
+
+        // service
+        .leftJoin(MEDICAL_SERVICE_ANALYSIS)
+        .on(ANALYSIS.ID.eq(MEDICAL_SERVICE_ANALYSIS.ANALYSIS_ID))
+        .leftJoin(MEDICAL_SERVICE)
+        .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ANALYSIS.MEDICAL_SERVICE_ID))
+
+        // tags
+        .leftJoin(TAG_ANALYSIS)
+        .on(ANALYSIS.ID.eq(TAG_ANALYSIS.ANALYSIS_ID))
+        .leftJoin(TAG)
+        .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
+
+        // package
+        .leftJoin(PACKAGE_ANALYSIS)
+        .on(ANALYSIS.ID.eq(PACKAGE_ANALYSIS.ANALYSIS_ID))
+        .leftJoin(PACKAGE)
+        .on(PACKAGE.ID.eq(PACKAGE_ANALYSIS.PACKAGE_ID))
+
+        // CATEGORY
+        .leftJoin(CATEGORY)
+        .on(ANALYSIS.CATEGORY_ID.eq(CATEGORY.ID));
   }
 
   public Optional<AnalysisEntity> findById(Long id) {

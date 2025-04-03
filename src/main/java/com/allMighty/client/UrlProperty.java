@@ -29,6 +29,14 @@ public interface UrlProperty extends ParamProperty {
     String PATH = ROOT_PATH + "/analyses";
   }
 
+  interface AnalysisPackage {
+    String PATH = ROOT_PATH + "/packages";
+  }
+
+  interface AnalysisCategory {
+    String PATH = ROOT_PATH + "/categories";
+  }
+
   interface MedicalService {
     String PATH = ROOT_PATH + "/services";
   }

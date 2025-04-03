@@ -19,7 +19,7 @@ public class AnalysisEntity extends AbstractEntity {
     private String medicalName;
     private String synonym;
     private Integer price;
-
+    private boolean isoVerified;
 
     private boolean archived;
     private boolean removed;
@@ -37,5 +37,14 @@ public class AnalysisEntity extends AbstractEntity {
             joinColumns = @JoinColumn(name = "analysis_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<TagEntity> tags;
+
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private AnalysisCategoryEntity category;
+
+
+    @Transient
+    private Long categoryId;
 
 }

@@ -6,7 +6,8 @@ CREATE TABLE analysis (
                                   synonym VARCHAR(255),
                                   price INT,
                                   archived BOOLEAN NOT NULL DEFAULT FALSE,
-                                  removed BOOLEAN NOT NULL DEFAULT FALSE
+                                  removed BOOLEAN NOT NULL DEFAULT FALSE,
+                                  iso_verified BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- Create the sequence with increment size of 50 (matching Hibernate allocationSize)

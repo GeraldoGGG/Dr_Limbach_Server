@@ -562,7 +562,7 @@ public class DataInitializerUtils {
     service3.setArticleIds(Arrays.asList(2L, 4L)); // Kombinim i artikujve të ndryshëm
     service3.setTags(
             new HashSet<>(Arrays.asList(new TagDTO("Ginekolgji"), new TagDTO("Shtatzënia"))));
-    service3.setImages(getImageContent("medical3jpg"));
+    service3.setImages(getImageContent("medical3.jpg"));
 
 // Shërbimi Mjekësor 4: Konsulta Gastroenterologjike
     MedicalServiceDTO service4 = new MedicalServiceDTO();

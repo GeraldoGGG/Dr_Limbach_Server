@@ -2,7 +2,10 @@
 CREATE TABLE tag (
                      id BIGSERIAL PRIMARY KEY,
                      version BIGINT,
+                     archived BOOLEAN NOT NULL DEFAULT FALSE,
+                     removed BOOLEAN NOT NULL DEFAULT FALSE,
                      name VARCHAR(255) NOT NULL UNIQUE
+
 );
 
 -- Optional: Index for name for faster searches

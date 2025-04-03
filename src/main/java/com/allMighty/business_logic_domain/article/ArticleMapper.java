@@ -7,6 +7,7 @@ import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.enitity.TagEntity;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
@@ -43,6 +44,19 @@ public class ArticleMapper {
     articleEntity.setVersion(articleDTO.getVersion());
     articleEntity.setCreationDate(articleDTO.getCreationDate());
     articleEntity.setSummary(articleDTO.getSummary());
+  }
+
+  public static List<ArticleEntity> mapArticleEntities(List<Long> articleIds) {
+    List<ArticleEntity> articles =
+        articleIds.stream()
+            .map(
+                articleId -> {
+                  ArticleEntity article = new ArticleEntity();
+                  article.setId(articleId);
+                  return article;
+                })
+            .toList();
+    return articles;
   }
 
   static class ArticleJooqMapper implements RecordMapper<Record, ArticleEntity> {

@@ -1,8 +1,8 @@
 package com.allMighty.business_logic_domain.medical_service;
 
-import static com.allMighty.business_logic_domain.medical_service.MedicalServiceMapper.ANALYSIS_IDS_KEYWORD;
-import static com.allMighty.business_logic_domain.medical_service.MedicalServiceMapper.ARTICLES_IDS_KEYWORD;
 import static com.allMighty.business_logic_domain.tag.TagMapper.TAGS_KEYWORD;
+import static com.allMighty.util.JooqMapperProperty.ANALYSIS_IDS_KEYWORD;
+import static com.allMighty.util.JooqMapperProperty.ARTICLES_IDS_KEYWORD;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.MedicalServiceAnalysis.MEDICAL_SERVICE_ANALYSIS;
 import static com.example.jooq.generated.tables.MedicalServiceArticle.MEDICAL_SERVICE_ARTICLE;

@@ -8,6 +8,8 @@ import com.allMighty.client.UrlProperty.Analysis;
 import com.allMighty.client.UrlProperty.Article;
 import com.allMighty.client.UrlProperty.Event;
 import com.allMighty.client.UrlProperty.MedicalService;
+import com.allMighty.client.UrlProperty.AnalysisPackage;
+import com.allMighty.client.UrlProperty.AnalysisCategory;
 import com.allMighty.config.jwt.JwtAuthenticationFilter;
 import com.allMighty.config.security.person.role.Role;
 import lombok.RequiredArgsConstructor;
@@ -91,11 +93,23 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.PUT, MedicalService.PATH + "/**")
                     .hasRole(ADMIN.name())
 
-                    /* .requestMatchers(HttpMethod.POST, UrlProperty.Email.PATH + "/**")
-                    .hasRole(Role.ADMIN.name())*/
-                    /*
-                    .requestMatchers(HttpMethod.POST, UrlProperty.Email.PATH + "/**")
-                    .hasRole(Role.ADMIN.name())*/
+                    // packages
+                    .requestMatchers(
+                        HttpMethod.GET, AnalysisPackage.PATH, AnalysisPackage.PATH + "/**")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, AnalysisPackage.PATH)
+                    .hasRole(Role.ADMIN.name())
+                    .requestMatchers(HttpMethod.PUT, AnalysisPackage.PATH + "/**")
+                    .hasRole(ADMIN.name())
+
+                        // packages
+                        .requestMatchers(
+                                HttpMethod.GET, AnalysisCategory.PATH, AnalysisCategory.PATH + "/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, AnalysisCategory.PATH)
+                        .hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, AnalysisCategory.PATH + "/**")
+                        .hasRole(ADMIN.name())
                     .anyRequest()
                     .authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

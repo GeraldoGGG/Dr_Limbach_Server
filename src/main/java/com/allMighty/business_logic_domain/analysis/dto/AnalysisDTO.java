@@ -18,6 +18,8 @@ public class AnalysisDTO extends AbstractDTO {
   private String medicalName;
   private String synonym;
   private Integer price;
+  private boolean isoVerified;
+  private Long categoryId;
 
   private boolean archived;
   private boolean removed;

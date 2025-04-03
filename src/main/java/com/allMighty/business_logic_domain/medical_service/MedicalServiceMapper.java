@@ -1,5 +1,9 @@
 package com.allMighty.business_logic_domain.medical_service;
 
+import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper.mapAnalysisEntities;
+import static com.allMighty.business_logic_domain.article.ArticleMapper.mapArticleEntities;
+import static com.allMighty.util.JooqMapperProperty.ANALYSIS_IDS_KEYWORD;
+import static com.allMighty.util.JooqMapperProperty.ARTICLES_IDS_KEYWORD;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 
 import com.allMighty.business_logic_domain.tag.TagDTO;
@@ -7,20 +11,15 @@ import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.enitity.MedicalServiceEntity;
 import com.allMighty.enitity.analysis.AnalysisEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
 public class MedicalServiceMapper {
-
-  static final String ARTICLES_IDS_KEYWORD = "articleIds";
-  static final String ANALYSIS_IDS_KEYWORD = "analysisId";
 
   // Converts MedicalServiceEntity to MedicalServiceDTO
   public static MedicalServiceDTO toMedicalServiceDTO(MedicalServiceEntity medicalServiceEntity) {
@@ -90,44 +89,16 @@ public class MedicalServiceMapper {
 
       // Map the article IDs as a list
       List<Long> articleIds = record.get(ARTICLES_IDS_KEYWORD, ArrayList.class);
-      List<ArticleEntity> articles = mapArticleEntitiesForService(articleIds);
+      List<ArticleEntity> articles = mapArticleEntities(articleIds);
 
       entity.setArticles(articles);
 
       // Map the analysis IDs as a list
       List<Long> analysisIds = record.get(ANALYSIS_IDS_KEYWORD, ArrayList.class);
-      List<AnalysisEntity> analyses = mapAnalysisEntitiesForService(analysisIds);
+      List<AnalysisEntity> analyses = mapAnalysisEntities(analysisIds);
       entity.setAnalysis(analyses);
 
       return entity;
-    }
-
-    private static @NotNull List<AnalysisEntity> mapAnalysisEntitiesForService(
-        List<Long> analysisIds) {
-      List<AnalysisEntity> analyses =
-          analysisIds.stream()
-              .map(
-                  analysisId -> {
-                    AnalysisEntity analysis = new AnalysisEntity();
-                    analysis.setId(analysisId);
-                    return analysis;
-                  })
-              .toList();
-      return analyses;
-    }
-
-    private static @NotNull List<ArticleEntity> mapArticleEntitiesForService(
-        List<Long> articleIds) {
-      List<ArticleEntity> articles =
-          articleIds.stream()
-              .map(
-                  articleId -> {
-                    ArticleEntity article = new ArticleEntity();
-                    article.setId(articleId);
-                    return article;
-                  })
-              .toList();
-      return articles;
     }
   }
 }

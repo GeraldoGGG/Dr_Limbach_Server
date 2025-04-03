@@ -3,10 +3,10 @@ CREATE TABLE package (
                                           id BIGSERIAL PRIMARY KEY,
                                           version BIGINT,
                                           price INT,
-                                          discount_percentage INT,
-                                          promoted BOOLEAN NOT NULL DEFAULT FALSE,
+                                          business_module VARCHAR(255),
                                           archived BOOLEAN NOT NULL DEFAULT FALSE,
-                                          removed BOOLEAN NOT NULL DEFAULT FALSE
+                                          removed BOOLEAN NOT NULL DEFAULT FALSE,
+                                          name VARCHAR(255) NOT NULL
 );
 
 -- Create Join Table: medical_package_analysis (AnalysisPackage ↔ MedicalAnalysis)

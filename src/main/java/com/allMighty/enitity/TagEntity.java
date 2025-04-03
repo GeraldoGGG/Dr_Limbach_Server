@@ -10,5 +10,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "tag")
 public class TagEntity extends AbstractEntity {
+  private boolean archived;
+  private boolean removed;
   private String name;
 }
