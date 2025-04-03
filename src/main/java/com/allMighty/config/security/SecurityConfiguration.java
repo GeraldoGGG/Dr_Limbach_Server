@@ -10,6 +10,7 @@ import com.allMighty.client.UrlProperty.Event;
 import com.allMighty.client.UrlProperty.MedicalService;
 import com.allMighty.client.UrlProperty.AnalysisPackage;
 import com.allMighty.client.UrlProperty.AnalysisCategory;
+import com.allMighty.client.UrlProperty.Email;
 import com.allMighty.config.jwt.JwtAuthenticationFilter;
 import com.allMighty.config.security.person.role.Role;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,7 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    // @formatter:off
     http.cors(Customizer.withDefaults())
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
@@ -102,14 +104,22 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.PUT, AnalysisPackage.PATH + "/**")
                     .hasRole(ADMIN.name())
 
-                        // packages
-                        .requestMatchers(
-                                HttpMethod.GET, AnalysisCategory.PATH, AnalysisCategory.PATH + "/**")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST, AnalysisCategory.PATH)
-                        .hasRole(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.PUT, AnalysisCategory.PATH + "/**")
-                        .hasRole(ADMIN.name())
+                    // category
+                    .requestMatchers(
+                        HttpMethod.GET, AnalysisCategory.PATH, AnalysisCategory.PATH + "/**")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, AnalysisCategory.PATH)
+                    .hasRole(Role.ADMIN.name())
+                    .requestMatchers(HttpMethod.PUT, AnalysisCategory.PATH + "/**")
+                    .hasRole(ADMIN.name())
+
+                    // email
+                    .requestMatchers(
+                        HttpMethod.POST, Email.PATH, Email.PATH + "/**")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, Email.PATH, Email.PATH + "/**")
+                    .hasRole(Role.ADMIN.name())
+
                     .anyRequest()
                     .authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

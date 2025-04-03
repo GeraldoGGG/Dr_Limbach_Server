@@ -1,8 +1,13 @@
 package com.allMighty.business_logic_domain.email;
 
 import com.allMighty.config.email.BrevoConfig;
-import lombok.AllArgsConstructor;
+import com.allMighty.enitity.EmailEntity;
+import com.allMighty.global_operation.BaseService;
+import com.allMighty.global_operation.exception_management.exception.InternalServerException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sendinblue.ApiException;
 import sibApi.TransactionalEmailsApi;
 import sibModel.SendSmtpEmail;
@@ -10,32 +15,66 @@ import sibModel.SendSmtpEmailSender;
 import sibModel.SendSmtpEmailTo;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.allMighty.business_logic_domain.email.EmailMapper.toEmailDetailDTO;
 
 @Service
-@AllArgsConstructor
-public class EmailService {
+@RequiredArgsConstructor
+public class EmailService extends BaseService {
+  @Value("${email.sender}")
+  private String emailSender;
 
-    private final BrevoConfig brevoConfig;
+  @Value("${email.receiver}")
+  private String receiver;
 
-    public void sendEmailWithTemplate(String userEmail, String name, Long templateId) {
-        TransactionalEmailsApi apiInstance = brevoConfig.configTransactionalEmailsApi();
+  private final EmailRepository emailRepository;
+  private final BrevoConfig brevoConfig;
 
-        SendSmtpEmail email = new SendSmtpEmail();
-        email.setTemplateId(templateId);
-        email.setTo(Collections.singletonList(new SendSmtpEmailTo().email(userEmail)));
+  public List<EmailDetailDTO> getSubscribersEmails() {
+    return emailRepository.getSubscribersEmails().stream()
+        .map(EmailMapper::toEmailDetailDTO)
+        .toList();
+  }
 
-        SendSmtpEmailSender sender = new SendSmtpEmailSender();
-        sender.setEmail("ramo.beso@hotmail.com");
-        sender.setName("Kali");
-        email.setSender(sender);
+  @Transactional
+  public EmailDetailDTO saveEmail(EmailDetailDTO emailDetailDTO) {
+    EmailEntity emailEntity = new EmailEntity();
+    emailEntity.setEmailAddress(emailDetailDTO.getEmail());
+    emailEntity = em.merge(emailEntity);
 
-        try {
-            apiInstance.sendTransacEmail(email);
-        } catch (ApiException e) {
-            System.err.println("API Exception: " + e.getMessage());
-            System.err.println("Response Body: " + e.getResponseBody());
-            e.printStackTrace();
-            throw new RuntimeException("Failed to send email", e);
-        }
+    if (emailEntity.getId() == null) {
+      throw new InternalServerException("Failed to save email");
     }
+    return toEmailDetailDTO(emailEntity);
+  }
+
+  public void sendEmailWithTemplate(EmailDetailDTO emailDetailDTO) {
+    TransactionalEmailsApi apiInstance = brevoConfig.configTransactionalEmailsApi();
+    String userName = emailDetailDTO.getName();
+
+    SendSmtpEmail email = new SendSmtpEmail();
+    email.setTemplateId(1L);
+    email.setTo(Collections.singletonList(new SendSmtpEmailTo().email(receiver)));
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("message", emailDetailDTO.getMessage());
+    params.put("phoneNumber", emailDetailDTO.getPhoneNumber());
+    params.put("emailAddress", emailDetailDTO.getEmail());
+
+    email.setParams(params);
+    email.setSubject("Client contact");
+
+    SendSmtpEmailSender sender = new SendSmtpEmailSender();
+    sender.setEmail(emailSender);
+    sender.setName(userName);
+    email.setSender(sender);
+    try {
+      apiInstance.sendTransacEmail(email);
+    } catch (ApiException e) {
+      throw new InternalServerException("Failed to send email", e);
+    }
+  }
 }
