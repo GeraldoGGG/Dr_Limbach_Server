@@ -9,7 +9,7 @@ import static com.example.jooq.generated.Tables.QUESTIONNAIRE;
 @Getter
 public enum QuestionnaireField implements FilterableField {
     ID("id", QUESTIONNAIRE.ID),
-    BUSINESS_MODULE("business_module", QUESTIONNAIRE.BUSINESS_MODULE);
+    BUSINESS_MODULE("businessModule", QUESTIONNAIRE.BUSINESS_MODULE);
 
     private final String restAlias;
     private final Field<?> jooqField;
