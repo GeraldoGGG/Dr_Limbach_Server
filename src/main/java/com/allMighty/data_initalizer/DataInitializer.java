@@ -27,14 +27,13 @@ public class DataInitializer implements CommandLineRunner {
   private final EventService eventService;
   private final AnalysisService analysisService;
   private final MedicalServiceService medicalServiceService;
-
   private final PersonEntityRepository personEntityRepository;
 
   @Override
   public void run(String... args) {
     log.error("Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+    analysisService.createInitialAnalysis();
     insertDummyMainUser();
-
     insertDummyArticles();
     insertDummyEvents();
     insertDummyAnalysis();
