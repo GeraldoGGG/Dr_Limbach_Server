@@ -33,12 +33,11 @@ public class DataInitializer implements CommandLineRunner {
   public void run(String... args) {
     log.error("Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
     analysisService.createInitialAnalysis();
-
-/*    insertDummyMainUser();
+    insertDummyMainUser();
     insertDummyArticles();
     insertDummyEvents();
     insertDummyAnalysis();
-    insertDummyMedicalServices();*/
+    insertDummyMedicalServices();
     log.error("Finished Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
 
   }
