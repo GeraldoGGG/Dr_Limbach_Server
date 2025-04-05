@@ -12,6 +12,7 @@ import com.allMighty.client.UrlProperty.AnalysisPackage;
 import com.allMighty.client.UrlProperty.AnalysisCategory;
 import com.allMighty.client.UrlProperty.Questionnaire;
 import com.allMighty.client.UrlProperty.Email;
+import com.allMighty.client.UrlProperty.Search;
 import com.allMighty.config.jwt.JwtAuthenticationFilter;
 import com.allMighty.config.security.person.role.Role;
 import lombok.RequiredArgsConstructor;
@@ -131,8 +132,10 @@ public class SecurityConfiguration {
                     .hasRole(Role.ADMIN.name())
 
                     // search
-                    /*.requestMatchers(HttpMethod.GET, Search.PATH)
-                    .permitAll()*/
+                    .requestMatchers(HttpMethod.GET, Search.PATH)
+                    .permitAll()
+
+
                     .anyRequest()
                     .authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

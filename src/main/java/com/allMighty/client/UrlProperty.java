@@ -16,6 +16,9 @@ public interface UrlProperty extends ParamProperty {
     interface Event {
         String PATH = ROOT_PATH + "/events";
     }
+    interface Search {
+        String PATH = ROOT_PATH + "/search";
+    }
 
     interface Image {
         String PATH = ROOT_PATH + "/images";
