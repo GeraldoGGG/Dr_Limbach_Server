@@ -61,7 +61,9 @@ public class AnalysisRepository {
             ANALYSIS.SYNONYM,
             ANALYSIS.PRICE,
             ANALYSIS.ARCHIVED,
-            ANALYSIS.REMOVED)
+            ANALYSIS.REMOVED,
+            CATEGORY.ID,
+            CATEGORY.NAME)
         .offset(offset)
         .limit(pageSize)
         .fetch(analysisJooqMapper);
@@ -76,8 +78,9 @@ public class AnalysisRepository {
         ANALYSIS.PRICE,
         ANALYSIS.ARCHIVED,
         ANALYSIS.REMOVED,
-        ANALYSIS.CATEGORY_ID,
         ANALYSIS.ISO_VERIFIED,
+        CATEGORY.ID,
+        CATEGORY.NAME,
         multiset(
                 select(TAG.ID, TAG.NAME, TAG.VERSION)
                     .from(TAG)

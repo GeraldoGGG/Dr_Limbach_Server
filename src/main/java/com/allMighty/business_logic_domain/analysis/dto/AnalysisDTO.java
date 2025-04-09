@@ -20,6 +20,7 @@ public class AnalysisDTO extends AbstractDTO {
   private Integer price;
   private boolean isoVerified;
   private Long categoryId;
+  private String categoryName;
 
   private boolean archived;
   private boolean removed;

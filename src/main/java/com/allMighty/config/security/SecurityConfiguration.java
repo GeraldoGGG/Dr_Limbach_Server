@@ -10,7 +10,9 @@ import com.allMighty.client.UrlProperty.Event;
 import com.allMighty.client.UrlProperty.MedicalService;
 import com.allMighty.client.UrlProperty.AnalysisPackage;
 import com.allMighty.client.UrlProperty.AnalysisCategory;
+import com.allMighty.client.UrlProperty.Questionnaire;
 import com.allMighty.client.UrlProperty.Email;
+import com.allMighty.client.UrlProperty.Search;
 import com.allMighty.config.jwt.JwtAuthenticationFilter;
 import com.allMighty.config.security.person.role.Role;
 import lombok.RequiredArgsConstructor;
@@ -114,12 +116,24 @@ public class SecurityConfiguration {
                     .hasRole(ADMIN.name())
 
                     // email
-                    .requestMatchers(
-                        HttpMethod.POST, Email.PATH, Email.PATH + "/**")
+                    .requestMatchers(HttpMethod.POST, Email.PATH, Email.PATH + "/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, Email.PATH, Email.PATH + "/**")
                     .hasRole(Role.ADMIN.name())
 
+                    //  Questionnaire
+                    .requestMatchers(HttpMethod.GET, Questionnaire.PATH, Questionnaire.PATH + "/**")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, Questionnaire.PATH, Questionnaire.PATH + "/**")
+                    .hasRole(Role.ADMIN.name())
+                    .requestMatchers(HttpMethod.PUT, Questionnaire.PATH, Questionnaire.PATH + "/**")
+                    .hasRole(Role.ADMIN.name())
+                    .requestMatchers(HttpMethod.DELETE, Questionnaire.PATH)
+                    .hasRole(Role.ADMIN.name())
+
+                    // search
+                    .requestMatchers(HttpMethod.GET, Search.PATH)
+                    .permitAll()
                     .anyRequest()
                     .authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

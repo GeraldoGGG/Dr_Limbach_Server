@@ -47,4 +47,7 @@ public class AnalysisEntity extends AbstractEntity {
     @Transient
     private Long categoryId;
 
+    @Transient
+    private String categoryName;
+
 }
