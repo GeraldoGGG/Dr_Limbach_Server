@@ -1,7 +1,6 @@
 package com.allMighty.business_logic_domain.analysis.mapper;
 
 import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisDetailMapper.AnalysisDetailJooqMapper.mapDetails;
-import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisDetailMapper.toDetailEntities;
 import static com.allMighty.business_logic_domain.tag.TagMapper.TagJooqMapper.mapTagEntities;
 import static com.example.jooq.generated.tables.Analysis.ANALYSIS;
 import static com.example.jooq.generated.tables.Category.CATEGORY;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
@@ -28,8 +26,6 @@ public class AnalysisMapper {
     analysisDTO.setSynonym(analysisEntity.getSynonym());
     analysisDTO.setPrice(analysisEntity.getPrice());
     analysisDTO.setArchived(analysisEntity.isArchived());
-    analysisDTO.setRemoved(analysisEntity.isRemoved());
-    analysisDTO.setVersion(analysisEntity.getVersion());
     analysisDTO.setIsoVerified(analysisEntity.isIsoVerified());
 
     analysisDTO.setCategoryId(analysisEntity.getCategoryId());
@@ -58,23 +54,22 @@ public class AnalysisMapper {
     analysisEntity.setSynonym(analysisDTO.getSynonym());
     analysisEntity.setPrice(analysisDTO.getPrice());
     analysisEntity.setArchived(analysisDTO.isArchived());
-    analysisEntity.setRemoved(analysisDTO.isRemoved());
-    analysisEntity.setVersion(analysisDTO.getVersion());
-    analysisEntity.setAnalysisDetailEntities(toDetailEntities(analysisDTO.getDetails(), analysisEntity));
+    /*analysisEntity.setRemoved(analysisDTO.isRemoved());
+    analysisEntity.setVersion(analysisDTO.getVersion());*/
     analysisEntity.setIsoVerified(analysisDTO.isIsoVerified());
   }
 
-  public static List<AnalysisEntity> mapAnalysisEntities(
-          List<Long> analysisIds) {
+  // TODO do not like this
+  public static List<AnalysisEntity> mapAnalysisEntities(List<Long> analysisIds) {
     List<AnalysisEntity> analyses =
-            analysisIds.stream()
-                    .map(
-                            analysisId -> {
-                              AnalysisEntity analysis = new AnalysisEntity();
-                              analysis.setId(analysisId);
-                              return analysis;
-                            })
-                    .collect(Collectors.toList());
+        analysisIds.stream()
+            .map(
+                analysisId -> {
+                  AnalysisEntity analysis = new AnalysisEntity();
+                  analysis.setId(analysisId);
+                  return analysis;
+                })
+            .collect(Collectors.toList());
     return analyses;
   }
 
@@ -85,18 +80,18 @@ public class AnalysisMapper {
       AnalysisEntity analysis = new AnalysisEntity();
 
       analysis.setId(record.get(ANALYSIS.ID));
-      analysis.setVersion(record.get(ANALYSIS.VERSION));
       analysis.setMedicalName(record.get(ANALYSIS.MEDICAL_NAME));
       analysis.setSynonym(record.get(ANALYSIS.SYNONYM));
       analysis.setPrice(record.get(ANALYSIS.PRICE));
       analysis.setArchived(record.get(ANALYSIS.ARCHIVED));
-      analysis.setRemoved(record.get(ANALYSIS.REMOVED));
       analysis.setIsoVerified(record.get(ANALYSIS.ISO_VERIFIED));
 
-      //category
+      /*      analysis.setRemoved(record.get(ANALYSIS.REMOVED));
+      analysis.setVersion(record.get(ANALYSIS.VERSION));*/
+
+      // category
       analysis.setCategoryId(record.get(CATEGORY.ID));
       analysis.setCategoryName(record.get(CATEGORY.NAME));
-
 
       analysis.setTags(mapTagEntities(record));
       analysis.setAnalysisDetailEntities(mapDetails(record));

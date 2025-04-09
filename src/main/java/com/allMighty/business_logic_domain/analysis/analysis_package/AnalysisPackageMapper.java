@@ -22,11 +22,9 @@ public class AnalysisPackageMapper {
 
     analysisPackageDTO.setId(analysisPackageEntity.getId());
     analysisPackageDTO.setName(analysisPackageEntity.getName());
-    analysisPackageDTO.setVersion(analysisPackageDTO.getVersion());
     analysisPackageDTO.setPrice(analysisPackageEntity.getPrice());
     if (CollectionUtils.isNotEmpty(analysisPackageEntity.getAnalyses())) {
-      List<Long> analysisIds =
-          analysisPackageEntity.getAnalyses().stream().map(AbstractEntity::getId).toList();
+      List<Long> analysisIds = analysisPackageEntity.getAnalyses().stream().map(AbstractEntity::getId).toList();
       analysisPackageDTO.setAnalysisIds(analysisIds);
     }
 
@@ -38,7 +36,6 @@ public class AnalysisPackageMapper {
     packageEntity.setName(packageDTO.getName());
     packageEntity.setPrice(packageDTO.getPrice());
     packageEntity.setArchived(packageDTO.isArchived());
-    packageEntity.setRemoved(packageDTO.isRemoved());
     packageEntity.setBusinessModule(packageDTO.getBusinessModule());
   }
 

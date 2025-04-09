@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class QuestionnaireDTO extends AbstractDTO {
     private Long id;
-    private Long version;
     @NotNull(message = "Question cannot be null")
     private String question;
 

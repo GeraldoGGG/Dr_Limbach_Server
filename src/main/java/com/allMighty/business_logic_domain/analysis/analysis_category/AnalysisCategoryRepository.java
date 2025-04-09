@@ -33,8 +33,6 @@ public class AnalysisCategoryRepository {
             CATEGORY.ID,
             CATEGORY.NAME,
             CATEGORY.ARCHIVED,
-            CATEGORY.REMOVED,
-            CATEGORY.VERSION,
             multiset(select(ANALYSIS.ID).from(ANALYSIS).where(ANALYSIS.CATEGORY_ID.eq(CATEGORY.ID)))
                 .convertFrom(records -> records.getValues(ANALYSIS.ID, Long.class))
                 .as(ANALYSIS_IDS_KEYWORD))

@@ -56,10 +56,11 @@ public class AnalysisPackageService extends BaseService {
 
   @Transactional
   public Long updateAnalysisPackage(Long id, AnalysisPackageDTO analysisPackageDTO) {
-    AnalysisPackageEntity packageEntity =
-        analysisPackageRepository
-            .getAnalysisPackageById(id)
-            .orElseThrow(() -> new BadRequestException("Package not found!"));
+    AnalysisPackageEntity packageEntity = em.find(AnalysisPackageEntity.class, id);
+    if (packageEntity == null) {
+      throw new BadRequestException("Package not found!");
+    }
+
     toAnalysisPackageEntity(analysisPackageDTO, packageEntity);
 
     if (CollectionUtils.isNotEmpty(analysisPackageDTO.getAnalysisIds())) {

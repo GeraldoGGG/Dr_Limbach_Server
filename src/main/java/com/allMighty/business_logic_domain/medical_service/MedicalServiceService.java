@@ -70,10 +70,10 @@ public class MedicalServiceService extends BaseService {
 
   @Transactional
   public Long updateMedicalService(Long id, MedicalServiceDTO medicalServiceDTO) {
-    MedicalServiceEntity medicalServiceEntity =
-        medicalServiceRepository
-            .findById(id)
-            .orElseThrow(() -> new BadRequestException("Medical service not found!"));
+    MedicalServiceEntity medicalServiceEntity = em.find(MedicalServiceEntity.class, id);
+    if (medicalServiceEntity == null) {
+      throw new BadRequestException("Medical service not found!");
+    }
 
     toMedicalServiceEntity(medicalServiceDTO, medicalServiceEntity);
 

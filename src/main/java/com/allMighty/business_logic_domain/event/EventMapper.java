@@ -18,8 +18,6 @@ public class EventMapper {
     eventDTO.setEventDuration(eventEntity.getEventDuration());
     eventDTO.setPrice(eventEntity.getPrice());
     eventDTO.setArchived(eventEntity.isArchived());
-    eventDTO.setRemoved(eventEntity.isRemoved());
-    eventDTO.setVersion(eventEntity.getVersion());
     eventDTO.setOrganization(eventEntity.getOrganization());
     eventDTO.setGuestNumber(eventEntity.getGuestNumber());
     eventDTO.setLocation(eventEntity.getLocation());
@@ -34,8 +32,6 @@ public class EventMapper {
     eventEntity.setEventDuration(eventDTO.getEventDuration());
     eventEntity.setPrice(eventDTO.getPrice());
     eventEntity.setArchived(eventDTO.isArchived());
-    eventEntity.setRemoved(eventDTO.isRemoved());
-    eventEntity.setVersion(eventDTO.getVersion());
     eventEntity.setOrganization(eventDTO.getOrganization());
     eventEntity.setGuestNumber(eventDTO.getGuestNumber());
     eventEntity.setLocation(eventDTO.getLocation());
@@ -48,14 +44,12 @@ public class EventMapper {
       EventEntity event = new EventEntity();
 
       event.setId(record.get(EVENT.ID));
-      event.setVersion(record.get(EVENT.VERSION));
       event.setTitle(record.get(EVENT.TITLE));
       event.setContent(record.get(EVENT.CONTENT));
       event.setEventDate(record.get(EVENT.EVENT_DATE));
       event.setEventDuration(record.get(EVENT.EVENT_DURATION));
       event.setPrice(record.get(EVENT.PRICE));
       event.setArchived(record.get(EVENT.ARCHIVED));
-      event.setRemoved(record.get(EVENT.REMOVED));
       event.setOrganization(record.get(EVENT.ORGANIZATION));
       event.setGuestNumber(record.get(EVENT.GUEST_NUMBER));
       event.setLocation(record.get(EVENT.LOCATION));

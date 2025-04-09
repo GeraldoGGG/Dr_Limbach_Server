@@ -32,11 +32,9 @@ public class AnalysisPackageRepository {
 
     return dsl.select(
             PACKAGE.ID,
-            PACKAGE.VERSION,
             PACKAGE.NAME,
             PACKAGE.PRICE,
             PACKAGE.ARCHIVED,
-            PACKAGE.REMOVED,
             PACKAGE.BUSINESS_MODULE,
             multiset(
                     select(PACKAGE_ANALYSIS.ANALYSIS_ID)

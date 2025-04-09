@@ -29,8 +29,6 @@ public class EventDTO extends AbstractDTO {
 
   private Integer price;
 
-  private Long version;
-
   private String organization;
 
   private Integer guestNumber;
@@ -38,7 +36,6 @@ public class EventDTO extends AbstractDTO {
   private String location;
 
   private boolean archived;
-  private boolean removed;
 
   private List<ImageDTO> images = new ArrayList<>();
 }

@@ -1,6 +1,6 @@
 package com.allMighty.business_logic_domain.medical_service;
 
-import static com.example.jooq.generated.tables.Article.ARTICLE;
+import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.Tag.TAG;
 
 import com.allMighty.global_operation.filter.FilterableField;
@@ -9,7 +9,9 @@ import org.jooq.Field;
 
 @Getter
 public enum MedicalServiceField implements FilterableField {
-  ID("id", ARTICLE.ID),
+  ID("id", MEDICAL_SERVICE.ID),
+  TITLE("title", MEDICAL_SERVICE.TITLE),
+  ARCHIVED("archived", MEDICAL_SERVICE.ARCHIVED),
   TAG_ID("tag:id", TAG.ID),
   TAG_NAME("tag:name", TAG.NAME);
 

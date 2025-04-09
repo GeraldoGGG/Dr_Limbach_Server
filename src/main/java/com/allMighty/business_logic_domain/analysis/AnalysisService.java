@@ -1,18 +1,17 @@
 package com.allMighty.business_logic_domain.analysis;
 
-import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisDetailMapper.toDetailEntities;
 import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper.*;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 import static com.example.jooq.generated.tables.Category.CATEGORY;
 
 import com.allMighty.business_logic_domain.analysis.analysis_category.AnalysisCategoryRepository;
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
+import com.allMighty.business_logic_domain.analysis.dto.AnalysisDetailDTO;
 import com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper;
 import com.allMighty.business_logic_domain.export.ExportService;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.business_logic_domain.tag.TagRepository;
-import com.allMighty.client.UrlProperty;
 import com.allMighty.enitity.TagEntity;
 import com.allMighty.enitity.analysis.AnalysisCategoryEntity;
 import com.allMighty.enitity.analysis.AnalysisDetailEntity;
@@ -23,9 +22,11 @@ import com.allMighty.global_operation.exception_management.exception.BadRequestE
 import com.allMighty.global_operation.filter.FilterParser;
 import com.allMighty.global_operation.response.page.PageDescriptor;
 import java.util.*;
+
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.Collation;
 import org.jooq.Condition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,14 +79,21 @@ public class AnalysisService extends BaseService {
 
   @Transactional
   public Long updateAnalysis(Long id, AnalysisDTO analysisDTO) {
-    AnalysisEntity analysisEntity =
-        analysisRepository
-            .findById(id)
-            .orElseThrow(() -> new BadRequestException("Analysis not found!"));
+    AnalysisEntity analysisEntity = em.find(AnalysisEntity.class, id);
+    if (analysisEntity == null) {
+      throw new BadRequestException("Analysis not found!");
+    }
     toAnalysisEntity(analysisDTO, analysisEntity);
 
+    // details
+    updateDetailEntities(analysisDTO.getDetails(), analysisEntity);
+
+    // tags
     Set<TagEntity> tagEntities = tagRepository.updateTagEntities(analysisDTO.getTags(), em);
     analysisEntity.setTags(tagEntities);
+
+    // category
+    updateCategory(analysisDTO.getCategoryId(), analysisEntity);
 
     AnalysisEntity saved = em.merge(analysisEntity);
 
@@ -107,8 +115,15 @@ public class AnalysisService extends BaseService {
     AnalysisEntity analysisEntity = new AnalysisEntity();
     toAnalysisEntity(analysisDTO, analysisEntity);
 
+    // details
+    updateDetailEntities(analysisDTO.getDetails(), analysisEntity);
+
+    // tags
     Set<TagEntity> tagEntities = tagRepository.updateTagEntities(analysisDTO.getTags(), em);
     analysisEntity.setTags(tagEntities);
+
+    // category
+    updateCategory(analysisDTO.getCategoryId(), analysisEntity);
 
     AnalysisEntity saved = em.merge(analysisEntity);
 
@@ -118,33 +133,43 @@ public class AnalysisService extends BaseService {
     return saved.getId();
   }
 
+  private void updateCategory(Long categoryId, AnalysisEntity analysisEntity) {
+    if (categoryId != null) {
+      AnalysisCategoryEntity analysisCategoryEntity =
+          em.find(AnalysisCategoryEntity.class, categoryId);
+      analysisEntity.setCategory(analysisCategoryEntity);
+    } else {
+      analysisEntity.setCategory(null);
+    }
+  }
+
   private void addImages(List<AnalysisDTO> analysisDTOS) {
     List<Long> referenceIds = analysisDTOS.stream().map(AnalysisDTO::getId).toList();
     Map<Long, List<ImageDTO>> images = imageService.getImages(referenceIds, EntityType.ANALYSIS);
     analysisDTOS.forEach(dto -> dto.setImages(images.get(dto.getId())));
   }
 
-
-
   @Transactional
   public void createInitialAnalysis() {
     List<ExcelAnalysisDataDTO> dtoList = exportService.fetchAnalysisExcel();
-    for(ExcelAnalysisDataDTO dto : dtoList) {
+    for (ExcelAnalysisDataDTO dto : dtoList) {
       String analiza = dto.getAnaliza();
       String sinonimi = dto.getSinonimi();
       String kategoria = dto.getKategoria();
       String akredituarNgaISO15189 = dto.getAkredituarNgaISO15189();
 
-      //category
+      // category
       AnalysisEntity analysisEntity = new AnalysisEntity();
 
       Condition nameCondition = CATEGORY.NAME.eq(kategoria);
-      AnalysisCategoryEntity found = analysisCategoryRepository.getAllAnalysisCategories(Collections.singletonList(nameCondition))
+      AnalysisCategoryEntity found =
+          analysisCategoryRepository
+              .getAllAnalysisCategories(Collections.singletonList(nameCondition))
               .stream()
               .findFirst()
               .orElse(null);
       AnalysisCategoryEntity analysisCategoryEntity;
-      if(found == null) {
+      if (found == null) {
         analysisCategoryEntity = new AnalysisCategoryEntity();
         analysisCategoryEntity.setName(kategoria);
         em.persist(analysisCategoryEntity);
@@ -152,40 +177,69 @@ public class AnalysisService extends BaseService {
         analysisCategoryEntity = em.find(AnalysisCategoryEntity.class, found.getId());
       }
 
-
-
-
-
-      //analysis
+      // analysis
       analysisEntity.setSynonym(sinonimi);
       analysisEntity.setMedicalName(analiza);
       boolean isIso = "Po".equals(akredituarNgaISO15189);
       analysisEntity.setIsoVerified(isIso);
 
-      //details
+      // details
       List<AnalysisDetailEntity> detailsList = new ArrayList<>();
 
       // Create AnalysisDetailEntity for each property in the DTO
       detailsList.add(createAnalysisDetailEntity("mostra", dto.getMostra(), analysisEntity));
-      detailsList.add(createAnalysisDetailEntity("stabiliteti", dto.getStabiliteti(), analysisEntity));
-      detailsList.add(createAnalysisDetailEntity("preanalitika", dto.getPreanalitika(), analysisEntity));
+      detailsList.add(
+          createAnalysisDetailEntity("stabiliteti", dto.getStabiliteti(), analysisEntity));
+      detailsList.add(
+          createAnalysisDetailEntity("preanalitika", dto.getPreanalitika(), analysisEntity));
       detailsList.add(createAnalysisDetailEntity("metoda", dto.getMetoda(), analysisEntity));
-      detailsList.add(createAnalysisDetailEntity("indikacioniKlinik", dto.getIndikacioniKlinik(), analysisEntity));
-      detailsList.add(createAnalysisDetailEntity("interpretimiIRrezultatit", dto.getInterpretimiIRrezultatit(), analysisEntity));
+      detailsList.add(
+          createAnalysisDetailEntity(
+              "indikacioniKlinik", dto.getIndikacioniKlinik(), analysisEntity));
+      detailsList.add(
+          createAnalysisDetailEntity(
+              "interpretimiIRrezultatit", dto.getInterpretimiIRrezultatit(), analysisEntity));
       analysisEntity.setAnalysisDetailEntities(detailsList);
 
       analysisEntity.setCategory(analysisCategoryEntity);
 
       em.persist(analysisEntity);
-
     }
-
   }
-  private AnalysisDetailEntity createAnalysisDetailEntity(String key, String value, AnalysisEntity analysisEntity) {
+
+  private AnalysisDetailEntity createAnalysisDetailEntity(
+      String key, String value, AnalysisEntity analysisEntity) {
     AnalysisDetailEntity detail = new AnalysisDetailEntity();
     detail.setKey_value(key);
     detail.setString_value(value);
     detail.setAnalysis(analysisEntity);
     return detail;
+  }
+
+  public void updateDetailEntities(List<AnalysisDetailDTO> dtoList, AnalysisEntity entity) {
+    if (entity.getAnalysisDetailEntities() != null) {
+      entity.getAnalysisDetailEntities().clear();
+    }
+
+    if (CollectionUtils.isEmpty(dtoList)) {
+      return;
+    }
+
+    for (AnalysisDetailDTO detailDTO : dtoList) {
+      Long detailDTOId = detailDTO.getId();
+
+      AnalysisDetailEntity analysisDetailEntity;
+      if (detailDTOId != null) {
+        analysisDetailEntity = em.find(AnalysisDetailEntity.class, detailDTOId);
+        if (analysisDetailEntity == null) {
+          throw new EntityNotFoundException("Detail with id " + detailDTO.getId() + " not found");
+        }
+      } else {
+        analysisDetailEntity = new AnalysisDetailEntity();
+      }
+      analysisDetailEntity.setKey_value(detailDTO.getKeyValue());
+      analysisDetailEntity.setString_value(detailDTO.getStringValue());
+      entity.addAnalysisDetail(analysisDetailEntity);
+    }
   }
 }

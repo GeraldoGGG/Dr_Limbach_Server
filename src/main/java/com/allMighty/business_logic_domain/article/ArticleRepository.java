@@ -55,12 +55,10 @@ public class ArticleRepository {
 
     return dsl.select(
             ARTICLE.ID,
-            ARTICLE.VERSION,
             ARTICLE.TITLE,
             ARTICLE.AUTHOR,
             ARTICLE.CONTENT,
             ARTICLE.ARCHIVED,
-            ARTICLE.REMOVED,
             ARTICLE.CREATION_DATE,
             ARTICLE.SUMMARY,
             multiset(

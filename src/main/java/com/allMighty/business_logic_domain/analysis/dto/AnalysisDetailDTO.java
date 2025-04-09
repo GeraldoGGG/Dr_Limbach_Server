@@ -13,7 +13,6 @@ public class AnalysisDetailDTO {
     private Long id;
     private String stringValue;
     private String keyValue;
-    private Long version;
 
     public AnalysisDetailDTO(String stringValue, String keyValue) {
         this.stringValue = stringValue;

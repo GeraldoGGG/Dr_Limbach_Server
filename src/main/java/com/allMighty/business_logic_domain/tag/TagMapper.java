@@ -3,12 +3,11 @@ package com.allMighty.business_logic_domain.tag;
 import static com.example.jooq.generated.tables.Tag.TAG;
 
 import com.allMighty.enitity.TagEntity;
+import java.util.HashSet;
+import java.util.Set;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jooq.Result;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class TagMapper {
 
@@ -26,9 +25,7 @@ public class TagMapper {
     @Override
     public TagEntity map(Record record) {
       TagEntity tag = new TagEntity();
-
       tag.setId(record.get(TAG.ID));
-      tag.setVersion(record.get(TAG.VERSION));
       tag.setName(record.get(TAG.NAME));
 
       return tag;
@@ -42,7 +39,6 @@ public class TagMapper {
           TagEntity tag = new TagEntity();
           tag.setId(tagRecord.get(TAG.ID));
           tag.setName(tagRecord.get(TAG.NAME));
-          tag.setVersion(tagRecord.get(TAG.VERSION));
           tags.add(tag);
         }
       }

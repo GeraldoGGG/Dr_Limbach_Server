@@ -28,8 +28,6 @@ public class ArticleDTO extends AbstractDTO {
 
   private boolean archived;
 
-  private Long version;
-
   private String summary;
 
   private LocalDateTime creationDate;

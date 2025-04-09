@@ -21,7 +21,8 @@ public enum AnalysisField implements FilterableField {
   PACKAGE_ID("package:id", PACKAGE.ID),
   PACKAGE_NAME("package:name", PACKAGE.NAME),
   CATEGORY_ID("category:id", CATEGORY.ID),
-  CATEGORY_NAME("category:name", CATEGORY.NAME);
+  CATEGORY_NAME("category:name", CATEGORY.NAME),
+  ARCHIVED("archived", CATEGORY.ARCHIVED);
 
   private final String restAlias;
   private final Field<?> jooqField;

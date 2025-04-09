@@ -65,10 +65,11 @@ public class ArticleService extends BaseService {
 
   @Transactional
   public Long updateArticle(Long id, ArticleDTO articleDTO) {
-    ArticleEntity articleEntity =
-        articleRepository
-            .findById(id)
-            .orElseThrow(() -> new BadRequestException("Article not found!"));
+    ArticleEntity articleEntity = em.find(ArticleEntity.class, id);
+    if (articleEntity == null) {
+      throw new BadRequestException("Article not found!");
+    }
+
     toArticleEntity(articleDTO, articleEntity);
 
     Set<TagEntity> tagEntities = tagRepository.updateTagEntities(articleDTO.getTags(), em);

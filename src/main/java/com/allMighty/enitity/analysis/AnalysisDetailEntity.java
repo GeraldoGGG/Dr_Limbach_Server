@@ -19,7 +19,7 @@ public class AnalysisDetailEntity extends AbstractEntity {
     private String string_value;
     private String key_value;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "analysis_id", nullable = false)
     private AnalysisEntity analysis;
 

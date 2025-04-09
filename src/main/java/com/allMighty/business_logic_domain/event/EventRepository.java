@@ -41,14 +41,12 @@ public class EventRepository {
 
     return dsl.select(
             EVENT.ID,
-            EVENT.VERSION,
             EVENT.TITLE,
             EVENT.CONTENT,
             EVENT.EVENT_DATE,
             EVENT.EVENT_DURATION,
             EVENT.PRICE,
             EVENT.ARCHIVED,
-            EVENT.REMOVED,
             EVENT.ORGANIZATION,
             EVENT.LOCATION,
             EVENT.GUEST_NUMBER)

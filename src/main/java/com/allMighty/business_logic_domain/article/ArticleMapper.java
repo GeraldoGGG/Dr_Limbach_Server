@@ -24,7 +24,6 @@ public class ArticleMapper {
     articleDTO.setContent(articleEntity.getContent());
     articleDTO.setAuthor(articleEntity.getAuthor());
     articleDTO.setArchived(articleEntity.isArchived());
-    articleDTO.setVersion(articleEntity.getVersion());
     articleDTO.setCreationDate(articleEntity.getCreationDate());
     articleDTO.setSummary(articleEntity.getSummary());
 
@@ -41,11 +40,11 @@ public class ArticleMapper {
     articleEntity.setContent(articleDTO.getContent());
     articleEntity.setAuthor(articleDTO.getAuthor());
     articleEntity.setArchived(articleDTO.isArchived());
-    articleEntity.setVersion(articleDTO.getVersion());
     articleEntity.setCreationDate(articleDTO.getCreationDate());
     articleEntity.setSummary(articleDTO.getSummary());
   }
 
+  //TODO do not like this
   public static List<ArticleEntity> mapArticleEntities(List<Long> articleIds) {
     List<ArticleEntity> articles =
         articleIds.stream()
@@ -66,12 +65,10 @@ public class ArticleMapper {
       ArticleEntity article = new ArticleEntity();
 
       article.setId(record.get(ARTICLE.ID));
-      article.setVersion(record.get(ARTICLE.VERSION));
       article.setTitle(record.get(ARTICLE.TITLE));
       article.setAuthor(record.get(ARTICLE.AUTHOR));
       article.setContent(record.get(ARTICLE.CONTENT));
       article.setArchived(record.get(ARTICLE.ARCHIVED));
-      article.setRemoved(record.get(ARTICLE.REMOVED));
       article.setCreationDate(record.get(ARTICLE.CREATION_DATE));
       article.setSummary(record.get(ARTICLE.SUMMARY));
       Set<TagEntity> tags = mapTagEntities(record);

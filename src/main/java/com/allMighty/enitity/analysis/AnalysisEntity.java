@@ -25,8 +25,7 @@ public class AnalysisEntity extends AbstractEntity {
     private boolean removed;
 
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "analysis_id")
+    @OneToMany(mappedBy = "analysis", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnalysisDetailEntity> analysisDetailEntities = new ArrayList<>();
 
 
@@ -49,5 +48,14 @@ public class AnalysisEntity extends AbstractEntity {
 
     @Transient
     private String categoryName;
+
+
+    public void addAnalysisDetail(AnalysisDetailEntity detail) {
+        if (analysisDetailEntities == null) {
+            analysisDetailEntities = new ArrayList<>();
+        }
+        analysisDetailEntities.add(detail);
+        detail.setAnalysis(this);
+    }
 
 }

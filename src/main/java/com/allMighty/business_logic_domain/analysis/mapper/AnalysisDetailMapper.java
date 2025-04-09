@@ -22,29 +22,10 @@ public class AnalysisDetailMapper {
       dto.setId(entity.getId());
       dto.setStringValue(entity.getString_value());
       dto.setKeyValue(entity.getKey_value());
-      dto.setVersion(entity.getVersion());
       return dto;
   }
 
-  public static List<AnalysisDetailEntity> toDetailEntities(
-      List<AnalysisDetailDTO> dtoList, AnalysisEntity entity) {
-    if (CollectionUtils.isEmpty(dtoList)) {
-      return Collections.emptyList();
-    }
 
-    return dtoList.stream()
-        .map(
-            dto -> {
-              AnalysisDetailEntity detail = new AnalysisDetailEntity();
-              detail.setId(dto.getId());
-              detail.setAnalysis(entity);
-              detail.setString_value(dto.getStringValue());
-              detail.setKey_value(dto.getKeyValue());
-              detail.setVersion(dto.getVersion());
-              return detail;
-            })
-        .collect(Collectors.toList());
-  }
 
   public static class AnalysisDetailJooqMapper {
     public static List<AnalysisDetailEntity> mapDetails(Record detailRecord) {
@@ -56,7 +37,6 @@ public class AnalysisDetailMapper {
           detailEntity.setId(record.get(ANALYSIS_DETAIL.ID));
           detailEntity.setKey_value(record.get(ANALYSIS_DETAIL.KEY_VALUE));
           detailEntity.setString_value(record.get(ANALYSIS_DETAIL.STRING_VALUE));
-          detailEntity.setVersion(record.get(ANALYSIS_DETAIL.VERSION));
           details.add(detailEntity);
         }
       }

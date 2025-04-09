@@ -52,11 +52,9 @@ public class MedicalServiceRepository {
 
     return dsl.select(
             MEDICAL_SERVICE.ID,
-            MEDICAL_SERVICE.VERSION,
             MEDICAL_SERVICE.TITLE,
             MEDICAL_SERVICE.CONTENT,
             MEDICAL_SERVICE.ARCHIVED,
-            MEDICAL_SERVICE.REMOVED,
             MEDICAL_SERVICE.SHOW_IN_HOME_PAGE,
             multiset(
                     select(MEDICAL_SERVICE_ARTICLE.ARTICLE_ID)

@@ -23,8 +23,6 @@ public class AnalysisCategoryMapper {
     categoryDTO.setId(analysisCategoryEntity.getId());
     categoryDTO.setName(analysisCategoryEntity.getName());
     categoryDTO.setArchived(analysisCategoryEntity.isArchived());
-    categoryDTO.setRemoved(analysisCategoryEntity.isRemoved());
-    categoryDTO.setVersion(analysisCategoryEntity.getVersion());
     if (CollectionUtils.isNotEmpty(analysisCategoryEntity.getAnalyses())) {
       List<Long> analysisIds =
           analysisCategoryEntity.getAnalyses().stream().map(AbstractEntity::getId).toList();
@@ -38,8 +36,6 @@ public class AnalysisCategoryMapper {
       AnalysisCategoryDTO categoryDTO, AnalysisCategoryEntity categoryEntity) {
     categoryEntity.setName(categoryDTO.getName());
     categoryEntity.setArchived(categoryDTO.isArchived());
-    categoryEntity.setRemoved(categoryDTO.isRemoved());
-    categoryEntity.setVersion(categoryDTO.getVersion());
   }
 
   static class AnalysisCategoryJooqMapper implements RecordMapper<Record, AnalysisCategoryEntity> {
@@ -51,8 +47,6 @@ public class AnalysisCategoryMapper {
       entity.setId(record.get(CATEGORY.ID));
       entity.setName(record.get(CATEGORY.NAME));
       entity.setArchived(record.get(CATEGORY.ARCHIVED));
-      entity.setRemoved(record.get(CATEGORY.REMOVED));
-      entity.setVersion(record.get(CATEGORY.VERSION));
 
       List<Long> analysisIds = record.get(ANALYSIS_IDS_KEYWORD, ArrayList.class);
       List<AnalysisEntity> analyses = mapAnalysisEntities(analysisIds);

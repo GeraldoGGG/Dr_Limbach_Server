@@ -74,12 +74,13 @@ public class EventService extends BaseService {
 
     return saved.getId();
   }
+
   @Transactional
   public Long updateEvent(Long id, EventDTO articleDTO) {
-    EventEntity eventEntity =
-        eventRepository
-            .findById(id)
-            .orElseThrow(() -> new BadRequestException("Article not found!"));
+    EventEntity eventEntity = em.find(EventEntity.class, id);
+    if (eventEntity == null) {
+      throw new BadRequestException("Event not found!");
+    }
 
     toEventEntity(articleDTO, eventEntity);
 

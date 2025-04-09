@@ -46,14 +46,6 @@ public class ImageRepository {
     return Optional.ofNullable(image);
   }
 
-  /*  public List<ImageEntity> getAllImages() {
-    return dsl.select().from(IMAGE).fetchInto(ImageEntity.class);
-  }
-
-  public boolean imageExists(Long imageId) {
-    return dsl.fetchExists(dsl.selectOne().from(IMAGE).where(IMAGE.ID.eq(imageId)));
-  }*/
-
   @Transactional
   public int deleteImagesByEntityReferenceAndContentType(
       List<Long> entityReferenceIds, EntityType entityType) {

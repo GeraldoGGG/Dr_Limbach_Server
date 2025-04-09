@@ -71,6 +71,6 @@ public class TagRepository {
   }
 
   public List<TagEntity> getAllTags() {
-    return dslContext.select(TAG.ID, TAG.NAME, TAG.VERSION).from(TAG).fetch(tagJooqMapper);
+    return dslContext.select(TAG.ID, TAG.NAME).from(TAG).fetch(tagJooqMapper);
   }
 }

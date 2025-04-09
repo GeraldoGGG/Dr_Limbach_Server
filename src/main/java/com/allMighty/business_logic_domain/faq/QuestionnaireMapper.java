@@ -13,7 +13,6 @@ public class QuestionnaireMapper {
     public static QuestionnaireDTO toQuestionnaireDTO(QuestionnaireEntity questionnaireEntity) {
         QuestionnaireDTO questionnaireDTO = new QuestionnaireDTO();
         questionnaireDTO.setId(questionnaireEntity.getId());
-        questionnaireDTO.setVersion(questionnaireEntity.getVersion());
         questionnaireDTO.setBusinessModule(questionnaireEntity.getBusinessModule());
         questionnaireDTO.setQuestion(questionnaireEntity.getQuestion());
         questionnaireDTO.setAnswer(questionnaireEntity.getAnswer());
@@ -22,7 +21,6 @@ public class QuestionnaireMapper {
 
     public static QuestionnaireEntity toQuestionnaireEntity(QuestionnaireDTO questionnaireDTO,
                                                             QuestionnaireEntity questionnaireEntity) {
-        questionnaireEntity.setVersion(questionnaireDTO.getVersion());
         questionnaireEntity.setBusinessModule(questionnaireDTO.getBusinessModule());
         questionnaireEntity.setQuestion(questionnaireDTO.getQuestion());
         questionnaireEntity.setAnswer(questionnaireDTO.getAnswer());

@@ -32,7 +32,6 @@ public class QuestionnaireRepository {
 
         return dslContext.select(
                 QUESTIONNAIRE.ID,
-                QUESTIONNAIRE.VERSION,
                 QUESTIONNAIRE.BUSINESS_MODULE,
                 QUESTIONNAIRE.QUESTION,
                 QUESTIONNAIRE.ANSWER

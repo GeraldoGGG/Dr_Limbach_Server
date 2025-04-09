@@ -16,7 +16,5 @@ public class AnalysisCategoryDTO extends AbstractDTO {
     @NotEmpty(message = "name must not be empty")
     private String name;
     private List<Long> analysisIds;
-    private Long version;
     private boolean archived;
-    private boolean removed;
 }

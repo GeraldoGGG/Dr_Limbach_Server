@@ -8,7 +8,9 @@ import static com.example.jooq.generated.tables.Event.EVENT;
 
 @Getter
 public enum EventField implements FilterableField {
-  ID("id", EVENT.ID);
+  ID("id", EVENT.ID),
+  TITLE("title", EVENT.TITLE),
+  ARCHIVED("archived", EVENT.ARCHIVED);
 
   private final String restAlias;
   private final Field<?> jooqField;

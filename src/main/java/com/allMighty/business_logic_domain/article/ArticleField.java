@@ -13,8 +13,8 @@ public enum ArticleField implements FilterableField {
   ID("id", ARTICLE.ID),
   TAG_ID("tag:id", TAG.ID),
   TAG_NAME("tag:name", TAG.NAME),
-  SERVICE_ID("service:id", MEDICAL_SERVICE.ID);
-
+  SERVICE_ID("service:id", MEDICAL_SERVICE.ID),
+  ARCHIVED("archived", MEDICAL_SERVICE.ARCHIVED);
   private final String restAlias;
   private final Field<?> jooqField;
 

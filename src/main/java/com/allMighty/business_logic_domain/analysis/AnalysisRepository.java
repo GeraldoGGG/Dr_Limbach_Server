@@ -72,12 +72,10 @@ public class AnalysisRepository {
   private SelectSelectStep<?> getSelect() {
     return dsl.select(
         ANALYSIS.ID,
-        ANALYSIS.VERSION,
         ANALYSIS.MEDICAL_NAME,
         ANALYSIS.SYNONYM,
         ANALYSIS.PRICE,
         ANALYSIS.ARCHIVED,
-        ANALYSIS.REMOVED,
         ANALYSIS.ISO_VERIFIED,
         CATEGORY.ID,
         CATEGORY.NAME,
