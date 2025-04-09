@@ -328,7 +328,7 @@ public class DataInitializerUtils {
     aldosteroneAnalysis.setSynonym("Nuk ka");
     aldosteroneAnalysis.setPrice(150);
     aldosteroneAnalysis.setArchived(false);
-    aldosteroneAnalysis.setRemoved(false);
+    ;
     aldosteroneAnalysis.setTags(
         new HashSet<>(Arrays.asList(new TagDTO("Endokrinologji"), new TagDTO("Hipertensioni"))));
     List<AnalysisDetailDTO> detailDTOS = new ArrayList<>();
@@ -357,7 +357,7 @@ public class DataInitializerUtils {
     reninAnalysis.setSynonym("Renina Plazmatike");
     reninAnalysis.setPrice(130);
     reninAnalysis.setArchived(false);
-    reninAnalysis.setRemoved(false);
+    ;
     reninAnalysis.setTags(
         new HashSet<>(Arrays.asList(new TagDTO("Endokrinologji"), new TagDTO("Hipertensioni"))));
 
@@ -387,7 +387,7 @@ public class DataInitializerUtils {
     testosteroneAnalysis.setSynonym("Androgjen");
     testosteroneAnalysis.setPrice(200);
     testosteroneAnalysis.setArchived(false);
-    testosteroneAnalysis.setRemoved(false);
+    ;
     testosteroneAnalysis.setTags(
         new HashSet<>(Arrays.asList(new TagDTO("Endokrinologji"), new TagDTO("Hormonale"))));
 
@@ -417,7 +417,7 @@ public class DataInitializerUtils {
     estradiolAnalysis.setSynonym("E2");
     estradiolAnalysis.setPrice(180);
     estradiolAnalysis.setArchived(false);
-    estradiolAnalysis.setRemoved(false);
+    ;
     estradiolAnalysis.setTags(
         new HashSet<>(Arrays.asList(new TagDTO("Endokrinologji"), new TagDTO("Hormonal"))));
 
@@ -447,7 +447,7 @@ public class DataInitializerUtils {
     prolactinAnalysis.setSynonym("Lactotropin");
     prolactinAnalysis.setPrice(170);
     prolactinAnalysis.setArchived(false);
-    prolactinAnalysis.setRemoved(false);
+    ;
     prolactinAnalysis.setTags(
         new HashSet<>(Arrays.asList(new TagDTO("Endokrinologji"), new TagDTO("Hormonale"))));
 
@@ -477,7 +477,7 @@ public class DataInitializerUtils {
     cortisolAnalysis.setSynonym("Hidrokortizon");
     cortisolAnalysis.setPrice(160);
     cortisolAnalysis.setArchived(false);
-    cortisolAnalysis.setRemoved(false);
+    ;
     cortisolAnalysis.setTags(
         new HashSet<>(Arrays.asList(new TagDTO("Endokrinologji"), new TagDTO("Stresi"))));
 
@@ -515,7 +515,7 @@ public class DataInitializerUtils {
     service1.setTitle("Konsulta Endokrinologjike");
     service1.setShowInHomePage(true);
     service1.setArchived(false);
-    service1.setRemoved(false);
+    ;
     service1.setContent(
             "Konsulta Endokrinologjike ofron një shërbim të plotë për pacientët që vuajnë nga çrregullime hormonale dhe metabolike. Specialistët tanë ofrojnë diagnoza dhe trajtim për sëmundje të tilla si: \n" +
                     "- Hipertensioni dhe problemet me tensionin e lartë\n" +
@@ -533,7 +533,7 @@ public class DataInitializerUtils {
     service2.setTitle("Konsulta Kardiologjike");
     service2.setShowInHomePage(true);
     service2.setArchived(false);
-    service2.setRemoved(false);
+    ;
     service2.setContent(
             "Konsulta Kardiologjike ofron vlerësim dhe trajtim për pacientët që vuajnë nga probleme kardiovaskulare, siç janë:\n" +
                     "- Hipertensioni i lartë\n" +
@@ -551,7 +551,7 @@ public class DataInitializerUtils {
     service3.setTitle("Konsulta Ginekolologjike");
     service3.setShowInHomePage(true);
     service3.setArchived(false);
-    service3.setRemoved(false);
+    ;
     service3.setContent(
             "Konsulta Ginekolologjike ofron shërbim të plotë për problemet ginekolgjike, përfshirë:\n" +
                     "- Kontrollin rutinë ginekolgjik\n" +
@@ -569,7 +569,7 @@ public class DataInitializerUtils {
     service4.setTitle("Konsulta Gastroenterologjike");
     service4.setShowInHomePage(true);
     service4.setArchived(false);
-    service4.setRemoved(false);
+    ;
     service4.setContent(
             "Konsulta Gastroenterologjike ofron shërbim për pacientët që vuajnë nga çrregullime të sistemit tretës, siç janë:\n" +
                     "- Dhimbjet e barkut\n" +
@@ -587,7 +587,7 @@ public class DataInitializerUtils {
     service5.setTitle("Konsulta Dermatologjike");
     service5.setShowInHomePage(true);
     service5.setArchived(false);
-    service5.setRemoved(false);
+    ;
     service5.setContent(
             "Konsulta Dermatologjike ofron diagnostikimin dhe trajtimin e problemeve të lëkurës, duke përfshirë:\n" +
                     "- Aknet dhe çrregullimet e tjera të lëkurës\n" +
@@ -605,7 +605,7 @@ public class DataInitializerUtils {
     service6.setTitle("Konsulta Ortopedike");
     service6.setShowInHomePage(true);
     service6.setArchived(false);
-    service6.setRemoved(false);
+    ;
     service6.setContent(
             "Konsulta Ortopedike ofron diagnostikimin dhe trajtimin e problemeve muskulore dhe të kockave, duke përfshirë:\n" +
                     "- Dhembjet e kyçeve dhe muskujve\n" +
@@ -623,7 +623,7 @@ public class DataInitializerUtils {
     service7.setTitle("Konsulta Neurologjike");
     service7.setShowInHomePage(true);
     service7.setArchived(false);
-    service7.setRemoved(false);
+    ;
     service7.setContent(
             "Konsulta Neurologjike ofron diagnostikimin dhe trajtimin e problemeve të sistemit nervor, përfshirë:\n" +
                     "- Migrena dhe dhimbjet e kokës\n" +
