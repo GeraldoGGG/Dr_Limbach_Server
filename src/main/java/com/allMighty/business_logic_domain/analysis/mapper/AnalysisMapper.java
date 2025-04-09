@@ -31,7 +31,10 @@ public class AnalysisMapper {
     analysisDTO.setRemoved(analysisEntity.isRemoved());
     analysisDTO.setVersion(analysisEntity.getVersion());
     analysisDTO.setIsoVerified(analysisEntity.isIsoVerified());
+
     analysisDTO.setCategoryId(analysisEntity.getCategoryId());
+    analysisDTO.setCategoryName(analysisEntity.getCategoryName());
+
     if (CollectionUtils.isNotEmpty(analysisEntity.getAnalysisDetailEntities())) {
       List<AnalysisDetailDTO> analysisDetails =
           analysisEntity.getAnalysisDetailEntities().stream()
@@ -89,7 +92,12 @@ public class AnalysisMapper {
       analysis.setArchived(record.get(ANALYSIS.ARCHIVED));
       analysis.setRemoved(record.get(ANALYSIS.REMOVED));
       analysis.setIsoVerified(record.get(ANALYSIS.ISO_VERIFIED));
-      analysis.setCategoryId(record.get(ANALYSIS.CATEGORY_ID));
+
+      //category
+      analysis.setCategoryId(record.get(CATEGORY.ID));
+      analysis.setCategoryName(record.get(CATEGORY.NAME));
+
+
       analysis.setTags(mapTagEntities(record));
       analysis.setAnalysisDetailEntities(mapDetails(record));
 
