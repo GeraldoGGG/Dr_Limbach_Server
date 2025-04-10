@@ -12,4 +12,6 @@ public class SearchResponseDTO {
   private List<SearchUnitResponseDTO> analysesFound = new ArrayList<>();
   private List<SearchUnitResponseDTO> servicesFound = new ArrayList<>();
   private List<SearchUnitResponseDTO> articlesFound = new ArrayList<>();
+  private List<SearchUnitResponseDTO> analysisPackageFound = new ArrayList<>();
+  private List<SearchUnitResponseDTO> analysisCategoryFound = new ArrayList<>();
 }

@@ -89,8 +89,7 @@ public class SecurityConfiguration {
                     .hasRole(ADMIN.name())
 
                     // services
-                    .requestMatchers(
-                        HttpMethod.GET, MedicalService.PATH, MedicalService.PATH + "/**")
+                    .requestMatchers(HttpMethod.GET, MedicalService.PATH, MedicalService.PATH + "/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, MedicalService.PATH)
                     .hasRole(Role.ADMIN.name())
@@ -98,8 +97,7 @@ public class SecurityConfiguration {
                     .hasRole(ADMIN.name())
 
                     // packages
-                    .requestMatchers(
-                        HttpMethod.GET, AnalysisPackage.PATH, AnalysisPackage.PATH + "/**")
+                    .requestMatchers(HttpMethod.GET, AnalysisPackage.PATH, AnalysisPackage.PATH + "/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, AnalysisPackage.PATH)
                     .hasRole(Role.ADMIN.name())
@@ -107,8 +105,7 @@ public class SecurityConfiguration {
                     .hasRole(ADMIN.name())
 
                     // category
-                    .requestMatchers(
-                        HttpMethod.GET, AnalysisCategory.PATH, AnalysisCategory.PATH + "/**")
+                    .requestMatchers(HttpMethod.GET, AnalysisCategory.PATH, AnalysisCategory.PATH + "/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, AnalysisCategory.PATH)
                     .hasRole(Role.ADMIN.name())
@@ -121,7 +118,7 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.GET, Email.PATH, Email.PATH + "/**")
                     .hasRole(Role.ADMIN.name())
 
-                    //  Questionnaire
+                    // Questionnaire
                     .requestMatchers(HttpMethod.GET, Questionnaire.PATH, Questionnaire.PATH + "/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, Questionnaire.PATH, Questionnaire.PATH + "/**")
