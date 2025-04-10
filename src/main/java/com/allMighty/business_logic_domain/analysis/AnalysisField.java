@@ -14,7 +14,7 @@ import org.jooq.Field;
 @Getter
 public enum AnalysisField implements FilterableField {
   ID("id",  ANALYSIS.ID),
-  MEDICAL_NAME("medicalName", ANALYSIS.ID),
+  MEDICAL_NAME("medicalName", ANALYSIS.MEDICAL_NAME),
   TAG_ID("tag:id", TAG.ID),
   TAG_NAME("tag:name", TAG.NAME),
   SERVICE_ID("service:id", MEDICAL_SERVICE.ID),
