@@ -78,7 +78,6 @@ public class MedicalServiceMapper {
       entity.setTitle(record.get(MEDICAL_SERVICE.TITLE));
       entity.setContent(record.get(MEDICAL_SERVICE.CONTENT));
       entity.setArchived(record.get(MEDICAL_SERVICE.ARCHIVED));
-      entity.setRemoved(record.get(MEDICAL_SERVICE.REMOVED));
       entity.setShowInHomePage(record.get(MEDICAL_SERVICE.SHOW_IN_HOME_PAGE));
 
       // Map the article IDs as a list
