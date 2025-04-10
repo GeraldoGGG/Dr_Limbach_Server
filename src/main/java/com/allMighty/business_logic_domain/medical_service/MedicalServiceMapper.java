@@ -75,7 +75,6 @@ public class MedicalServiceMapper {
 
       MedicalServiceEntity entity = new MedicalServiceEntity();
       entity.setId(record.get(MEDICAL_SERVICE.ID));
-      entity.setVersion(record.get(MEDICAL_SERVICE.VERSION));
       entity.setTitle(record.get(MEDICAL_SERVICE.TITLE));
       entity.setContent(record.get(MEDICAL_SERVICE.CONTENT));
       entity.setArchived(record.get(MEDICAL_SERVICE.ARCHIVED));
