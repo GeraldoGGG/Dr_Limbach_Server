@@ -7,6 +7,7 @@ import static com.example.jooq.generated.tables.Category.CATEGORY;
 
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDetailDTO;
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.analysis.AnalysisEntity;
@@ -28,9 +29,8 @@ public class AnalysisMapper {
     analysisDTO.setArchived(analysisEntity.isArchived());
     analysisDTO.setIsoVerified(analysisEntity.isIsoVerified());
 
-    analysisDTO.setCategoryId(analysisEntity.getCategoryId());
-    analysisDTO.setCategoryName(analysisEntity.getCategoryName());
-
+    analysisDTO.setCategory(
+        new EntityIdDTO(analysisEntity.getCategoryId(), analysisEntity.getCategoryName()));
     if (CollectionUtils.isNotEmpty(analysisEntity.getAnalysisDetailEntities())) {
       List<AnalysisDetailDTO> analysisDetails =
           analysisEntity.getAnalysisDetailEntities().stream()
@@ -54,23 +54,19 @@ public class AnalysisMapper {
     analysisEntity.setSynonym(analysisDTO.getSynonym());
     analysisEntity.setPrice(analysisDTO.getPrice());
     analysisEntity.setArchived(analysisDTO.isArchived());
-    /*analysisEntity.setRemoved(analysisDTO.isRemoved());
-    analysisEntity.setVersion(analysisDTO.getVersion());*/
     analysisEntity.setIsoVerified(analysisDTO.isIsoVerified());
   }
 
   // TODO do not like this
   public static List<AnalysisEntity> mapAnalysisEntities(List<Long> analysisIds) {
-    List<AnalysisEntity> analyses =
-        analysisIds.stream()
-            .map(
-                analysisId -> {
-                  AnalysisEntity analysis = new AnalysisEntity();
-                  analysis.setId(analysisId);
-                  return analysis;
-                })
-            .collect(Collectors.toList());
-    return analyses;
+    return analysisIds.stream()
+        .map(
+            analysisId -> {
+              AnalysisEntity analysis = new AnalysisEntity();
+              analysis.setId(analysisId);
+              return analysis;
+            })
+        .collect(Collectors.toList());
   }
 
   public static class AnalysisJooqMapper implements RecordMapper<Record, AnalysisEntity> {
@@ -85,9 +81,6 @@ public class AnalysisMapper {
       analysis.setPrice(record.get(ANALYSIS.PRICE));
       analysis.setArchived(record.get(ANALYSIS.ARCHIVED));
       analysis.setIsoVerified(record.get(ANALYSIS.ISO_VERIFIED));
-
-      /*      analysis.setRemoved(record.get(ANALYSIS.REMOVED));
-      analysis.setVersion(record.get(ANALYSIS.VERSION));*/
 
       // category
       analysis.setCategoryId(record.get(CATEGORY.ID));

@@ -2,7 +2,6 @@ package com.allMighty.business_logic_domain.email;
 
 import com.allMighty.business_logic_domain.export.ExportService;
 import com.allMighty.client.UrlProperty;
-import com.allMighty.enitity.EmailEntity;
 import com.allMighty.global_operation.response.EntityResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

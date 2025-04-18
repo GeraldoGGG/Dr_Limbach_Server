@@ -3,6 +3,7 @@ package com.allMighty.client;
 public interface UrlProperty extends ParamProperty {
     String ROOT_PATH = "/v1";
     String ID_PATH = "/{id}";
+    String SIMPLE = "/simple";
 
     interface Auth {
         String PATH = ROOT_PATH + "/auth";

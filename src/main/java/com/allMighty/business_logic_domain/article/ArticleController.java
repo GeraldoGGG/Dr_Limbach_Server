@@ -1,5 +1,6 @@
 package com.allMighty.business_logic_domain.article;
 
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.client.UrlProperty.Article;
 import com.allMighty.global_operation.response.page.EntityPageResponseDTO;
 import com.allMighty.global_operation.response.page.PageDescriptor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.allMighty.client.UrlProperty.ID_PATH;
+import static com.allMighty.client.UrlProperty.SIMPLE;
 import static com.allMighty.global_operation.response.ResponseFactory.createPage;
 import static com.allMighty.global_operation.response.ResponseFactory.createResponse;
 
@@ -33,6 +35,12 @@ public class ArticleController {
     PageDescriptor pageDescriptor = new PageDescriptor(page, pageSize);
     List<ArticleDTO> articleDTOs = articleService.getArticles(filters, pageDescriptor);
     return ResponseEntity.ok(createPage(count, articleDTOs, pageDescriptor));
+  }
+
+  @GetMapping(SIMPLE)
+  public ResponseEntity<EntityResponseDTO<List<EntityIdDTO>>> getAllArticlesSimple() {
+    List<EntityIdDTO> articleDTOs = articleService.getSimpleArticles();
+    return ResponseEntity.ok(createResponse(articleDTOs));
   }
 
   @GetMapping(ID_PATH)

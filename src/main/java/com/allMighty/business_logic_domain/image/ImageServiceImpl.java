@@ -1,18 +1,16 @@
 package com.allMighty.business_logic_domain.image;
 
 import static com.allMighty.business_logic_domain.image.ImageMapper.mapToImageDTO;
-import static com.allMighty.business_logic_domain.image.ImageMapper.mapToImageDTO_WithData;
 
 import com.allMighty.enitity.ImageEntity;
 import com.allMighty.enumeration.EntityType;
 import com.allMighty.global_operation.BaseService;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;
+import com.allMighty.global_operation.exception_management.exception.NotFoundException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.allMighty.global_operation.exception_management.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +65,7 @@ public class ImageServiceImpl extends BaseService implements ImageService {
         em.persist(imageEntity);
 
       } catch (IllegalArgumentException iae) {
-        throw new BadRequestException("Invalid image format.");
+        throw new BadRequestException("Invalid image format." + iae.getMessage());
       }
     }
   }

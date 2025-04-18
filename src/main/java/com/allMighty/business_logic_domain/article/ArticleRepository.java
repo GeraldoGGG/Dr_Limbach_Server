@@ -9,6 +9,7 @@ import static com.example.jooq.generated.tables.TagArticle.TAG_ARTICLE;
 import static org.jooq.impl.DSL.multiset;
 import static org.jooq.impl.DSL.select;
 
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.global_operation.response.page.PageDescriptor;
 import java.util.*;
@@ -61,6 +62,7 @@ public class ArticleRepository {
             ARTICLE.ARCHIVED,
             ARTICLE.CREATION_DATE,
             ARTICLE.SUMMARY,
+            ARTICLE.SHOW_HOME_PAGE,
             multiset(
                     select(TAG.ID, TAG.NAME, TAG.VERSION)
                         .from(TAG)
@@ -95,5 +97,13 @@ public class ArticleRepository {
     Condition eq = ARTICLE.ID.eq(id);
     List<ArticleEntity> articles = getAllArticles(Collections.singletonList(eq), null);
     return articles.stream().findFirst();
+  }
+
+  public List<EntityIdDTO> getAllArticlesSimple() {
+
+    return dsl.select(ARTICLE.ID, ARTICLE.TITLE.as("name"))
+        .from(ARTICLE)
+        .where(ARTICLE.ARCHIVED.eq(false))
+        .fetchInto(EntityIdDTO.class);
   }
 }

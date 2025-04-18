@@ -50,4 +50,26 @@ public class QuestionnaireService extends BaseService {
         .map(QuestionnaireMapper::toQuestionnaireDTO)
         .orElseThrow(() -> new BadRequestException("Questionnaire not found!"));
   }
+
+  public void delete(Long id) {
+    QuestionnaireEntity questionnaireEntity = em.find(QuestionnaireEntity.class, id);
+    if (questionnaireEntity != null) {
+      em.remove(questionnaireEntity);
+    } else {
+      throw new BadRequestException("Questionnaire not found!");
+    }
+  }
+
+  public Long updateQuestionnaire(Long id, QuestionnaireDTO questionnaireDTO) {
+    QuestionnaireEntity questionnaireEntity = em.find(QuestionnaireEntity.class, id);
+    if (questionnaireEntity == null) {
+      throw new BadRequestException("Questionnaire not found!");
+    }
+    questionnaireEntity.setAnswer(questionnaireEntity.getAnswer());
+    questionnaireEntity.setQuestion(questionnaireDTO.getQuestion());
+    questionnaireEntity.setBusinessModule(questionnaireDTO.getBusinessModule());
+
+    em.merge(questionnaireEntity);
+    return id;
+  }
 }

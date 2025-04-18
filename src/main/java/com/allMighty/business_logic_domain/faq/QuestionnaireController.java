@@ -1,19 +1,18 @@
 package com.allMighty.business_logic_domain.faq;
 
+import static com.allMighty.client.UrlProperty.ID_PATH;
+import static com.allMighty.global_operation.response.ResponseFactory.*;
+
 import com.allMighty.client.UrlProperty.Questionnaire;
 import com.allMighty.global_operation.response.EntityResponseDTO;
 import com.allMighty.global_operation.response.page.EntityPageResponseDTO;
 import com.allMighty.global_operation.response.page.PageDescriptor;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static com.allMighty.global_operation.response.ResponseFactory.createPage;
-import static com.allMighty.global_operation.response.ResponseFactory.createResponse;
 
 @RestController
 @RequestMapping(Questionnaire.PATH)
@@ -47,5 +46,20 @@ public class QuestionnaireController {
     return ResponseEntity.ok(createResponse(createdQuestionnaire));
   }
 
-  //TODO duhet me bot nje update per pytje pergjigje si dhe nje delete (ne kete rast do bejm delete real nga db
+  @PutMapping(ID_PATH)
+  public ResponseEntity<EntityResponseDTO<QuestionnaireDTO>> updateQuestionnaire(
+      @PathVariable(name = "id") Long id, @RequestBody @Valid QuestionnaireDTO questionnaireDTO) {
+
+    Long questionnaireId = questionnaireService.updateQuestionnaire(id, questionnaireDTO);
+
+    QuestionnaireDTO createdQuestionnaire =
+        questionnaireService.getQuestionnaireById(questionnaireId);
+    return ResponseEntity.ok(createResponse(createdQuestionnaire));
+  }
+
+  @DeleteMapping(ID_PATH)
+  public ResponseEntity<?> deleteQuestionnaire(@PathVariable(name = "id") Long id) {
+    questionnaireService.delete(id);
+    return ResponseEntity.ok(createDeleteResponse(id));
+  }
 }

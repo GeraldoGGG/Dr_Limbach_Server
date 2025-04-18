@@ -3,6 +3,7 @@ package com.allMighty.business_logic_domain.article;
 import static com.allMighty.business_logic_domain.article.ArticleMapper.*;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.business_logic_domain.tag.TagRepository;
@@ -110,5 +111,9 @@ public class ArticleService extends BaseService {
     List<Long> referenceIds = articleDTOS.stream().map(ArticleDTO::getId).toList();
     Map<Long, List<ImageDTO>> images = imageService.getImages(referenceIds, EntityType.ARTICLE);
     articleDTOS.forEach(dto -> dto.setImages(images.get(dto.getId())));
+  }
+
+  public List<EntityIdDTO> getSimpleArticles() {
+    return articleRepository.getAllArticlesSimple();
   }
 }

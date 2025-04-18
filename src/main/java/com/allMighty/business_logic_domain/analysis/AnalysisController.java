@@ -1,6 +1,7 @@
 package com.allMighty.business_logic_domain.analysis;
 
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.client.UrlProperty.Analysis;
 import com.allMighty.global_operation.response.page.EntityPageResponseDTO;
 import com.allMighty.global_operation.response.page.PageDescriptor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.allMighty.client.UrlProperty.ID_PATH;
+import static com.allMighty.client.UrlProperty.SIMPLE;
 import static com.allMighty.global_operation.response.ResponseFactory.createPage;
 import static com.allMighty.global_operation.response.ResponseFactory.createResponse;
 @RestController
@@ -34,6 +36,12 @@ public class AnalysisController {
         PageDescriptor pageDescriptor = new PageDescriptor(page, pageSize);
         List<AnalysisDTO> analysisDTOs = analysisService.getAnalyses(filters, pageDescriptor);
         return ResponseEntity.ok(createPage(count, analysisDTOs, pageDescriptor));
+    }
+
+    @GetMapping(SIMPLE)
+    public ResponseEntity<EntityResponseDTO<List<EntityIdDTO>>> getAllAnalysesSimple() {
+        List<EntityIdDTO> analysisDTOs = analysisService.getSimpleAnalyses();
+        return ResponseEntity.ok(createResponse(analysisDTOs));
     }
 
     @GetMapping(ID_PATH)

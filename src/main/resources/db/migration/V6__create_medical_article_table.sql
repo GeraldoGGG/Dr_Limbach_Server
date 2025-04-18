@@ -5,6 +5,7 @@ CREATE TABLE article (
                                  title VARCHAR(255) NOT NULL,
                                  author VARCHAR(255),
                                  content TEXT,
+                                 show_home_page BOOLEAN NOT NULL DEFAULT FALSE,
                                  archived BOOLEAN NOT NULL DEFAULT FALSE,
                                  removed BOOLEAN NOT NULL DEFAULT FALSE
 );

@@ -1,5 +1,6 @@
 package com.allMighty.business_logic_domain.analysis.dto;
 
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.global_operation.dto.AbstractDTO;
@@ -19,8 +20,7 @@ public class AnalysisDTO extends AbstractDTO {
   private String synonym;
   private Integer price;
   private boolean isoVerified;
-  private Long categoryId;
-  private String categoryName;
+  private EntityIdDTO category;
 
   private boolean archived;
 

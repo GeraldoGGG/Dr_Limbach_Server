@@ -26,6 +26,8 @@ public class ArticleEntity extends AbstractEntity {
 
   private String summary;
 
+  private boolean showHomePage;
+
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
   @JoinTable(
       name = "tag_article",

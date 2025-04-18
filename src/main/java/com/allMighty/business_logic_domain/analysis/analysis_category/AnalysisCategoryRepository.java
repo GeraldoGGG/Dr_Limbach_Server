@@ -28,6 +28,10 @@ public class AnalysisCategoryRepository {
     return getAllAnalysisCategories(new ArrayList<>());
   }
 
+  public List<AnalysisCategoryEntity> getAllAnalysisCategories(Condition condition) {
+    return getAllAnalysisCategories(Collections.singletonList(condition));
+  }
+
   public List<AnalysisCategoryEntity> getAllAnalysisCategories(List<Condition> conditions) {
     return dsl.select(
             CATEGORY.ID,

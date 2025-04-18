@@ -26,7 +26,7 @@ public class ArticleMapper {
     articleDTO.setArchived(articleEntity.isArchived());
     articleDTO.setCreationDate(articleEntity.getCreationDate());
     articleDTO.setSummary(articleEntity.getSummary());
-
+    articleDTO.setShowHomePage(articleEntity.isShowHomePage());
     if (CollectionUtils.isNotEmpty(articleEntity.getTags())) {
       Set<TagDTO> tagDTOs =
           articleEntity.getTags().stream().map(TagMapper::toTagDTO).collect(Collectors.toSet());
@@ -42,6 +42,8 @@ public class ArticleMapper {
     articleEntity.setArchived(articleDTO.isArchived());
     articleEntity.setCreationDate(articleDTO.getCreationDate());
     articleEntity.setSummary(articleDTO.getSummary());
+    articleEntity.setShowHomePage(articleDTO.isShowHomePage());
+
   }
 
   //TODO do not like this
@@ -71,6 +73,7 @@ public class ArticleMapper {
       article.setArchived(record.get(ARTICLE.ARCHIVED));
       article.setCreationDate(record.get(ARTICLE.CREATION_DATE));
       article.setSummary(record.get(ARTICLE.SUMMARY));
+      article.setShowHomePage(record.get(ARTICLE.SHOW_HOME_PAGE));
       Set<TagEntity> tags = mapTagEntities(record);
       article.setTags(tags);
       return article;

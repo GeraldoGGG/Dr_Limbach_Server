@@ -9,6 +9,7 @@ import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDetailDTO;
 import com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper;
 import com.allMighty.business_logic_domain.export.ExportService;
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.business_logic_domain.tag.TagRepository;
@@ -21,9 +22,8 @@ import com.allMighty.global_operation.BaseService;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;
 import com.allMighty.global_operation.filter.FilterParser;
 import com.allMighty.global_operation.response.page.PageDescriptor;
-import java.util.*;
-
 import jakarta.persistence.EntityNotFoundException;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -93,7 +93,7 @@ public class AnalysisService extends BaseService {
     analysisEntity.setTags(tagEntities);
 
     // category
-    updateCategory(analysisDTO.getCategoryId(), analysisEntity);
+    updateCategory(analysisDTO.getCategory(), analysisEntity);
 
     AnalysisEntity saved = em.merge(analysisEntity);
 
@@ -123,7 +123,7 @@ public class AnalysisService extends BaseService {
     analysisEntity.setTags(tagEntities);
 
     // category
-    updateCategory(analysisDTO.getCategoryId(), analysisEntity);
+    updateCategory(analysisDTO.getCategory(), analysisEntity);
 
     AnalysisEntity saved = em.merge(analysisEntity);
 
@@ -133,14 +133,33 @@ public class AnalysisService extends BaseService {
     return saved.getId();
   }
 
-  private void updateCategory(Long categoryId, AnalysisEntity analysisEntity) {
-    if (categoryId != null) {
-      AnalysisCategoryEntity analysisCategoryEntity =
-          em.find(AnalysisCategoryEntity.class, categoryId);
-      analysisEntity.setCategory(analysisCategoryEntity);
-    } else {
-      analysisEntity.setCategory(null);
+  private void updateCategory(EntityIdDTO category, AnalysisEntity analysisEntity) {
+    if (category != null) {
+      Long categoryId = category.getId();
+      String categoryName = category.getName();
+
+      // find by id
+      if (categoryId != null) {
+        AnalysisCategoryEntity analysisCategoryEntity =
+            em.find(AnalysisCategoryEntity.class, categoryId);
+        if (analysisCategoryEntity != null) {
+          analysisEntity.setCategory(analysisCategoryEntity);
+          return;
+        }
+      }
+
+      // find by name
+      if (StringUtils.isNotBlank(categoryName)) {
+        List<AnalysisCategoryEntity> allAnalysisCategories =
+            analysisCategoryRepository.getAllAnalysisCategories(CATEGORY.NAME.eq(categoryName));
+        if (CollectionUtils.isNotEmpty(allAnalysisCategories)) {
+          analysisEntity.setCategory(
+              em.find(AnalysisCategoryEntity.class, allAnalysisCategories.get(0).getId()));
+          return;
+        }
+      }
     }
+    analysisEntity.setCategory(null);
   }
 
   private void addImages(List<AnalysisDTO> analysisDTOS) {
@@ -241,5 +260,9 @@ public class AnalysisService extends BaseService {
       analysisDetailEntity.setString_value(detailDTO.getStringValue());
       entity.addAnalysisDetail(analysisDetailEntity);
     }
+  }
+
+  public List<EntityIdDTO> getSimpleAnalyses() {
+    return analysisRepository.getSimpleAnalyses();
   }
 }

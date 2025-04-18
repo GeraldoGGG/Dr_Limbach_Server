@@ -16,6 +16,7 @@ import static org.jooq.impl.DSL.select;
 
 import com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper;
 import com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper.AnalysisJooqMapper;
+import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.enitity.analysis.AnalysisEntity;
 import com.allMighty.global_operation.response.page.PageDescriptor;
 import java.util.*;
@@ -128,5 +129,12 @@ public class AnalysisRepository {
     Condition eq = ANALYSIS.ID.eq(id);
     List<AnalysisEntity> analyses = getAllAnalyses(Collections.singletonList(eq), null);
     return analyses.stream().findFirst();
+  }
+
+  public List<EntityIdDTO> getSimpleAnalyses() {
+    return dsl.select(ANALYSIS.ID, ANALYSIS.MEDICAL_NAME.as("name"))
+        .from(ANALYSIS)
+        .where(ANALYSIS.ARCHIVED.eq(false))
+        .fetchInto(EntityIdDTO.class);
   }
 }
