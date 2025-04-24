@@ -37,7 +37,6 @@ public class DataInitializer implements CommandLineRunner {
     insertDummyEvents();
     insertDummyAnalysis();
     insertDummyMedicalServices();
-    analysisService.createInitialAnalysis();
 
     log.error("Finished Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
 
@@ -94,6 +93,7 @@ public class DataInitializer implements CommandLineRunner {
     if (analysisService.count() != 0) {
       return;
     }
+    analysisService.createInitialAnalysis();
 
     List<AnalysisDTO> analysisDTOS = generateAnalysis();
     for (AnalysisDTO dto : analysisDTOS) {
