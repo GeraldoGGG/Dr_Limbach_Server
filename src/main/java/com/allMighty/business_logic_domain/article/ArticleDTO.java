@@ -28,7 +28,7 @@ public class ArticleDTO extends AbstractDTO {
 
   private boolean archived;
 
-  private boolean showHomePage;
+  private boolean showInHomePage;
 
   private String summary;
 

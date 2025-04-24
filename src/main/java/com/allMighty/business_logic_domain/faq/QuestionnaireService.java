@@ -51,6 +51,7 @@ public class QuestionnaireService extends BaseService {
         .orElseThrow(() -> new BadRequestException("Questionnaire not found!"));
   }
 
+  @Transactional
   public void delete(Long id) {
     QuestionnaireEntity questionnaireEntity = em.find(QuestionnaireEntity.class, id);
     if (questionnaireEntity != null) {

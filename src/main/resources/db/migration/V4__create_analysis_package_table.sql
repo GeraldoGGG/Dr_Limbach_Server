@@ -3,7 +3,7 @@ CREATE TABLE package (
                                           id BIGSERIAL PRIMARY KEY,
                                           version BIGINT,
                                           price INT,
-                                          business_module VARCHAR(255),
+                                          show_in_home_page BOOLEAN NOT NULL DEFAULT FALSE,
                                           archived BOOLEAN NOT NULL DEFAULT FALSE,
                                           removed BOOLEAN NOT NULL DEFAULT FALSE,
                                           name VARCHAR(255) NOT NULL

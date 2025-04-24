@@ -32,7 +32,7 @@ public class EmailController {
 
     @PostMapping(SUBSCRIBE)
     public ResponseEntity<EntityResponseDTO<EmailDetailDTO>> saveSubscriberEmail(
-            @RequestParam(name = "emailAddress") @Valid EmailDetailDTO emailDetailDTO) {
+            @RequestBody @Valid EmailDetailDTO emailDetailDTO) {
         EmailDetailDTO savedEmail = emailService.saveEmail(emailDetailDTO);
 
         return ResponseEntity.ok(createResponse(savedEmail));

@@ -24,10 +24,6 @@ public class AnalysisPackageRepository {
   private final AnalysisPackageMapper.AnalysisPackageJooqMapper analysisPackageJooqMapper =
       new AnalysisPackageMapper.AnalysisPackageJooqMapper();
 
-  public List<AnalysisPackageEntity> getAllAnalysisPackages() {
-    return getAllAnalysisPackages(new ArrayList<>());
-  }
-
   public List<AnalysisPackageEntity> getAllAnalysisPackages(List<Condition> conditions) {
 
     return dsl.select(
@@ -35,7 +31,7 @@ public class AnalysisPackageRepository {
             PACKAGE.NAME,
             PACKAGE.PRICE,
             PACKAGE.ARCHIVED,
-            PACKAGE.BUSINESS_MODULE,
+            PACKAGE.SHOW_IN_HOME_PAGE,
             multiset(
                     select(PACKAGE_ANALYSIS.ANALYSIS_ID)
                         .from(PACKAGE_ANALYSIS)

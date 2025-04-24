@@ -67,11 +67,11 @@ public class MedicalServiceRepository {
                     select(MEDICAL_SERVICE_ANALYSIS.ANALYSIS_ID)
                         .from(MEDICAL_SERVICE_ANALYSIS)
                         .where(MEDICAL_SERVICE_ANALYSIS.MEDICAL_SERVICE_ID.eq(MEDICAL_SERVICE.ID)))
-                    .convertFrom(
-                            records -> records.getValues(MEDICAL_SERVICE_ANALYSIS.ANALYSIS_ID, Long.class))
+                .convertFrom(
+                    records -> records.getValues(MEDICAL_SERVICE_ANALYSIS.ANALYSIS_ID, Long.class))
                 .as(ANALYSIS_IDS_KEYWORD),
             multiset(
-                    select(TAG.ID, TAG.NAME, TAG.VERSION)
+                    select(TAG.ID, TAG.NAME)
                         .from(TAG)
                         .leftJoin(TAG_MEDICAL_SERVICE)
                         .on(TAG.ID.eq(TAG_MEDICAL_SERVICE.TAG_ID))
@@ -85,12 +85,10 @@ public class MedicalServiceRepository {
         .where(conditions)
         .groupBy(
             MEDICAL_SERVICE.ID,
-            MEDICAL_SERVICE.VERSION,
             MEDICAL_SERVICE.TITLE,
             MEDICAL_SERVICE.CONTENT,
             MEDICAL_SERVICE.ARCHIVED,
-            MEDICAL_SERVICE.REMOVED,
-            MEDICAL_SERVICE.SHOW_IN_HOME_PAGE)
+            MEDICAL_SERVICE.REMOVED)
         .offset(offset)
         .limit(pageSize)
         .fetch(medicalServiceJooqMapper);

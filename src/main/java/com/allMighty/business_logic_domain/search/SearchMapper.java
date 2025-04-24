@@ -42,17 +42,9 @@ public class SearchMapper {
       Result<Record> servicesResult = searchRecord.get(SERVICES_SEARCH_KEYWORD, Result.class);
       dto.setServicesFound(mapServices(servicesResult));
 
-      // Categories
-      Result<Record> categoriesResult = searchRecord.get(CATEGORY_SEARCH_KEYWORD, Result.class);
-      dto.setAnalysisCategoryFound(mapCategories(categoriesResult));
-
       // Articles
       Result<Record> articlesResult = searchRecord.get(ARTICLES_SEARCH_KEYWORD, Result.class);
       dto.setArticlesFound(mapArticles(articlesResult));
-
-      // Packages
-      Result<Record> packagesResult = searchRecord.get(PACKAGE_SEARCH_KEYWORD, Result.class);
-      dto.setAnalysisPackageFound(mapPackages(packagesResult));
 
       return dto;
     }

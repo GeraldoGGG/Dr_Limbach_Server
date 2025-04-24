@@ -37,8 +37,8 @@ public class MedicalServiceService extends BaseService {
   public List<MedicalServiceDTO> getMedicalServices(
       List<String> filters, PageDescriptor pageDescriptor) {
     List<Condition> conditions = buildConditions(filters, filterParser);
-    List<MedicalServiceDTO> dtos =
-        medicalServiceRepository.getAllMedicalServices(conditions, pageDescriptor).stream()
+    List<MedicalServiceDTO> dtos = medicalServiceRepository.getAllMedicalServices(conditions, pageDescriptor)
+            .stream()
             .map(MedicalServiceMapper::toMedicalServiceDTO)
             .toList();
 

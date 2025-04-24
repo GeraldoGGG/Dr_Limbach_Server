@@ -129,7 +129,7 @@ public class SecurityConfiguration {
                     .hasRole(Role.ADMIN.name())
 
                     // search
-                    .requestMatchers(HttpMethod.GET, Search.PATH)
+                    .requestMatchers(HttpMethod.POST, Search.PATH)
                     .permitAll()
 
 

@@ -54,7 +54,6 @@ public class EventRepository {
         .where(conditions)
         .groupBy(
             EVENT.ID,
-            EVENT.VERSION,
             EVENT.TITLE,
             EVENT.CONTENT,
             EVENT.EVENT_DATE,

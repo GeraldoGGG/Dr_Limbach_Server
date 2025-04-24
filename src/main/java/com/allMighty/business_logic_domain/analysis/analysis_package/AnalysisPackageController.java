@@ -21,8 +21,9 @@ public class AnalysisPackageController {
   private final AnalysisPackageService analysisPackageService;
 
   @GetMapping
-  public ResponseEntity<EntityResponseDTO<List<AnalysisPackageDTO>>> getAllAnalysisPackages() {
-    List<AnalysisPackageDTO> packages = analysisPackageService.getAllAnalysisPackages();
+  public ResponseEntity<EntityResponseDTO<List<AnalysisPackageDTO>>> getAllAnalysisPackages(
+          @RequestParam(value = "filter", defaultValue = "") List<String> filters) {
+    List<AnalysisPackageDTO> packages = analysisPackageService.getAllAnalysisPackages(filters);
     return ResponseEntity.ok(createResponse(packages));
   }
 

@@ -1,7 +1,6 @@
 package com.allMighty.enitity.analysis;
 
 import com.allMighty.enitity.abstractEntity.AbstractEntity;
-import com.allMighty.enumeration.BusinessModule;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +17,7 @@ public class AnalysisPackageEntity extends AbstractEntity {
   private Integer price;
   private boolean archived;
   private boolean removed;
-
-  @Enumerated(EnumType.STRING)
-  private BusinessModule businessModule;
+  private boolean showInHomePage;
 
   @ManyToMany
   @JoinTable(

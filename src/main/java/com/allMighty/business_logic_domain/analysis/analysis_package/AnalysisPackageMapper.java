@@ -23,6 +23,7 @@ public class AnalysisPackageMapper {
     analysisPackageDTO.setId(analysisPackageEntity.getId());
     analysisPackageDTO.setName(analysisPackageEntity.getName());
     analysisPackageDTO.setPrice(analysisPackageEntity.getPrice());
+    analysisPackageDTO.setShowInHomePage(analysisPackageDTO.isShowInHomePage());
     if (CollectionUtils.isNotEmpty(analysisPackageEntity.getAnalyses())) {
       List<Long> analysisIds = analysisPackageEntity.getAnalyses().stream().map(AbstractEntity::getId).toList();
       analysisPackageDTO.setAnalysisIds(analysisIds);
@@ -36,7 +37,7 @@ public class AnalysisPackageMapper {
     packageEntity.setName(packageDTO.getName());
     packageEntity.setPrice(packageDTO.getPrice());
     packageEntity.setArchived(packageDTO.isArchived());
-    packageEntity.setBusinessModule(packageDTO.getBusinessModule());
+    packageEntity.setShowInHomePage(packageDTO.isShowInHomePage());
   }
 
   static class AnalysisPackageJooqMapper implements RecordMapper<Record, AnalysisPackageEntity> {
@@ -46,11 +47,10 @@ public class AnalysisPackageMapper {
 
       AnalysisPackageEntity entity = new AnalysisPackageEntity();
       entity.setId(record.get(PACKAGE.ID));
-      entity.setVersion(record.get(PACKAGE.VERSION));
       entity.setName(record.get(PACKAGE.NAME));
       entity.setPrice(record.get(PACKAGE.PRICE));
       entity.setArchived(record.get(PACKAGE.ARCHIVED));
-      entity.setRemoved(record.get(PACKAGE.REMOVED));
+      entity.setShowInHomePage(record.get(PACKAGE.SHOW_IN_HOME_PAGE));
 
       List<Long> analysisIds = record.get(ANALYSIS_IDS_KEYWORD, ArrayList.class);
       List<AnalysisEntity> analyses = mapAnalysisEntities(analysisIds);

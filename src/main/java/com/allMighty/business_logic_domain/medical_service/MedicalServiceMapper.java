@@ -2,6 +2,7 @@ package com.allMighty.business_logic_domain.medical_service;
 
 import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper.mapAnalysisEntities;
 import static com.allMighty.business_logic_domain.article.ArticleMapper.mapArticleEntities;
+import static com.allMighty.business_logic_domain.tag.TagMapper.TagJooqMapper.mapTagEntities;
 import static com.allMighty.util.JooqMapperProperty.ANALYSIS_IDS_KEYWORD;
 import static com.allMighty.util.JooqMapperProperty.ARTICLES_IDS_KEYWORD;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
@@ -10,6 +11,7 @@ import com.allMighty.business_logic_domain.tag.TagDTO;
 import com.allMighty.business_logic_domain.tag.TagMapper;
 import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.enitity.MedicalServiceEntity;
+import com.allMighty.enitity.TagEntity;
 import com.allMighty.enitity.analysis.AnalysisEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,12 +81,14 @@ public class MedicalServiceMapper {
       entity.setContent(record.get(MEDICAL_SERVICE.CONTENT));
       entity.setArchived(record.get(MEDICAL_SERVICE.ARCHIVED));
       entity.setShowInHomePage(record.get(MEDICAL_SERVICE.SHOW_IN_HOME_PAGE));
-
       // Map the article IDs as a list
       List<Long> articleIds = record.get(ARTICLES_IDS_KEYWORD, ArrayList.class);
       List<ArticleEntity> articles = mapArticleEntities(articleIds);
 
       entity.setArticles(articles);
+
+      //tags
+      entity.setTags(mapTagEntities(record));
 
       // Map the analysis IDs as a list
       List<Long> analysisIds = record.get(ANALYSIS_IDS_KEYWORD, ArrayList.class);

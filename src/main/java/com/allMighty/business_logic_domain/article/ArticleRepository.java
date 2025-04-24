@@ -62,9 +62,9 @@ public class ArticleRepository {
             ARTICLE.ARCHIVED,
             ARTICLE.CREATION_DATE,
             ARTICLE.SUMMARY,
-            ARTICLE.SHOW_HOME_PAGE,
+            ARTICLE.SHOW_IN_HOME_PAGE,
             multiset(
-                    select(TAG.ID, TAG.NAME, TAG.VERSION)
+                    select(TAG.ID, TAG.NAME)
                         .from(TAG)
                         .leftJoin(TAG_ARTICLE)
                         .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
@@ -82,7 +82,6 @@ public class ArticleRepository {
         .where(conditions)
         .groupBy(
             ARTICLE.ID,
-            ARTICLE.VERSION,
             ARTICLE.TITLE,
             ARTICLE.AUTHOR,
             ARTICLE.CONTENT,

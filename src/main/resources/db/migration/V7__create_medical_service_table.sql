@@ -2,7 +2,7 @@
 CREATE TABLE medical_service (
                                  id BIGSERIAL PRIMARY KEY,
                                  version BIGINT,
-                                 show_in_home_page BOOLEAN,
+                                 show_in_home_page BOOLEAN NOT NULL DEFAULT FALSE,
                                  title VARCHAR(255),
                                  archived BOOLEAN NOT NULL DEFAULT FALSE,
                                  removed BOOLEAN NOT NULL DEFAULT FALSE,

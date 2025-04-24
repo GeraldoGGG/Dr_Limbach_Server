@@ -57,7 +57,6 @@ public class AnalysisRepository {
     return from.where(conditions)
         .groupBy(
             ANALYSIS.ID,
-            ANALYSIS.VERSION,
             ANALYSIS.MEDICAL_NAME,
             ANALYSIS.SYNONYM,
             ANALYSIS.PRICE,
@@ -81,7 +80,7 @@ public class AnalysisRepository {
         CATEGORY.ID,
         CATEGORY.NAME,
         multiset(
-                select(TAG.ID, TAG.NAME, TAG.VERSION)
+                select(TAG.ID, TAG.NAME)
                     .from(TAG)
                     .leftJoin(TAG_ANALYSIS)
                     .on(TAG.ID.eq(TAG_ANALYSIS.TAG_ID))
@@ -91,8 +90,7 @@ public class AnalysisRepository {
                 select(
                         ANALYSIS_DETAIL.ID,
                         ANALYSIS_DETAIL.KEY_VALUE,
-                        ANALYSIS_DETAIL.STRING_VALUE,
-                        ANALYSIS_DETAIL.VERSION)
+                        ANALYSIS_DETAIL.STRING_VALUE)
                     .from(ANALYSIS_DETAIL)
                     .where(ANALYSIS_DETAIL.ANALYSIS_ID.eq(ANALYSIS.ID)))
             .as(DETAILS_KEYWORD));
