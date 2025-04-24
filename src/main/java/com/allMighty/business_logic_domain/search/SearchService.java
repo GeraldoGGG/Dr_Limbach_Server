@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 public class SearchService {
 
     private final SearchRepository searchRepository;
+    private final SearchRepositoryFullTextSearch searchRepository1;
+
     public SearchResponseDTO search(SearchRequestDTO searchRequestDTO) {
-        return searchRepository.search(searchRequestDTO);
+        return searchRepository1.search(searchRequestDTO);
     }
 
 }

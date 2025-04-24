@@ -61,7 +61,7 @@ public class ExportService {
   public List<ExcelAnalysisDataDTO> fetchAnalysisExcel() {
     try {
       // File path to the Excel file
-      FileInputStream fis = new FileInputStream("src/main/resources/initialAnalysisData/analysisData.xlsx");
+      FileInputStream fis = new FileInputStream("src/main/resources/initialAnalysisData/Template_Motorri_i_kerkimit_me_1000_rreshta.xlsx");
 
       // Create Workbook instance for .xlsx file
       Workbook workbook = new XSSFWorkbook(fis);

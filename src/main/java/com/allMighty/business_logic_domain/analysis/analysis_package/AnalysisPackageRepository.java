@@ -7,7 +7,6 @@ import static org.jooq.impl.DSL.multiset;
 import static org.jooq.impl.DSL.select;
 
 import com.allMighty.enitity.analysis.AnalysisPackageEntity;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
