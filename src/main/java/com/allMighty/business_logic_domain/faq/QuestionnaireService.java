@@ -61,6 +61,8 @@ public class QuestionnaireService extends BaseService {
     }
   }
 
+
+  @Transactional
   public Long updateQuestionnaire(Long id, QuestionnaireDTO questionnaireDTO) {
     QuestionnaireEntity questionnaireEntity = em.find(QuestionnaireEntity.class, id);
     if (questionnaireEntity == null) {

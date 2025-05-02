@@ -1,7 +1,6 @@
 package com.allMighty.business_logic_domain.analysis;
 
 import static com.example.jooq.generated.tables.Analysis.ANALYSIS;
-import static com.example.jooq.generated.tables.Article.ARTICLE;
 import static com.example.jooq.generated.tables.Category.CATEGORY;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.Package.PACKAGE;
@@ -22,7 +21,7 @@ public enum AnalysisField implements FilterableField {
   PACKAGE_NAME("package:name", PACKAGE.NAME),
   CATEGORY_ID("category:id", CATEGORY.ID),
   CATEGORY_NAME("category:name", CATEGORY.NAME),
-  ARCHIVED("archived", CATEGORY.ARCHIVED);
+  ARCHIVED("archived", ANALYSIS.ARCHIVED);
 
   private final String restAlias;
   private final Field<?> jooqField;

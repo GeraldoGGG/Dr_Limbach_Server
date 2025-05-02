@@ -14,6 +14,8 @@ import com.allMighty.global_operation.BaseService;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;
 import com.allMighty.global_operation.filter.FilterParser;
 import com.allMighty.global_operation.response.page.PageDescriptor;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -95,7 +97,7 @@ public class ArticleService extends BaseService {
   public Long createArticle(ArticleDTO articleDTO) {
     ArticleEntity articleEntity = new ArticleEntity();
     toArticleEntity(articleDTO, articleEntity);
-
+    articleEntity.setCreationDate(LocalDateTime.now());
     Set<TagEntity> tagEntities = tagRepository.updateTagEntities(articleDTO.getTags(), em);
     articleEntity.setTags(tagEntities);
 
