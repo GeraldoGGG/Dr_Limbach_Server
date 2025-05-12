@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AnalysisDetailDTO {
     private Long id;
-    private String stringValue;
     private String keyValue;
+    private String stringValue;
 
     public AnalysisDetailDTO(String stringValue, String keyValue) {
         this.stringValue = stringValue;

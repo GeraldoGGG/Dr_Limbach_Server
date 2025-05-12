@@ -2,8 +2,8 @@
 CREATE TABLE analysis (
                                   id BIGSERIAL PRIMARY KEY,
                                   version BIGINT,
-                                  medical_name VARCHAR(255) NOT NULL,
-                                  synonym VARCHAR(255),
+                                  medical_name VARCHAR(1000) NOT NULL,
+                                  synonym VARCHAR(1000),
                                   price INT,
                                   archived BOOLEAN NOT NULL DEFAULT FALSE,
                                   removed BOOLEAN NOT NULL DEFAULT FALSE,

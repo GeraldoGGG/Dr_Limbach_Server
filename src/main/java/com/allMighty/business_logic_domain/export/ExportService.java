@@ -4,7 +4,6 @@ import com.allMighty.business_logic_domain.analysis.ExcelAnalysisDataDTO;
 import com.allMighty.business_logic_domain.email.EmailDetailDTO;
 import com.allMighty.global_operation.exception_management.exception.ExcelFailException;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class ExportService {
   public List<ExcelAnalysisDataDTO> fetchAnalysisExcel() {
     try {
       // File path to the Excel file
-      FileInputStream fis = new FileInputStream("src/main/resources/initialAnalysisData/Template_Motorri_i_kerkimit_me_1000_rreshta.xlsx");
+      FileInputStream fis = new FileInputStream("src/main/resources/initialAnalysisData/db-v1.xlsx");
 
       // Create Workbook instance for .xlsx file
       Workbook workbook = new XSSFWorkbook(fis);
