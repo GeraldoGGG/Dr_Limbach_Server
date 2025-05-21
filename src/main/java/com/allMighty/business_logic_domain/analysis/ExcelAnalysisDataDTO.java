@@ -6,11 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ExcelAnalysisDataDTO {
-    private String analiza;
+    private String emriAnalizes;
     private String sinonimi;
     private String kategoria;
     private String mostra;
-    private String stabiliteti;
     private String preanalitika;
     private String metoda;
     private String indikacioniKlinik;

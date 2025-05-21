@@ -171,59 +171,56 @@ public class AnalysisService extends BaseService {
   @Transactional
   public void createInitialAnalysis() {
     List<ExcelAnalysisDataDTO> dtoList = exportService.fetchAnalysisExcel();
+
+    // In-memory cache to avoid redundant queries and inserts
+    Map<String, AnalysisCategoryEntity> categoryCache = new HashMap<>();
+
     for (ExcelAnalysisDataDTO dto : dtoList) {
-      String analiza = dto.getAnaliza();
+      String emriAnalizes = dto.getEmriAnalizes();
       String sinonimi = dto.getSinonimi();
       String kategoria = dto.getKategoria();
       String akredituarNgaISO15189 = dto.getAkredituarNgaISO15189();
 
-      // category
-      AnalysisEntity analysisEntity = new AnalysisEntity();
-
-      Condition nameCondition = CATEGORY.NAME.eq(kategoria);
-      AnalysisCategoryEntity found =
-          analysisCategoryRepository
-              .getAllAnalysisCategories(Collections.singletonList(nameCondition))
-              .stream()
-              .findFirst()
-              .orElse(null);
-      AnalysisCategoryEntity analysisCategoryEntity;
-      if (found == null) {
+      // Category lookup
+      AnalysisCategoryEntity analysisCategoryEntity = categoryCache.get(kategoria);
+      if (analysisCategoryEntity == null) {
         analysisCategoryEntity = new AnalysisCategoryEntity();
         analysisCategoryEntity.setName(kategoria);
         em.persist(analysisCategoryEntity);
-      } else {
-        analysisCategoryEntity = em.find(AnalysisCategoryEntity.class, found.getId());
+        categoryCache.put(kategoria, analysisCategoryEntity);
       }
 
-      // analysis
+      // Create analysis entity
+      AnalysisEntity analysisEntity = new AnalysisEntity();
       analysisEntity.setSynonym(sinonimi);
-      analysisEntity.setMedicalName(analiza);
-      boolean isIso = "Po".equals(akredituarNgaISO15189);
-      analysisEntity.setIsoVerified(isIso);
+      analysisEntity.setMedicalName(emriAnalizes);
+      analysisEntity.setIsoVerified(isIso(akredituarNgaISO15189));
 
-      // details
-      List<AnalysisDetailEntity> detailsList = new ArrayList<>();
-
-      // Create AnalysisDetailEntity for each property in the DTO
-      detailsList.add(createAnalysisDetailEntity("mostra", dto.getMostra(), analysisEntity));
-      detailsList.add(
-          createAnalysisDetailEntity("stabiliteti", dto.getStabiliteti(), analysisEntity));
-      detailsList.add(
-          createAnalysisDetailEntity("preanalitika", dto.getPreanalitika(), analysisEntity));
-      detailsList.add(createAnalysisDetailEntity("metoda", dto.getMetoda(), analysisEntity));
-      detailsList.add(
-          createAnalysisDetailEntity(
-              "indikacioniKlinik", dto.getIndikacioniKlinik(), analysisEntity));
-      detailsList.add(
-          createAnalysisDetailEntity(
-              "interpretimiIRrezultatit", dto.getInterpretimiIRrezultatit(), analysisEntity));
-      analysisEntity.setAnalysisDetailEntities(detailsList);
-
+      // Set category
       analysisEntity.setCategory(analysisCategoryEntity);
+
+      // Create details
+      List<AnalysisDetailEntity> detailsList = new ArrayList<>();
+      detailsList.add(createAnalysisDetailEntity("Mostra", dto.getMostra(), analysisEntity));
+      detailsList.add(createAnalysisDetailEntity("Preanalitika", dto.getPreanalitika(), analysisEntity));
+      detailsList.add(createAnalysisDetailEntity("Metoda", dto.getMetoda(), analysisEntity));
+      detailsList.add(createAnalysisDetailEntity("Indikacioni klinik", dto.getIndikacioniKlinik(), analysisEntity));
+      detailsList.add(createAnalysisDetailEntity("Interpretimi i rezultatit", dto.getInterpretimiIRrezultatit(), analysisEntity));
+      analysisEntity.setAnalysisDetailEntities(detailsList);
 
       em.persist(analysisEntity);
     }
+  }
+
+
+  private static boolean isIso(String akredituarNgaISO15189) {
+    if("Po".equals(akredituarNgaISO15189)){
+      return true;
+    }
+    if("Po+A2508:I2521".equals(akredituarNgaISO15189)){
+      return true;
+    }
+    return false;
   }
 
   private AnalysisDetailEntity createAnalysisDetailEntity(

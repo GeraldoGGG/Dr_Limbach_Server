@@ -15,9 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnalysisDetailEntity extends AbstractEntity {
-
-    private String string_value;
     private String key_value;
+    private String string_value;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "analysis_id", nullable = false)

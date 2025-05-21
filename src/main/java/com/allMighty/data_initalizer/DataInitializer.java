@@ -3,7 +3,6 @@ package com.allMighty.data_initalizer;
 import static com.allMighty.data_initalizer.DataInitializerUtils.*;
 
 import com.allMighty.business_logic_domain.analysis.AnalysisService;
-import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
 import com.allMighty.business_logic_domain.article.ArticleDTO;
 import com.allMighty.business_logic_domain.article.ArticleService;
 import com.allMighty.business_logic_domain.event.EventDTO;
@@ -23,35 +22,42 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class DataInitializer implements CommandLineRunner {
-  private final ArticleService articleService;
-  private final EventService eventService;
   private final AnalysisService analysisService;
+  private final EventService eventService;
+  private final ArticleService articleService;
   private final MedicalServiceService medicalServiceService;
+
   private final PersonEntityRepository personEntityRepository;
 
   @Override
   public void run(String... args) {
-    log.error("Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
-    insertDummyMainUser();
+    insertMainUser();
+    generateInitialAnalysis();
+
     insertDummyArticles();
     insertDummyEvents();
-    insertDummyAnalysis();
     insertDummyMedicalServices();
-
-    log.error("Finished Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
-
+    log.info("Finished Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
   }
 
-  private void insertDummyMainUser() {
+  private void insertMainUser() {
     if (personEntityRepository.count() == 0) {
       PersonEntity adminUser = new PersonEntity();
-      adminUser.setFirstName("John");
-      adminUser.setLastName("Doe");
-      adminUser.setEmail("john.doe@example.com");
-      adminUser.setPassword("$2b$12$Ol5VnvETmsFKwS.M5j0n0.Zj5KgWceosZbQ3rGEGWDwndLj.awTaS");
+      adminUser.setFirstName("Admin");
+      adminUser.setLastName("Admin");
+      adminUser.setEmail("admin@limbachadmin.com");
+      adminUser.setPassword("$2a$12$BmoVaNJLTFeM0FGaOIP7ueKJ4hzA4cLXJ2QUpc2V27IyKOiMaRnOG");
       adminUser.setRole(Role.ADMIN);
       personEntityRepository.save(adminUser);
     }
+  }
+
+  private void generateInitialAnalysis() {
+
+    if (analysisService.count() != 0) {
+      return;
+    }
+    analysisService.createInitialAnalysis();
   }
 
   private void insertDummyMedicalServices() {
@@ -85,19 +91,6 @@ public class DataInitializer implements CommandLineRunner {
     List<EventDTO> eventDTOS = generateEvents();
     for (EventDTO eventDTO : eventDTOS) {
       eventService.createEvent(eventDTO);
-    }
-  }
-
-  private void insertDummyAnalysis() {
-
-    if (analysisService.count() != 0) {
-      return;
-    }
-    analysisService.createInitialAnalysis();
-
-    List<AnalysisDTO> analysisDTOS = generateAnalysis();
-    for (AnalysisDTO dto : analysisDTOS) {
-      analysisService.createAnalysis(dto);
     }
   }
 }

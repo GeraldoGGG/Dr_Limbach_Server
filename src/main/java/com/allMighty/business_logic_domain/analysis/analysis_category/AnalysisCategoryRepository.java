@@ -33,16 +33,17 @@ public class AnalysisCategoryRepository {
   }
 
   public List<AnalysisCategoryEntity> getAllAnalysisCategories(List<Condition> conditions) {
-    return dsl.select(
-            CATEGORY.ID,
-            CATEGORY.NAME,
-            CATEGORY.ARCHIVED,
-            multiset(select(ANALYSIS.ID).from(ANALYSIS).where(ANALYSIS.CATEGORY_ID.eq(CATEGORY.ID)))
-                .convertFrom(records -> records.getValues(ANALYSIS.ID, Long.class))
-                .as(ANALYSIS_IDS_KEYWORD))
-        .from(CATEGORY)
-        .where(conditions)
-        .fetch(analysisCategoryJooqMapper);
+    List<AnalysisCategoryEntity> fetch = dsl.select(
+                    CATEGORY.ID,
+                    CATEGORY.NAME,
+                    CATEGORY.ARCHIVED,
+                    multiset(select(ANALYSIS.ID).from(ANALYSIS).where(ANALYSIS.CATEGORY_ID.eq(CATEGORY.ID)))
+                            .convertFrom(records -> records.getValues(ANALYSIS.ID, Long.class))
+                            .as(ANALYSIS_IDS_KEYWORD))
+            .from(CATEGORY)
+            .where(conditions)
+            .fetch(analysisCategoryJooqMapper);
+    return fetch;
   }
 
   public Optional<AnalysisCategoryEntity> getAnalysisCategoryById(Long id) {
