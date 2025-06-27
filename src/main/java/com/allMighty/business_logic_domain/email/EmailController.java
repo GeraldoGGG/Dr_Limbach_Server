@@ -46,7 +46,7 @@ public class EmailController {
         byte[] excelFile = exportService.generateSubscribersEmailExcel(emailList);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=subscribers.xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=limbach-subscribers.xlsx");
         headers.setContentType(MediaType.parseMediaType(
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
 
