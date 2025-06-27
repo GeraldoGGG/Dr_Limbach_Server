@@ -17,6 +17,7 @@ public class EmailRepository {
   public List<EmailEntity> getSubscribersEmails() {
     return dslContext.select(EMAIL.ID, EMAIL.EMAIL_ADDRESS)
             .from(EMAIL)
+            .orderBy(EMAIL.ID.desc())
             .fetch(emailJooqMapper);
   }
 }
