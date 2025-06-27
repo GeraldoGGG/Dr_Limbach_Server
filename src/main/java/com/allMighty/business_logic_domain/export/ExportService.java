@@ -17,27 +17,25 @@ import org.springframework.stereotype.Service;
 public class ExportService {
 
   public byte[] generateSubscribersEmailExcel(List<EmailDetailDTO> emailList) {
-    Workbook workbook = new XSSFWorkbook();
-    CellStyle headerStyle = workbook.createCellStyle();
-    headerStyle.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.index);
-    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+    try (Workbook workbook = new XSSFWorkbook()) {
+      CellStyle headerStyle = workbook.createCellStyle();
+      headerStyle.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+      headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-    Sheet sheet = workbook.createSheet("Subscribers Email");
-    prepareColumns(sheet, headerStyle);
-    addValuesToColumns(emailList, sheet);
+      Sheet sheet = workbook.createSheet("Subscribers Email");
+      prepareColumns(sheet, headerStyle);
+      addValuesToColumns(emailList, sheet);
 
-    return returnFileToByteFormat(workbook);
-  }
-
-  private static byte[] returnFileToByteFormat(Workbook workbook) {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try {
-      workbook.write(baos);
-      workbook.close();
+      return returnFileToByteFormat(workbook);
     } catch (IOException e) {
-      throw new ExcelFailException("Excel generating failed", e);
+      throw new ExcelFailException("Excel generation failed", e);
     }
-    return baos.toByteArray();
+  }
+  private static byte[] returnFileToByteFormat(Workbook workbook) throws IOException {
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+      workbook.write(baos);
+      return baos.toByteArray();
+    }
   }
 
   private void addValuesToColumns(List<EmailDetailDTO> emailList, Sheet sheet) {
