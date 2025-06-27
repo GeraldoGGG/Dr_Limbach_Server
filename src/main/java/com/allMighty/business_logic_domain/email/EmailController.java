@@ -6,6 +6,7 @@ import com.allMighty.global_operation.response.EntityResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,17 +41,20 @@ public class EmailController {
 
     @GetMapping(EXPORT)
     public ResponseEntity<byte[]> exportEmails() {
-        List<EmailDetailDTO> ermailList = emailService.getSubscribersEmails();
+        List<EmailDetailDTO> emailList = emailService.getSubscribersEmails();
 
-        byte[] excelFile = exportService.generateSubscribersEmailExcel(ermailList);
+        byte[] excelFile = exportService.generateSubscribersEmailExcel(emailList);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=filename=subscribers.xlsx");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=subscribers.xlsx");
+        headers.setContentType(MediaType.parseMediaType(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
 
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(excelFile);
     }
+
 
     @GetMapping
     public ResponseEntity<EntityResponseDTO<List<EmailDetailDTO>>> getAllEmails() {
