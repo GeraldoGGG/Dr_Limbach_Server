@@ -7,10 +7,12 @@ import static com.example.jooq.generated.tables.Event.EVENT;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.Package.PACKAGE;
 
+import com.allMighty.business_logic_domain.search.model.SearchRequestDTO;
 import com.allMighty.business_logic_domain.search.model.SearchResponseDTO;
 import com.allMighty.business_logic_domain.search.model.SearchUnitResponseDTO;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Setter;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
@@ -24,27 +26,38 @@ public class SearchMapper {
   public static final String PACKAGE_SEARCH_KEYWORD = "packages";
   public static final String CATEGORY_SEARCH_KEYWORD = "categories";
 
+  @Setter
   static class SearchJooqMapper implements RecordMapper<Record, SearchResponseDTO> {
+    private SearchRequestDTO searchRequestDTO;
 
     @Override
     public SearchResponseDTO map(Record searchRecord) {
       SearchResponseDTO dto = new SearchResponseDTO();
+      searchRequestDTO = (searchRequestDTO == null) ? new SearchRequestDTO() : searchRequestDTO;
 
-      // Events
-      Result<Record> eventsResult = searchRecord.get(EVENT_SEARCH_KEYWORD, Result.class);
-      dto.setEventsFound(mapEvents(eventsResult));
+      // EVENTS
+      if (searchRequestDTO.includeEvents()) {
+        Result<Record> eventsResult = searchRecord.get(EVENT_SEARCH_KEYWORD, Result.class);
+        dto.setEventsFound(mapEvents(eventsResult));
+      }
 
-      // Analysis
-      Result<Record> analysisResult = searchRecord.get(ANALYSIS_SEARCH_KEYWORD, Result.class);
-      dto.setAnalysesFound(mapAnalysis(analysisResult));
+      // ANALYSIS
+      if (searchRequestDTO.includeAnalysis()) {
+        Result<Record> analysisResult = searchRecord.get(ANALYSIS_SEARCH_KEYWORD, Result.class);
+        dto.setAnalysesFound(mapAnalysis(analysisResult));
+      }
 
-      // Services
-      Result<Record> servicesResult = searchRecord.get(SERVICES_SEARCH_KEYWORD, Result.class);
-      dto.setServicesFound(mapServices(servicesResult));
+      // SERVICES
+      if (searchRequestDTO.includeServices()) {
+        Result<Record> servicesResult = searchRecord.get(SERVICES_SEARCH_KEYWORD, Result.class);
+        dto.setServicesFound(mapServices(servicesResult));
+      }
 
-      // Articles
-      Result<Record> articlesResult = searchRecord.get(ARTICLES_SEARCH_KEYWORD, Result.class);
-      dto.setArticlesFound(mapArticles(articlesResult));
+      // ARTICLES
+      if (searchRequestDTO.includeArticles()) {
+        Result<Record> articlesResult = searchRecord.get(ARTICLES_SEARCH_KEYWORD, Result.class);
+        dto.setArticlesFound(mapArticles(articlesResult));
+      }
 
       return dto;
     }

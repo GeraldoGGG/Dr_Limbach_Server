@@ -174,7 +174,7 @@ public class AnalysisService extends BaseService {
 
     // In-memory cache to avoid redundant queries and inserts
     Map<String, AnalysisCategoryEntity> categoryCache = new HashMap<>();
-
+        int t = 0;
     for (ExcelAnalysisDataDTO dto : dtoList) {
       String emriAnalizes = dto.getEmriAnalizes();
       String sinonimi = dto.getSinonimi();
