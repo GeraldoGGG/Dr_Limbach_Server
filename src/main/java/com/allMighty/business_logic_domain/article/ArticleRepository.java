@@ -17,6 +17,7 @@ import com.allMighty.enitity.article.ArticleEntity;
 import com.allMighty.global_operation.response.page.PageDescriptor;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
@@ -35,18 +36,34 @@ public class ArticleRepository {
   }
 
   public Long count(List<Condition> conditions) {
-    return dsl.select(DSL.countDistinct(ARTICLE.ID))
+    var select = dsl.select(DSL.countDistinct(ARTICLE.ID));
+
+    var from = getFrom(select);
+
+    return from.where(conditions).fetchSingleInto(Long.class);
+  }
+
+  private static @NotNull SelectOnConditionStep<?> getFrom(SelectSelectStep<?> select) {
+    return select
         .from(ARTICLE)
+
+        // service
         .leftJoin(MEDICAL_SERVICE_ARTICLE)
         .on(ARTICLE.ID.eq(MEDICAL_SERVICE_ARTICLE.ARTICLE_ID))
         .leftJoin(MEDICAL_SERVICE)
         .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ARTICLE.MEDICAL_SERVICE_ID))
+
+        // tags
         .leftJoin(TAG_ARTICLE)
         .on(ARTICLE.ID.eq(TAG_ARTICLE.ARTICLE_ID))
         .leftJoin(TAG)
         .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
-        .where(conditions)
-        .fetchSingleInto(Long.class);
+
+        // category
+        .leftJoin(ARTICLE_ARTICLE_CATEGORY)
+        .on(ARTICLE.ID.eq(ARTICLE_ARTICLE_CATEGORY.ARTICLE_ID))
+        .leftJoin(ARTICLE_CATEGORY)
+        .on(ARTICLE_CATEGORY.ID.eq(ARTICLE_ARTICLE_CATEGORY.ARTICLE_CATEGORY_ID));
   }
 
   public List<ArticleEntity> getAllArticles(
@@ -57,7 +74,8 @@ public class ArticleRepository {
     Long offset = pageDescriptor.getOffset();
     Long pageSize = pageDescriptor.getPageSize();
 
-    return dsl.select(
+    var select =
+        dsl.select(
             ARTICLE.ID,
             ARTICLE.TITLE,
             ARTICLE.AUTHOR,
@@ -79,17 +97,11 @@ public class ArticleRepository {
                         .leftJoin(ARTICLE_ARTICLE_CATEGORY)
                         .on(ARTICLE_CATEGORY.ID.eq(ARTICLE_ARTICLE_CATEGORY.ARTICLE_CATEGORY_ID))
                         .where(ARTICLE_ARTICLE_CATEGORY.ARTICLE_ID.eq(ARTICLE.ID)))
-                .as(ARTICLE_CATEGORY_KEYWORD))
-        .from(ARTICLE)
-        .leftJoin(MEDICAL_SERVICE_ARTICLE)
-        .on(ARTICLE.ID.eq(MEDICAL_SERVICE_ARTICLE.ARTICLE_ID))
-        .leftJoin(MEDICAL_SERVICE)
-        .on(MEDICAL_SERVICE.ID.eq(MEDICAL_SERVICE_ARTICLE.MEDICAL_SERVICE_ID))
-        .leftJoin(TAG_ARTICLE)
-        .on(ARTICLE.ID.eq(TAG_ARTICLE.ARTICLE_ID))
-        .leftJoin(TAG)
-        .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
-        .where(conditions)
+                .as(ARTICLE_CATEGORY_KEYWORD));
+
+    var from = getFrom(select);
+
+    return from.where(conditions)
         .groupBy(
             ARTICLE.ID,
             ARTICLE.TITLE,

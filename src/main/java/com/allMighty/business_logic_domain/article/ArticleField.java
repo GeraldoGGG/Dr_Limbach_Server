@@ -1,8 +1,8 @@
 package com.allMighty.business_logic_domain.article;
 
 import static com.example.jooq.generated.tables.Article.ARTICLE;
+import static com.example.jooq.generated.tables.ArticleCategory.ARTICLE_CATEGORY;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
-import static com.example.jooq.generated.tables.Package.PACKAGE;
 import static com.example.jooq.generated.tables.Tag.TAG;
 
 import com.allMighty.global_operation.filter.FilterableField;
@@ -17,7 +17,8 @@ public enum ArticleField implements FilterableField {
 
   TAG_ID("tag:id", TAG.ID),
   TAG_NAME("tag:name", TAG.NAME),
-  SERVICE_ID("service:id", MEDICAL_SERVICE.ID);
+  SERVICE_ID("service:id", MEDICAL_SERVICE.ID),
+  CATEGORY_ID("category:id", ARTICLE_CATEGORY.ID);
 
   private final String restAlias;
   private final Field<?> jooqField;

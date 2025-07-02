@@ -138,7 +138,7 @@ public class ArticleService extends BaseService {
 
   public List<ArticleCategoryDTO> getAllArticleCategories() {
     return articleCategoryRepository.getAllCategories().stream()
-        .map(entity -> toArticleCategoryDTO(entity))
+        .map(ArticleMapper::toArticleCategoryDTO)
         .collect(Collectors.toList());
   }
 }
