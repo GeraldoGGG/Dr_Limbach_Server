@@ -7,6 +7,7 @@ import static com.example.jooq.generated.tables.Event.EVENT;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.Package.PACKAGE;
 
+import com.allMighty.business_logic_domain.search.model.SearchAnalysisResponseDTO;
 import com.allMighty.business_logic_domain.search.model.SearchRequestDTO;
 import com.allMighty.business_logic_domain.search.model.SearchResponseDTO;
 import com.allMighty.business_logic_domain.search.model.SearchUnitResponseDTO;
@@ -67,8 +68,8 @@ public class SearchMapper {
       return mapBasicResult(result, EVENT.ID, EVENT.TITLE);
     }
 
-    private static List<SearchUnitResponseDTO> mapAnalysis(Result<Record> result) {
-      return mapBasicResult(result, ANALYSIS.ID, ANALYSIS.MEDICAL_NAME);
+    private static List<SearchAnalysisResponseDTO> mapAnalysis(Result<Record> result) {
+      return mapAnalysisResult(result);
     }
 
     private static List<SearchUnitResponseDTO> mapServices(Result<Record> result) {
@@ -97,6 +98,22 @@ public class SearchMapper {
         SearchUnitResponseDTO dto = new SearchUnitResponseDTO();
         dto.setId(record.get(idField, Long.class));
         dto.setTitle(String.valueOf(record.get(titleField, String.class)));
+        list.add(dto);
+      }
+
+      return list;
+    }
+
+    private static List<SearchAnalysisResponseDTO> mapAnalysisResult(Result<Record> result) {
+
+      List<SearchAnalysisResponseDTO> list = new ArrayList<>();
+      if (result == null) return list;
+
+      for (Record record : result) {
+        SearchAnalysisResponseDTO dto = new SearchAnalysisResponseDTO();
+        dto.setId(record.get(ANALYSIS.ID));
+        dto.setTitle(record.get(ANALYSIS.MEDICAL_NAME));
+        dto.setCategoryName(record.get(CATEGORY.NAME));
         list.add(dto);
       }
 

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class SearchResponseDTO {
   private List<SearchUnitResponseDTO> eventsFound = new ArrayList<>();
-  private List<SearchUnitResponseDTO> analysesFound = new ArrayList<>();
+  private List<SearchAnalysisResponseDTO> analysesFound = new ArrayList<>();
   private List<SearchUnitResponseDTO> servicesFound = new ArrayList<>();
   private List<SearchUnitResponseDTO> articlesFound = new ArrayList<>();
 }

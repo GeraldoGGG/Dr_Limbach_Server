@@ -58,7 +58,7 @@ public class SearchRepository {
     if (searchRequestDTO.includeAnalysis()) {
       selectFields.add(
           multiset(
-                  selectDistinct(ANALYSIS.ID, ANALYSIS.MEDICAL_NAME)
+                  selectDistinct(ANALYSIS.ID, ANALYSIS.MEDICAL_NAME, CATEGORY.NAME)
                       .from(ANALYSIS)
                       .leftJoin(ANALYSIS_DETAIL)
                       .on(ANALYSIS.ID.eq(ANALYSIS_DETAIL.ANALYSIS_ID))
