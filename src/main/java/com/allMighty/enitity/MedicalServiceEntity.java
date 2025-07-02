@@ -2,6 +2,7 @@ package com.allMighty.enitity;
 
 import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import com.allMighty.enitity.analysis.AnalysisEntity;
+import com.allMighty.enitity.article.ArticleEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

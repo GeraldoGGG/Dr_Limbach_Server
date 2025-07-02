@@ -7,16 +7,17 @@ import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.business_logic_domain.tag.TagRepository;
-import com.allMighty.enitity.ArticleEntity;
 import com.allMighty.enitity.TagEntity;
+import com.allMighty.enitity.article.ArticleCategoryEntity;
+import com.allMighty.enitity.article.ArticleEntity;
 import com.allMighty.enumeration.EntityType;
 import com.allMighty.global_operation.BaseService;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;
 import com.allMighty.global_operation.filter.FilterParser;
 import com.allMighty.global_operation.response.page.PageDescriptor;
-
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -31,6 +32,7 @@ public class ArticleService extends BaseService {
 
   private final ArticleRepository articleRepository;
   private final TagRepository tagRepository;
+  private final ArticleCategoryRepository articleCategoryRepository;
   private final ImageService imageService;
 
   public List<ArticleDTO> getArticles(List<String> filters, PageDescriptor pageDescriptor) {
@@ -73,18 +75,25 @@ public class ArticleService extends BaseService {
       throw new BadRequestException("Article not found!");
     }
 
+    // map
     toArticleEntity(articleDTO, articleEntity);
 
+    // tags
     Set<TagEntity> tagEntities = tagRepository.updateTagEntities(articleDTO.getTags(), em);
     articleEntity.setTags(tagEntities);
 
+    // categories
+    Set<ArticleCategoryEntity> categories =
+        articleCategoryRepository.updateCategoryEntities(articleDTO.getCategories(), em);
+    articleEntity.setCategories(categories);
+
+    // save
     ArticleEntity saved = em.merge(articleEntity);
 
+    // images
     List<ImageDTO> imageDTOs = articleDTO.getImages();
-
     boolean hasImageData =
         imageDTOs.stream().map(ImageDTO::getImageData).anyMatch(StringUtils::isNotBlank);
-
     if (hasImageData) {
       imageService.deleteImages(Collections.singletonList(id), EntityType.ARTICLE);
       imageService.createImages(imageDTOs, EntityType.ARTICLE, id);
@@ -98,13 +107,21 @@ public class ArticleService extends BaseService {
     ArticleEntity articleEntity = new ArticleEntity();
     toArticleEntity(articleDTO, articleEntity);
     articleEntity.setCreationDate(LocalDateTime.now());
+
+    // tags
     Set<TagEntity> tagEntities = tagRepository.updateTagEntities(articleDTO.getTags(), em);
     articleEntity.setTags(tagEntities);
 
+    // categories
+    Set<ArticleCategoryEntity> categories =
+        articleCategoryRepository.updateCategoryEntities(articleDTO.getCategories(), em);
+    articleEntity.setCategories(categories);
+
+    // save
     ArticleEntity saved = em.merge(articleEntity);
 
-    List<ImageDTO> images = articleDTO.getImages();
-    imageService.createImages(images, EntityType.ARTICLE, saved.getId());
+    // images
+    imageService.createImages(articleDTO.getImages(), EntityType.ARTICLE, saved.getId());
 
     return saved.getId();
   }
@@ -117,5 +134,11 @@ public class ArticleService extends BaseService {
 
   public List<EntityIdDTO> getSimpleArticles() {
     return articleRepository.getAllArticlesSimple();
+  }
+
+  public List<ArticleCategoryDTO> getAllArticleCategories() {
+    return articleCategoryRepository.getAllCategories().stream()
+        .map(entity -> toArticleCategoryDTO(entity))
+        .collect(Collectors.toList());
   }
 }

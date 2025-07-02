@@ -1,7 +1,10 @@
 package com.allMighty.business_logic_domain.article;
 
+import static com.allMighty.business_logic_domain.article.ArticleMapper.ArticleJooqMapper.ARTICLE_CATEGORY_KEYWORD;
 import static com.allMighty.business_logic_domain.tag.TagMapper.TAGS_KEYWORD;
 import static com.example.jooq.generated.tables.Article.ARTICLE;
+import static com.example.jooq.generated.tables.ArticleArticleCategory.ARTICLE_ARTICLE_CATEGORY;
+import static com.example.jooq.generated.tables.ArticleCategory.ARTICLE_CATEGORY;
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
 import static com.example.jooq.generated.tables.MedicalServiceArticle.MEDICAL_SERVICE_ARTICLE;
 import static com.example.jooq.generated.tables.Tag.TAG;
@@ -10,7 +13,7 @@ import static org.jooq.impl.DSL.multiset;
 import static org.jooq.impl.DSL.select;
 
 import com.allMighty.business_logic_domain.general.EntityIdDTO;
-import com.allMighty.enitity.ArticleEntity;
+import com.allMighty.enitity.article.ArticleEntity;
 import com.allMighty.global_operation.response.page.PageDescriptor;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +72,14 @@ public class ArticleRepository {
                         .leftJoin(TAG_ARTICLE)
                         .on(TAG.ID.eq(TAG_ARTICLE.TAG_ID))
                         .where(TAG_ARTICLE.ARTICLE_ID.eq(ARTICLE.ID)))
-                .as(TAGS_KEYWORD))
+                .as(TAGS_KEYWORD),
+            multiset(
+                    select(ARTICLE_CATEGORY.ID, ARTICLE_CATEGORY.NAME)
+                        .from(ARTICLE_CATEGORY)
+                        .leftJoin(ARTICLE_ARTICLE_CATEGORY)
+                        .on(ARTICLE_CATEGORY.ID.eq(ARTICLE_ARTICLE_CATEGORY.ARTICLE_CATEGORY_ID))
+                        .where(ARTICLE_ARTICLE_CATEGORY.ARTICLE_ID.eq(ARTICLE.ID)))
+                .as(ARTICLE_CATEGORY_KEYWORD))
         .from(ARTICLE)
         .leftJoin(MEDICAL_SERVICE_ARTICLE)
         .on(ARTICLE.ID.eq(MEDICAL_SERVICE_ARTICLE.ARTICLE_ID))

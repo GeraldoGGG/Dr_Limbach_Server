@@ -6,7 +6,7 @@ import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildCo
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.business_logic_domain.tag.TagRepository;
-import com.allMighty.enitity.ArticleEntity;
+import com.allMighty.enitity.article.ArticleEntity;
 import com.allMighty.enitity.MedicalServiceEntity;
 import com.allMighty.enitity.TagEntity;
 import com.allMighty.enitity.analysis.AnalysisEntity;

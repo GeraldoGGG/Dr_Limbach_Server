@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.allMighty.client.UrlProperty.Article.ARTICLE_CATEGORIES;
 import static com.allMighty.client.UrlProperty.ID_PATH;
 import static com.allMighty.client.UrlProperty.SIMPLE;
 import static com.allMighty.global_operation.response.ResponseFactory.createPage;
@@ -49,6 +50,11 @@ public class ArticleController {
 
     ArticleDTO articleDTO = articleService.getArticleById(id);
     return ResponseEntity.ok(createResponse(articleDTO));
+  }
+
+  @GetMapping(ARTICLE_CATEGORIES)
+  public ResponseEntity<EntityResponseDTO<List<ArticleCategoryDTO>>> getAllArticleCategories() {
+    return ResponseEntity.ok(createResponse(articleService.getAllArticleCategories()));
   }
 
   @PostMapping

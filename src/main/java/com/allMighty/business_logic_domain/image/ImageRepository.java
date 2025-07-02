@@ -1,21 +1,15 @@
 package com.allMighty.business_logic_domain.image;
 
-import com.allMighty.enitity.ArticleEntity;
+import static com.example.jooq.generated.tables.Image.IMAGE;
+
 import com.allMighty.enitity.ImageEntity;
 import com.allMighty.enumeration.EntityType;
-import com.allMighty.enumeration.ImageContentType;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Transient;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-
-import static com.example.jooq.generated.tables.Image.IMAGE;
 
 @Repository
 @RequiredArgsConstructor
@@ -47,12 +41,10 @@ public class ImageRepository {
   }
 
   @Transactional
-  public int deleteImagesByEntityReferenceAndContentType(
+  public void deleteImagesByEntityReferenceAndContentType(
       List<Long> entityReferenceIds, EntityType entityType) {
-    return dsl.deleteFrom(IMAGE)
-        .where(
-            IMAGE
-                .ENTITY_REFERENCE_ID
+    dsl.deleteFrom(IMAGE)
+        .where(IMAGE.ENTITY_REFERENCE_ID
                 .in(entityReferenceIds)
                 .and(IMAGE.ENTITY_TYPE.eq(entityType.name())))
         .execute();

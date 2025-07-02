@@ -36,5 +36,7 @@ public class ArticleDTO extends AbstractDTO {
 
   private Set<TagDTO> tags = new HashSet<>();
 
+  private Set<ArticleCategoryDTO> categories = new HashSet<>();
+
   private List<ImageDTO> images = new ArrayList<>();
 }
