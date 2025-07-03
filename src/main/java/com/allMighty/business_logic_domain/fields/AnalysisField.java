@@ -1,4 +1,4 @@
-package com.allMighty.business_logic_domain.analysis;
+package com.allMighty.business_logic_domain.fields;
 
 import static com.example.jooq.generated.tables.Analysis.ANALYSIS;
 import static com.example.jooq.generated.tables.Category.CATEGORY;

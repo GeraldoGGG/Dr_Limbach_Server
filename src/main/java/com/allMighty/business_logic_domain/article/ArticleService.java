@@ -3,6 +3,7 @@ package com.allMighty.business_logic_domain.article;
 import static com.allMighty.business_logic_domain.article.ArticleMapper.*;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
+import com.allMighty.business_logic_domain.fields.ArticleField;
 import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;

@@ -9,6 +9,7 @@ import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDetailDTO;
 import com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper;
 import com.allMighty.business_logic_domain.export.ExportService;
+import com.allMighty.business_logic_domain.fields.AnalysisField;
 import com.allMighty.business_logic_domain.general.EntityIdDTO;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
@@ -174,7 +175,6 @@ public class AnalysisService extends BaseService {
 
     // In-memory cache to avoid redundant queries and inserts
     Map<String, AnalysisCategoryEntity> categoryCache = new HashMap<>();
-        int t = 0;
     for (ExcelAnalysisDataDTO dto : dtoList) {
       String emriAnalizes = dto.getEmriAnalizes();
       String sinonimi = dto.getSinonimi();

@@ -1,4 +1,4 @@
-package com.allMighty.business_logic_domain.article;
+package com.allMighty.business_logic_domain.fields;
 
 import static com.example.jooq.generated.tables.Article.ARTICLE;
 import static com.example.jooq.generated.tables.ArticleCategory.ARTICLE_CATEGORY;

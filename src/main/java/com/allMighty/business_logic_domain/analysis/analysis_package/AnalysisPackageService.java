@@ -4,6 +4,7 @@ import static com.allMighty.business_logic_domain.analysis.analysis_package.Anal
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisPackageDTO;
+import com.allMighty.business_logic_domain.fields.PackageFields;
 import com.allMighty.enitity.analysis.AnalysisEntity;
 import com.allMighty.enitity.analysis.AnalysisPackageEntity;
 import com.allMighty.global_operation.BaseService;

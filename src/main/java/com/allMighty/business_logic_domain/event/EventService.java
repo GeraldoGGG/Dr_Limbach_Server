@@ -3,6 +3,7 @@ package com.allMighty.business_logic_domain.event;
 import static com.allMighty.business_logic_domain.event.EventMapper.toEventEntity;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
+import com.allMighty.business_logic_domain.fields.EventField;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.enitity.EventEntity;

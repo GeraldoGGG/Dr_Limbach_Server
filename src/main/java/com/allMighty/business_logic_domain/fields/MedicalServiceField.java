@@ -1,7 +1,6 @@
-package com.allMighty.business_logic_domain.medical_service;
+package com.allMighty.business_logic_domain.fields;
 
 import static com.example.jooq.generated.tables.MedicalService.MEDICAL_SERVICE;
-import static com.example.jooq.generated.tables.Package.PACKAGE;
 import static com.example.jooq.generated.tables.Tag.TAG;
 
 import com.allMighty.global_operation.filter.FilterableField;

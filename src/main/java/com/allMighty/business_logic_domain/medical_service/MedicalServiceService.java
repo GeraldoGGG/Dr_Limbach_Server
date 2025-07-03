@@ -3,6 +3,7 @@ package com.allMighty.business_logic_domain.medical_service;
 import static com.allMighty.business_logic_domain.medical_service.MedicalServiceMapper.*;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
+import com.allMighty.business_logic_domain.fields.MedicalServiceField;
 import com.allMighty.business_logic_domain.image.ImageDTO;
 import com.allMighty.business_logic_domain.image.ImageService;
 import com.allMighty.business_logic_domain.tag.TagRepository;

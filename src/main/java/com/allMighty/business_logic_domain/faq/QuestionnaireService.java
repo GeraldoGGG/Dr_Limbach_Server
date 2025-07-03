@@ -3,6 +3,7 @@ package com.allMighty.business_logic_domain.faq;
 import static com.allMighty.business_logic_domain.faq.QuestionnaireMapper.toQuestionnaireEntity;
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
+import com.allMighty.business_logic_domain.fields.QuestionnaireField;
 import com.allMighty.enitity.QuestionnaireEntity;
 import com.allMighty.global_operation.BaseService;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;

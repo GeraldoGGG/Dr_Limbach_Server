@@ -1,4 +1,4 @@
-package com.allMighty.business_logic_domain.analysis.analysis_package;
+package com.allMighty.business_logic_domain.fields;
 
 import com.allMighty.global_operation.filter.FilterableField;
 import lombok.Getter;
