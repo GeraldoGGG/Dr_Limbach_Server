@@ -34,9 +34,9 @@ public class DataInitializer implements CommandLineRunner {
     insertMainUser();
     generateInitialAnalysis();
 
-    insertDummyArticles();
+   /* insertDummyArticles();
     insertDummyEvents();
-    insertDummyMedicalServices();
+    insertDummyMedicalServices();*/
     log.info("Finished Initializing data...[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
   }
 
