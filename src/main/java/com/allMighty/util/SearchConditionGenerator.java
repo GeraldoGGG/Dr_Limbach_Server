@@ -50,12 +50,10 @@ public class SearchConditionGenerator {
   }
 
   public Condition getArticleSearchCondition() {
-    var conditions = new ArrayList<Condition>();
     return or(getSearchConditions(ARTICLE.TITLE, ARTICLE.AUTHOR));
   }
 
   public Condition getSeriviceSearchCondition() {
-    var conditions = new ArrayList<Condition>();
     return or(getSearchConditions(MEDICAL_SERVICE.TITLE));
   }
 }
