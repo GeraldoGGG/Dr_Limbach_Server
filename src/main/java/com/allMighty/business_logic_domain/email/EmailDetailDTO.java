@@ -16,6 +16,6 @@ public class EmailDetailDTO extends AbstractDTO {
     private String email;
     private String name;
     private String message;
-    private Integer phoneNumber;
+    private String phoneNumber;
     private Long id;
 }
