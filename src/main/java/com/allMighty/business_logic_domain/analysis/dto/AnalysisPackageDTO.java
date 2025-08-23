@@ -15,6 +15,7 @@ public class AnalysisPackageDTO extends AbstractDTO {
   private Long categoryId;
   private List<Long> analysisIds;
   private boolean showInHomePage;
+  private String description;
 
   private boolean archived;
 }

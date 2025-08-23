@@ -19,6 +19,9 @@ public class AnalysisPackageEntity extends AbstractEntity {
   private boolean removed;
   private boolean showInHomePage;
 
+  @Column(columnDefinition = "TEXT")
+  private String description;
+
   @ManyToMany
   @JoinTable(
       name = "package_analysis",

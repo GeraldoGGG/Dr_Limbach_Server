@@ -45,21 +45,7 @@ public class AnalysisPackageService extends BaseService {
   @Transactional
   public Long createAnalysisPackage(AnalysisPackageDTO packageDTO) {
     AnalysisPackageEntity packageEntity = new AnalysisPackageEntity();
-    toAnalysisPackageEntity(packageDTO, packageEntity);
-
-    if (CollectionUtils.isNotEmpty(packageDTO.getAnalysisIds())) {
-      List<AnalysisEntity> analyses =
-          packageDTO.getAnalysisIds().stream()
-              .map(id -> em.getReference(AnalysisEntity.class, id))
-              .collect(Collectors.toList());
-      packageEntity.setAnalyses(analyses);
-    } else {
-      packageEntity.setAnalyses(new ArrayList<>());
-    }
-
-    AnalysisPackageEntity saved = em.merge(packageEntity);
-
-    return saved.getId();
+    return savePackage(packageDTO, packageEntity);
   }
 
   @Transactional
@@ -69,6 +55,10 @@ public class AnalysisPackageService extends BaseService {
       throw new BadRequestException("Package not found!");
     }
 
+    return savePackage(analysisPackageDTO, packageEntity);
+  }
+
+  private Long savePackage(AnalysisPackageDTO analysisPackageDTO, AnalysisPackageEntity packageEntity) {
     toAnalysisPackageEntity(analysisPackageDTO, packageEntity);
 
     if (CollectionUtils.isNotEmpty(analysisPackageDTO.getAnalysisIds())) {

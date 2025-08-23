@@ -31,6 +31,7 @@ public class AnalysisPackageRepository {
             PACKAGE.PRICE,
             PACKAGE.ARCHIVED,
             PACKAGE.SHOW_IN_HOME_PAGE,
+            PACKAGE.DESCRIPTION,
             multiset(
                     select(PACKAGE_ANALYSIS.ANALYSIS_ID)
                         .from(PACKAGE_ANALYSIS)
