@@ -55,7 +55,6 @@ public class ArticleMapper {
     articleEntity.setContent(articleDTO.getContent());
     articleEntity.setAuthor(articleDTO.getAuthor());
     articleEntity.setArchived(articleDTO.isArchived());
-    articleEntity.setCreationDate(articleDTO.getCreationDate());
     articleEntity.setSummary(articleDTO.getSummary());
     articleEntity.setShowInHomePage(articleDTO.isShowInHomePage());
   }

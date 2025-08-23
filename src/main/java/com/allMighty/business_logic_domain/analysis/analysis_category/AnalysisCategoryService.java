@@ -1,28 +1,36 @@
 package com.allMighty.business_logic_domain.analysis.analysis_category;
 
 import static com.allMighty.business_logic_domain.analysis.analysis_category.AnalysisCategoryMapper.toAnalysisCategoryEntity;
+import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisCategoryDTO;
+import com.allMighty.business_logic_domain.fields.CategoryFields;
 import com.allMighty.enitity.analysis.AnalysisCategoryEntity;
 import com.allMighty.enitity.analysis.AnalysisEntity;
 import com.allMighty.global_operation.BaseService;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;
+import com.allMighty.global_operation.filter.FilterParser;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.jooq.Condition;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AnalysisCategoryService extends BaseService {
 
+  private final FilterParser<CategoryFields> filterParser =
+          new FilterParser<>(CategoryFields.values());
+
   private final AnalysisCategoryRepository analysisCategoryRepository;
 
-  public List<AnalysisCategoryDTO> getAllAnalysisCategories() {
-    return analysisCategoryRepository.getAllAnalysisCategories().stream()
+  public List<AnalysisCategoryDTO> getAllAnalysisCategories(List<String> filters) {
+    List<Condition> conditions = buildConditions(filters, filterParser);
+    return analysisCategoryRepository.getAllAnalysisCategories(conditions).stream()
         .map(AnalysisCategoryMapper::toAnalysisCategoryDTO)
         .toList();
   }
@@ -60,7 +68,7 @@ public class AnalysisCategoryService extends BaseService {
 
     toAnalysisCategoryEntity(categoryDTO, categoryEntity);
 
-    updateCategoryAnalysis(categoryDTO, categoryEntity);
+  //  updateCategoryAnalysis(categoryDTO, categoryEntity);
 
     return em.merge(categoryEntity).getId();
   }

@@ -23,8 +23,9 @@ public class AnalysisCategoryController {
   private final AnalysisCategoryService analysisCategoryService;
 
   @GetMapping
-  public ResponseEntity<EntityResponseDTO<List<AnalysisCategoryDTO>>> getAllAnalysisCategories() {
-    List<AnalysisCategoryDTO> categories = analysisCategoryService.getAllAnalysisCategories();
+  public ResponseEntity<EntityResponseDTO<List<AnalysisCategoryDTO>>> getAllAnalysisCategories(
+          @RequestParam(value = "filter", defaultValue = "") List<String> filters) {
+    List<AnalysisCategoryDTO> categories = analysisCategoryService.getAllAnalysisCategories(filters);
     return ResponseEntity.ok(createResponse(categories));
   }
 
