@@ -21,6 +21,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.SelectField;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class SearchRepository {
 
     conditionGenerator.setSearchRequestDTO(searchRequestDTO);
     searchJooqMapper.setSearchRequestDTO(searchRequestDTO);
+
 
     List<SelectField<?>> selectFields = new ArrayList<>();
 
@@ -68,7 +70,9 @@ public class SearchRepository {
                       .on(ANALYSIS.ID.eq(PACKAGE_ANALYSIS.ANALYSIS_ID))
                       .leftJoin(PACKAGE)
                       .on(PACKAGE.ID.eq(PACKAGE_ANALYSIS.PACKAGE_ID))
-                      .where(conditionGenerator.getAnalysisSearchCondition()))
+
+                      .where(conditionGenerator.getAnalysisSearchCondition()
+                              .and(DSL.and(conditionGenerator.getAnalysisFilterCondition()))))
               .as(ANALYSIS_SEARCH_KEYWORD));
     }
 
