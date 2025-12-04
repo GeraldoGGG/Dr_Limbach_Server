@@ -1,5 +1,6 @@
 package com.allMighty.enitity.analysis;
 
+import com.allMighty.business_logic_domain.analysis.converter.FloatArrayConverter;
 import com.allMighty.enitity.TagEntity;
 import com.allMighty.enitity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
@@ -49,6 +50,9 @@ public class AnalysisEntity extends AbstractEntity {
     @Transient
     private String categoryName;
 
+    @Convert(converter = FloatArrayConverter.class)
+    @Column(name = "ai_analysis_embedding", columnDefinition = "vector")
+    private float[] aiAnalysisEmbedding;
 
     public void addAnalysisDetail(AnalysisDetailEntity detail) {
         if (analysisDetailEntities == null) {

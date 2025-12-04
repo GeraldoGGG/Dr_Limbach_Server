@@ -135,4 +135,28 @@ public class AnalysisRepository {
         .where(ANALYSIS.ARCHIVED.eq(false))
         .fetchInto(EntityIdDTO.class);
   }
+
+
+  public List<Long> getAiAnalysis(){
+
+    var ranked = ANALYSIS.as("a");
+
+    // Create the row_number() expression
+    var rowNumberField = DSL.rowNumber()
+            .over()
+            .partitionBy(ranked.CATEGORY_ID)
+            .orderBy(ranked.MEDICAL_NAME.asc())
+            .as("rn");
+
+    // Wrap in a derived table
+    var sub = dsl.select(ranked.ID, rowNumberField)
+            .from(ranked)
+            .asTable("sub");
+
+    return dsl.select(sub.field("id", Long.class))
+            .from(sub)
+            .where(sub.field("rn", Integer.class).le(3))
+            .fetchInto(Long.class);
+  }
+
 }

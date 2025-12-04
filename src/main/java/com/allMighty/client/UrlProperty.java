@@ -21,6 +21,7 @@ public interface UrlProperty extends ParamProperty {
 
   interface Search {
     String PATH = ROOT_PATH + "/search";
+    String AI_PATH = PATH + "/ai";
   }
 
   interface Image {

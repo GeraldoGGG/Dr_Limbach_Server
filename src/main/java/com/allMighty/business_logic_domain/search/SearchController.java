@@ -1,5 +1,6 @@
 package com.allMighty.business_logic_domain.search;
 
+import static com.allMighty.client.UrlProperty.Search.AI_PATH;
 import static com.allMighty.global_operation.response.ResponseFactory.createResponse;
 
 import com.allMighty.business_logic_domain.search.model.SearchRequestDTO;
@@ -18,6 +19,13 @@ public class SearchController {
 
   @PostMapping
   public ResponseEntity<EntityResponseDTO<SearchResponseDTO>> search(@RequestBody SearchRequestDTO searchRequest) {
+    SearchResponseDTO searchResponseDTO = searchService.search(searchRequest);
+    return ResponseEntity.ok(createResponse(searchResponseDTO));
+  }
+
+
+  @PostMapping(AI_PATH)
+  public ResponseEntity<EntityResponseDTO<SearchResponseDTO>> searchWithAI(@RequestBody SearchRequestDTO searchRequest) {
     SearchResponseDTO searchResponseDTO = searchService.search(searchRequest);
     return ResponseEntity.ok(createResponse(searchResponseDTO));
   }

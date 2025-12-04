@@ -4,6 +4,7 @@ import static com.allMighty.business_logic_domain.analysis.mapper.AnalysisMapper
 import static com.allMighty.global_operation.filter.JooqConditionBuilder.buildConditions;
 import static com.example.jooq.generated.tables.Category.CATEGORY;
 
+import com.allMighty.business_logic_domain.ai.EmbeddingService;
 import com.allMighty.business_logic_domain.analysis.analysis_category.AnalysisCategoryRepository;
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDTO;
 import com.allMighty.business_logic_domain.analysis.dto.AnalysisDetailDTO;
@@ -28,6 +29,7 @@ import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.jooq.Condition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,8 @@ public class AnalysisService extends BaseService {
   private final ImageService imageService;
   private final ExportService exportService;
   private final AnalysisCategoryRepository analysisCategoryRepository;
+
+  private final EmbeddingService embeddingService;
 
   public List<AnalysisDTO> getAnalyses(List<String> filters, PageDescriptor pageDescriptor) {
     List<Condition> conditions = buildConditions(filters, filterParser);
@@ -262,4 +266,51 @@ public class AnalysisService extends BaseService {
   public List<EntityIdDTO> getSimpleAnalyses() {
     return analysisRepository.getSimpleAnalyses();
   }
+
+/*
+  public void populateAiColumn(){
+    List<Long> aiAnalysis = analysisRepository.getAiAnalysis();
+
+
+
+      for (Long analysisId : aiAnalysis) {
+        AnalysisEntity analysis = em.find(AnalysisEntity.class, analysisId);
+        float[] vectorArray = populateAiColumn(analysis);
+        if (vectorArray == null) continue;
+        analysis.setAiAnalysisEmbedding(vectorArray);
+        em.persist(analysis);
+      }
+
+
+  }
+
+  private float @Nullable [] populateAiColumn(AnalysisEntity analysis) {
+    if (analysis == null) return null;
+
+    // Only using medicalName + synonym
+    String baseText = analysis.getMedicalName();
+    if (analysis.getSynonym() != null && !analysis.getSynonym().isEmpty()) {
+      baseText += " (" + analysis.getSynonym() + ")";
+    }
+
+    // 1️⃣ Ask OpenAI for symptom context
+    String symptomContext = openAiService.generateSymptomsDescription(baseText);
+    // This could call GPT-3.5/4, e.g., via your ChatCompletionService
+
+    // 2️⃣ Combine for embedding
+    String textToEmbed = baseText + " " + symptomContext;
+
+    // 3️⃣ Generate embedding
+    List<Float> embeddingVector = embeddingService.generateEmbedding(textToEmbed);
+
+    // 4️⃣ Convert to float[] for pgvector
+    float[] vectorArray = new float[embeddingVector.size()];
+    for (int i = 0; i < embeddingVector.size(); i++) {
+      vectorArray[i] = embeddingVector.get(i);
+    }
+    return vectorArray;
+  }
+*/
+
+
 }
