@@ -109,6 +109,7 @@ public class ArticleRepository {
             ARTICLE.CONTENT,
             ARTICLE.ARCHIVED,
             ARTICLE.REMOVED)
+            .orderBy(ARTICLE.ID.desc())
         .offset(offset)
         .limit(pageSize)
         .fetch(articleJooqMapper);

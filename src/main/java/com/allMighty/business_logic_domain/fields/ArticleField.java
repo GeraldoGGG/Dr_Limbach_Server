@@ -14,7 +14,7 @@ public enum ArticleField implements FilterableField {
   ID("id", ARTICLE.ID),
   SHOW_IN_HOME_PAGE("showInHomePage", ARTICLE.SHOW_IN_HOME_PAGE),
   ARCHIVED("archived", ARTICLE.ARCHIVED),
-
+  TITLE("title", ARTICLE.TITLE),
   TAG_ID("tag:id", TAG.ID),
   TAG_NAME("tag:name", TAG.NAME),
   SERVICE_ID("service:id", MEDICAL_SERVICE.ID),
