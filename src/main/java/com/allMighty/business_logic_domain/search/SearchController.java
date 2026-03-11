@@ -2,6 +2,8 @@ package com.allMighty.business_logic_domain.search;
 
 import static com.allMighty.global_operation.response.ResponseFactory.createResponse;
 
+import com.allMighty.business_logic_domain.search.model.ChatSuggestRequestDTO;
+import com.allMighty.business_logic_domain.search.model.ChatSuggestResponseDTO;
 import com.allMighty.business_logic_domain.search.model.SearchRequestDTO;
 import com.allMighty.business_logic_domain.search.model.SearchResponseDTO;
 import com.allMighty.client.UrlProperty;
@@ -20,5 +22,12 @@ public class SearchController {
   public ResponseEntity<EntityResponseDTO<SearchResponseDTO>> search(@RequestBody SearchRequestDTO searchRequest) {
     SearchResponseDTO searchResponseDTO = searchService.search(searchRequest);
     return ResponseEntity.ok(createResponse(searchResponseDTO));
+  }
+
+  @PostMapping("/chat-suggest-analysis")
+  public ResponseEntity<EntityResponseDTO<ChatSuggestResponseDTO>> suggestAnalysisFromChat(
+      @RequestBody ChatSuggestRequestDTO requestDTO) {
+    ChatSuggestResponseDTO responseDTO = searchService.suggestAnalyses(requestDTO);
+    return ResponseEntity.ok(createResponse(responseDTO));
   }
 }

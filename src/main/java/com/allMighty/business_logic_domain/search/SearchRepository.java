@@ -12,13 +12,19 @@ import static com.example.jooq.generated.tables.PackageAnalysis.PACKAGE_ANALYSIS
 import static org.jooq.impl.DSL.*;
 import static org.jooq.impl.DSL.select;
 
+import com.allMighty.business_logic_domain.search.model.AnalysisCatalogItemDTO;
 import com.allMighty.business_logic_domain.search.model.SearchRequestDTO;
 import com.allMighty.business_logic_domain.search.model.SearchResponseDTO;
 import com.allMighty.global_operation.exception_management.exception.BadRequestException;
 import com.allMighty.util.SearchConditionGenerator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.SelectField;
 import org.jooq.impl.DSL;
@@ -97,5 +103,60 @@ public class SearchRepository {
     }
 
     return dsl.select(selectFields).fetchOne(searchJooqMapper);
+  }
+
+  public List<AnalysisCatalogItemDTO> getAnalysisCatalog(int limit) {
+    int safeLimit = Math.max(limit, 1);
+    return dsl.select(
+            ANALYSIS.ID,
+            ANALYSIS.MEDICAL_NAME.as("medicalName"),
+            ANALYSIS.SYNONYM.as("synonym"),
+            CATEGORY.NAME.as("categoryName"))
+        .from(ANALYSIS)
+        .leftJoin(CATEGORY)
+        .on(CATEGORY.ID.eq(ANALYSIS.CATEGORY_ID))
+        .where(ANALYSIS.ARCHIVED.eq(false).and(ANALYSIS.REMOVED.eq(false)))
+        .orderBy(ANALYSIS.ID.asc())
+        .limit(safeLimit)
+        .fetchInto(AnalysisCatalogItemDTO.class);
+  }
+
+  public List<Long> findExistingAnalysisIds(List<Long> analysisIds) {
+    if (analysisIds == null || analysisIds.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    return dsl.select(ANALYSIS.ID)
+        .from(ANALYSIS)
+        .where(ANALYSIS.ID.in(analysisIds))
+        .fetchInto(Long.class);
+  }
+
+  public List<Long> suggestAnalysisIdsByKeyword(String userMessage, int maxSuggestions) {
+    if (userMessage == null || userMessage.trim().isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    int safeLimit = Math.max(maxSuggestions, 1);
+    String keyword = "%" + userMessage.trim().toLowerCase(Locale.ROOT) + "%";
+
+    Condition textMatchCondition =
+        lower(ANALYSIS.MEDICAL_NAME)
+            .like(keyword)
+            .or(lower(ANALYSIS.SYNONYM).like(keyword))
+            .or(lower(CATEGORY.NAME).like(keyword));
+
+    List<Long> ids =
+        dsl.selectDistinct(ANALYSIS.ID)
+            .from(ANALYSIS)
+            .leftJoin(CATEGORY)
+            .on(CATEGORY.ID.eq(ANALYSIS.CATEGORY_ID))
+            .where(ANALYSIS.ARCHIVED.eq(false).and(ANALYSIS.REMOVED.eq(false)).and(textMatchCondition))
+            .orderBy(ANALYSIS.ID.asc())
+            .limit(safeLimit)
+            .fetchInto(Long.class);
+
+    Set<Long> unique = new LinkedHashSet<>(ids);
+    return new ArrayList<>(unique);
   }
 }
