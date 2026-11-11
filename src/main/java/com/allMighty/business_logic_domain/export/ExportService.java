@@ -2,11 +2,19 @@ package com.allMighty.business_logic_domain.export;
 
 import com.allMighty.business_logic_domain.analysis.ExcelAnalysisDataDTO;
 import com.allMighty.business_logic_domain.email.EmailDetailDTO;
+import com.allMighty.business_logic_domain.study_application.StudyApplicationDTO;
+import com.allMighty.enumeration.study.HealthCondition;
+import com.allMighty.enumeration.study.Medication;
 import com.allMighty.global_operation.exception_management.exception.ExcelFailException;
 
 import java.io.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -31,6 +39,76 @@ public class ExportService {
       throw new ExcelFailException("Excel generation failed", e);
     }
   }
+  private static final String[] STUDY_APPLICATION_HEADERS = {
+    "ID",
+    "First Name",
+    "Last Name",
+    "Age",
+    "Email",
+    "Study Group",
+    "Health Conditions",
+    "Medications",
+    "Applied At"
+  };
+
+  private static final DateTimeFormatter STUDY_APPLICATION_DATE_FORMAT =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+  public byte[] generateStudyApplicationsExcel(List<StudyApplicationDTO> applications) {
+    try (Workbook workbook = new XSSFWorkbook()) {
+      CellStyle headerStyle = workbook.createCellStyle();
+      headerStyle.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+      headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+      Sheet sheet = workbook.createSheet("Study Applications");
+
+      Row headerRow = sheet.createRow(0);
+      for (int i = 0; i < STUDY_APPLICATION_HEADERS.length; i++) {
+        Cell cell = headerRow.createCell(i);
+        cell.setCellStyle(headerStyle);
+        cell.setCellValue(STUDY_APPLICATION_HEADERS[i]);
+      }
+
+      int rowNum = 1;
+      for (StudyApplicationDTO application : applications) {
+        Row row = sheet.createRow(rowNum++);
+        row.createCell(0).setCellValue(application.getId());
+        row.createCell(1).setCellValue(application.getFirstName());
+        row.createCell(2).setCellValue(application.getLastName());
+        row.createCell(3).setCellValue(application.getAge());
+        row.createCell(4).setCellValue(application.getEmail());
+        row.createCell(5).setCellValue(application.getStudyGroup().getLabelEn());
+        row.createCell(6)
+            .setCellValue(joinLabels(application.getConditions(), HealthCondition::getLabelEn));
+        row.createCell(7)
+            .setCellValue(joinLabels(application.getMedications(), Medication::getLabelEn));
+        row.createCell(8)
+            .setCellValue(
+                application.getCreatedAt() != null
+                    ? application.getCreatedAt().format(STUDY_APPLICATION_DATE_FORMAT)
+                    : "");
+      }
+
+      for (int i = 0; i < STUDY_APPLICATION_HEADERS.length; i++) {
+        sheet.autoSizeColumn(i);
+      }
+
+      return returnFileToByteFormat(workbook);
+    } catch (IOException e) {
+      throw new ExcelFailException("Excel generation failed", e);
+    }
+  }
+
+  private static <E extends Enum<E>> String joinLabels(Set<E> values, Function<E, String> label) {
+    if (values == null) {
+      return "";
+    }
+    return values.stream()
+        .sorted(Comparator.comparingInt(Enum::ordinal))
+        .map(label)
+        .collect(Collectors.joining(", "));
+  }
+
   private static byte[] returnFileToByteFormat(Workbook workbook) throws IOException {
     try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
       workbook.write(baos);

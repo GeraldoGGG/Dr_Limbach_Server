@@ -56,4 +56,14 @@ public interface UrlProperty extends ParamProperty {
   interface Questionnaire {
     String PATH = ROOT_PATH + "/questionnaires";
   }
+
+  interface StudyApplication {
+    String PATH = ROOT_PATH + "/study-applications";
+    String EXPORT = "/export";
+  }
+
+  interface Setting {
+    String PATH = ROOT_PATH + "/settings";
+    String STUDY_APPLICATION = "/study-application";
+  }
 }

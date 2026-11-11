@@ -13,6 +13,8 @@ import com.allMighty.client.UrlProperty.AnalysisCategory;
 import com.allMighty.client.UrlProperty.Questionnaire;
 import com.allMighty.client.UrlProperty.Email;
 import com.allMighty.client.UrlProperty.Search;
+import com.allMighty.client.UrlProperty.Setting;
+import com.allMighty.client.UrlProperty.StudyApplication;
 import com.allMighty.config.jwt.JwtAuthenticationFilter;
 import com.allMighty.config.security.person.role.Role;
 import lombok.RequiredArgsConstructor;
@@ -131,6 +133,16 @@ public class SecurityConfiguration {
                     // search
                     .requestMatchers(HttpMethod.POST, Search.PATH)
                     .permitAll()
+
+                    .requestMatchers(HttpMethod.POST, StudyApplication.PATH)
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, StudyApplication.PATH, StudyApplication.PATH + "/**")
+                    .hasRole(Role.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.GET, Setting.PATH + "/**")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.PUT, Setting.PATH + "/**")
+                    .hasRole(Role.ADMIN.name())
 
 
                     .anyRequest()

@@ -172,6 +172,12 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(value = {ForbiddenException.class})
+    public ResponseEntity<?> forbiddenException(ForbiddenException ex) {
+        log.error(ex.toString());
+        return logExceptionAndCreateResponse(Level.INFO, ex.getMessage(), FORBIDDEN, ex);
+    }
+
     @ExceptionHandler(value = {ConflictException.class})
     public ResponseEntity<?> conflictException(ConflictException ex) {
         log.error(ex.toString());
